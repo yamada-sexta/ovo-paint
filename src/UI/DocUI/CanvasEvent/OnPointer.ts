@@ -4,7 +4,9 @@ import {IViewerState} from "../DocCanvasState";
 import {PaintToolEvent} from "../../../core/src/PaintToolEvent";
 import {DocNode} from "../../../core/src/Documents/DocNodes/DocNode";
 
+// let isDown = false;
 export async function onDown(state: IViewerState, e: PointerEvent) {
+
     state.input.downPos = [e.offsetX, e.offsetY];
     switch (e.button) {
         case 0:
@@ -45,6 +47,7 @@ function canvasCordToDocCord(state: IViewerState, pos: [number, number]): [numbe
 function createPaintToolEvent(state: IViewerState, e: PointerEvent): PaintToolEvent<DocNode> {
     const doc = state.doc.doc;
     const docPos: Vec2 = canvasCordToDocCord(state, [e.offsetX, e.offsetY]);
+    // console.log(docPos)
     return {
         pos: docPos,
         doc: doc,
@@ -69,10 +72,18 @@ export async function onMove(state: IViewerState, e: PointerEvent) {
     state.input.pointerAbsPos = [e.clientX, e.clientY];
     state.input.pointerRelaPos = [e.offsetX, e.offsetY];
 
+    // if (isDown) {
+    //     if (e.pressure === 0) {
+    //         await onUp(state, e);
+    //         return;
+    //     }
+    // }
+
     await state.tool.currentTool.onMove(createPaintToolEvent(state, e));
 }
 
 export async function onUp(state: IViewerState, e: PointerEvent) {
     state.input.downPos = null;
+    console.log("up")
     await state.tool.currentTool.onUp(createPaintToolEvent(state, e));
 }

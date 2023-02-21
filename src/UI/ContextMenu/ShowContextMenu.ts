@@ -40,8 +40,14 @@ export class ContextMenu{
     }
 
     set pos(pos:[number, number]){
-        this._contentFrame.style.left = pos[0] + "px";
-        this._contentFrame.style.top = pos[1] + "px";
+        // Get the scroll position
+        // let scrollPos = [document.body.scrollLeft, document.body.scrollTop];
+
+        let scrollPos = [window.scrollX, window.scrollY];
+        console.log("scrollPos", scrollPos)
+
+        this._contentFrame.style.left = pos[0] + scrollPos[0]+ "px";
+        this._contentFrame.style.top = pos[1] + scrollPos[1] + "px";
         if (this._contentFrame.clientWidth + pos[0] > window.innerWidth) {
             this._contentFrame.style.left = (pos[0] - this._contentFrame.clientWidth) + "px";
         }
@@ -74,7 +80,7 @@ export class ContextMenu{
             menu.oncontextmenu = (e) => {
 
             }
-        }, 10);
+        }, 100);
 
         this._contentFrame.style.visibility = "visible";
     }

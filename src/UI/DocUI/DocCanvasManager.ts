@@ -20,6 +20,8 @@ export function DocCanvasManager(canvas: HTMLCanvasElement, doc: OVODocument) {
     if (!ctx) {
         throw new Error("Could not get 2D context from canvas");
     }
+    canvas.style.overflow = "hidden";
+    canvas.style.touchAction = "none";
     const state = createState(canvas, ctx, doc, new BasicPen())
 
     // state.viewer.scale = ;
