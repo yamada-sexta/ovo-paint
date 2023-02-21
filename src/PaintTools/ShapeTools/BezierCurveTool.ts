@@ -19,8 +19,8 @@ export class BezierCurveTool extends ShapePaintTool {
         }
     }
 
-    onDown(e: PaintToolEvent<ShapeLayerNode>) {
-        super.onDown(e);
+    async onDown(e: PaintToolEvent<ShapeLayerNode>) {
+        await super.onDown(e);
         let shape = e.node.getInRangeShapes(e.pos);
         if (shape !== null) {
             if (!(shape instanceof BezierCurveShape)) return;
@@ -59,8 +59,8 @@ export class BezierCurveTool extends ShapePaintTool {
         ctx.stroke();
     }
 
-    onMove(e: PaintToolEvent<ShapeLayerNode>) {
-        super.onMove(e);
+    async onMove(e: PaintToolEvent<ShapeLayerNode>) {
+        await super.onMove(e);
 
         this.drawThisUI(e)
 
@@ -78,8 +78,8 @@ export class BezierCurveTool extends ShapePaintTool {
         this.selectedShape.renderUI(e.ui.ctx);
     }
 
-    onUp(e: PaintToolEvent<ShapeLayerNode>) {
-        super.onUp(e);
+    async onUp(e: PaintToolEvent<ShapeLayerNode>) {
+        await super.onUp(e);
         this.selectedShape = null;
         this.selectedPointIndex = null;
     }

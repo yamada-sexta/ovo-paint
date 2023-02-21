@@ -2,6 +2,7 @@ import {ContextMenu} from "../../ContextMenu/ShowContextMenu";
 import {div, label, text} from "../../DOMFunctions";
 import {state} from "../DocCanvasState";
 import {BasicPen} from "../../../PaintTools/BitmapPaintTools/BasicPen";
+import {TextTool} from "../../../PaintTools/ShapeTools/TextTool";
 
 let toolContextMenu = new ContextMenu(
     [0, 0],
@@ -24,7 +25,7 @@ export function openToolContextMenu(pos: [number, number]) {
     let tool = state.tool.currentTool;
     if (!tool) {
         // return;
-        tool = new BasicPen();
+        tool = new TextTool();
     }
     toolContextMenu.content = tool.getMenu();
     toolContextMenu.open();

@@ -10,15 +10,15 @@ export abstract class PaintTool<NodeType extends DocNode = DocNode> {
     }
 
 
-    onDown(e: PaintToolEvent<NodeType>): void {
+    async onDown(e: PaintToolEvent<NodeType>): Promise<void> {
 
     }
 
-    onMove(e: PaintToolEvent<NodeType>): void {
+    async onMove(e: PaintToolEvent<NodeType>): Promise<void> {
 
     }
 
-    onUp(e: PaintToolEvent<NodeType>): void {
+    async onUp(e: PaintToolEvent<NodeType>): Promise<void> {
 
     }
 }

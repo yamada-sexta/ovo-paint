@@ -5,21 +5,18 @@ import {drawPointDebug} from "../../core/src/submodules/common-ts-utils/Canvas/P
 
 export class DebugPen extends BitmapPaintTool {
     isDrawing: boolean = false;
-    onDown(e: PaintToolEvent<BitmapLayerNode>) {
+    async onDown(e: PaintToolEvent<BitmapLayerNode>) {
         this.isDrawing = true;
-        super.onDown(e);
     }
 
-    onMove(e: PaintToolEvent<BitmapLayerNode>) {
-        super.onMove(e);
+    async onMove(e: PaintToolEvent<BitmapLayerNode>) {
         if (!this.isDrawing) return;
         console.log(e)
         const ctx = e.node.activeCtx;
         drawPointDebug(ctx, e.pos);
     }
 
-    onUp(e: PaintToolEvent<BitmapLayerNode>) {
-        super.onUp(e);
+    async onUp(e: PaintToolEvent<BitmapLayerNode>) {
         this.isDrawing = false;
         e.node.createSnapshot();
     }

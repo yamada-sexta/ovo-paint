@@ -2,13 +2,47 @@ import {ShapePaintTool} from "./ShapePaintTool";
 import {PaintToolEvent} from "../../core/src/PaintToolEvent";
 import {ShapeLayerNode} from "../../core/src/Documents/DocNodes/Layers/ShapeLayer/ShapeLayerNode";
 import {TextShape} from "./Shape/TextShape";
+import {br, div} from "../../UI/DOMFunctions";
 
 export class TextTool extends ShapePaintTool {
     private downRelaPos: Vec2 | null = null;
     private selectedShape: TextShape | null = null;
 
-    onDown(e: PaintToolEvent<ShapeLayerNode>) {
-        super.onDown(e);
+    getMenu(): HTMLElement {
+        // if (!this.selectedShape) return div();
+
+        let frame = div();
+        let input = document.createElement("input");
+        input.type = "text";
+        input.placeholder = "Text";
+        frame.appendChild(input);
+        frame.append(br());
+        let font = document.createElement("input");
+        font.type = "text";
+        font.placeholder = "Font";
+        frame.appendChild(font);
+        frame.append(br());
+        let size = document.createElement("input");
+        size.type = "number";
+        size.placeholder = "Size";
+        frame.appendChild(size);
+        frame.append(br());
+        let button = document.createElement("button");
+        button.innerText = "Save";
+        button.onclick = () => {
+            if (input.value === "") return;
+            if (font.value === "") return;
+            if (size.value === "") return;
+            this.selectedShape!.content = input.value;
+            this.selectedShape!.font = font.value;
+            this.selectedShape!.fontSize = parseInt(size.value);
+        }
+        frame.appendChild(button);
+        return frame;
+    }
+
+    async onDown(e: PaintToolEvent<ShapeLayerNode>) {
+        await super.onDown(e);
         const pos = e.pos;
         let shape = e.node.getInRangeShapes(pos);
         if (shape !== null) {
@@ -47,14 +81,14 @@ export class TextTool extends ShapePaintTool {
     }
 
 
-    onMove(e: PaintToolEvent<ShapeLayerNode>) {
-        super.onMove(e);
+    async onMove(e: PaintToolEvent<ShapeLayerNode>) {
+        await super.onMove(e);
 
         if (this.selectedShape !== null) {
             this.selectedShape.renderUI(e.ui.ctx);
             const pos = e.pos;
             this.selectedShape.position = [pos[0] - this.downRelaPos![0], pos[1] - this.downRelaPos![1]];
-        }else{
+        } else {
             e.ui.ctx.clearRect(0, 0, e.ui.canvas.width, e.ui.canvas.height);
             const currShape = e.node.getInRangeShapes(e.pos);
             if (currShape !== null) {
@@ -64,8 +98,8 @@ export class TextTool extends ShapePaintTool {
         }
     }
 
-    onUp(e: PaintToolEvent<ShapeLayerNode>) {
-        super.onUp(e);
+    async onUp(e: PaintToolEvent<ShapeLayerNode>) {
+        await super.onUp(e);
         e.ui.ctx.clearRect(0, 0, e.ui.canvas.width, e.ui.canvas.height);
         // this.downPos = null;
         this.selectedShape = null;

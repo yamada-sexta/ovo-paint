@@ -15,7 +15,6 @@ export class BasicPen extends BitmapPaintTool {
     color: string = "#000000";
 
     drawUI(e: PaintToolEvent<BitmapLayerNode>, size: number) {
-
         e.ui.ctx.clearRect(0, 0, e.ui.canvas.width, e.ui.canvas.height);
         e.ui.ctx.strokeStyle = "#969696";
         e.ui.ctx.lineWidth = 1;
@@ -46,14 +45,14 @@ export class BasicPen extends BitmapPaintTool {
         return frame;
     }
 
-    onDown(e: PaintToolEvent<BitmapLayerNode>) {
-        super.onDown(e);
+    async onDown(e: PaintToolEvent<BitmapLayerNode>) {
+        await super.onDown(e);
         e.node.activeCtx.lineCap = "round";
         this.isDrawing = true;
     }
 
-    onMove(e: PaintToolEvent<BitmapLayerNode>) {
-        super.onMove(e);
+    async onMove(e: PaintToolEvent<BitmapLayerNode>) {
+        await super.onMove(e);
         if (!this.isDrawing) {
             this.drawUI(e, this.maxSize / 2);
             return;
@@ -75,8 +74,8 @@ export class BasicPen extends BitmapPaintTool {
         this.lastPoints.push(e.pos);
     }
 
-    onUp(e: PaintToolEvent<BitmapLayerNode>) {
-        super.onUp(e);
+    async onUp(e: PaintToolEvent<BitmapLayerNode>) {
+        await super.onUp(e);
         this.isDrawing = false;
         e.node.createSnapshot();
         this.lastPoints = [];
