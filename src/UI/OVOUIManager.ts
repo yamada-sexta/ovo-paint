@@ -3,7 +3,7 @@ import $ from "jquery";
 
 import {OVODocument} from "../core/src/Documents/OVODocument";
 import {openCreateWindow} from "./CreateUI";
-import {DocCanvasManager} from "./DocCanvasManager";
+import {DocCanvasManager} from "./DocUI/DocCanvasManager";
 
 /**
  * This class is responsible for managing the UI of OVO Paint.
@@ -31,12 +31,19 @@ export class OVOUIManager {
             this._documentList.push(doc);
         }
     }
-
     constructor(root: HTMLDivElement, doc: OVODocument | null = null) {
         if (doc) {
             throw new Error("Not implemented yet");
         }
         this.root = root;
+
+        // root.onmousedown = (e) => {
+        //     e.preventDefault();
+        // }
+        // root.oncontextmenu = (e) => {
+        //     e.preventDefault();
+        //     return false;
+        // }
 
         if (doc === null) {
             this.showNullDocumentUI();

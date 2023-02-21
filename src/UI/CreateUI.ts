@@ -1,4 +1,44 @@
 import {OVODocument} from "../core/src/Documents/OVODocument";
+import {br, button, div, input, label, text} from "./DOMFunctions";
+import {openPopUp} from "./OpenPopUp";
+
+const templateOptions = [
+    {
+        name: "100x100",
+        width: 100,
+        height: 100
+    },
+    {
+        name: "A4 Portrait",
+        width: 210,
+        height: 297
+    },
+    {
+        name: "A4 Landscape",
+        width: 297,
+        height: 210
+    },
+    {
+        name: "A3 Portrait",
+        width: 297,
+        height: 420
+    },
+    {
+        name: "A3 Landscape",
+        width: 420,
+        height: 297
+    },
+    {
+        name: "4K",
+        width: 3840,
+        height: 2160
+    },
+    {
+        name: "1080p",
+        width: 1920,
+        height: 1080
+    }
+];
 
 interface CreateCallback {
     name: string;
@@ -11,12 +51,6 @@ export async function openCreateWindow(
     windowHeight: number = 300
 ): Promise<OVODocument> {
     return new Promise<OVODocument>((resolve, reject) => {
-        let createWindow = window.open("", "", `width=${windowWidth},height=${windowHeight}`);
-        if (!createWindow) {
-            reject("Could not open window");
-            return;
-        }
-
         function finish(name: string, width: number, height: number) {
             if (name === "") {
                 reject("Name cannot be empty");
@@ -42,79 +76,27 @@ export async function openCreateWindow(
             );
         }
 
+        let createDiv = getCreateDiv({createCallback: finish});
+
+        let createWindow = openPopUp("Create New Document", windowWidth, windowHeight, createDiv);
         (createWindow as any).callback = finish;
         if (!createWindow) {
             reject("Could not open window");
             return;
         }
-
-        let createDiv = getCreateDiv(finish);
-
-        createWindow.document.body.append(createDiv);
-        //
-        // createWindow.document.write(`
-        //         <html>
-        //             <head>
-        //                 <title>Create Document</title>
-        //             </head>
-        //             <body>
-        //                 <div>Create New Document</div>
-        //
-        //                 <div>Name: <input type="text" id="name" value="Untitled"></div>
-        //                 <div>Width: <input type="number" id="width" value="${defaultWidth}"></div>
-        //                 <div>Height: <input type="number" id="height" value="${defaultHeight}"></div>
-        //                 <button onclick="
-        //                     let name = document.getElementById('name').value;
-        //                     let width = document.getElementById('width').value;
-        //                     let height = document.getElementById('height').value;
-        //                     callback(name, width, height);
-        //                 ">Create</button>
-        //             </body>
-        //         </html>
-        // `);
-
     });
 }
 
-function div() {
-    return document.createElement("div");
-}
-function br() {
-    return document.createElement("br");
-}
-function label(text: string) {
-    let label = document.createElement("label");
-    label.innerText = text;
-    return label;
-}
 
-function getCreateDiv(finish: (name: string, width: number, height: number) => void){
+function getCreateDiv(props: {
+    createCallback: (name: string, width: number, height: number) => void
+}) {
 
-    let createDiv = document.createElement("div");
-
-    let title = document.createElement("div");
-    title.innerText = "Create New Document";
-    createDiv.appendChild(title);
+    let title = text("Create New Document");
 
     let templateDropdown = document.createElement("select");
 
-    let templateOptions = [
-        {
-            name: "Blank",
-            width: 100,
-            height: 100
-        },
-        {
-            name: "A4 Portrait",
-            width: 210,
-            height: 297
-        },
-        {
-            name: "A4 Landscape",
-            width: 297,
-            height: 210
-        }
-        ];
+
     for (let option of templateOptions) {
         let optionElement = document.createElement("option");
         optionElement.innerText = option.name;
@@ -125,49 +107,76 @@ function getCreateDiv(finish: (name: string, width: number, height: number) => v
     let templateLabel = document.createElement("label");
     templateLabel.innerText = "Template: ";
     templateLabel.appendChild(templateDropdown);
-    createDiv.appendChild(templateLabel);
-    createDiv.appendChild(templateDropdown);
-    createDiv.appendChild(br());
 
-    let nameInput = document.createElement("input");
-    nameInput.type = "text";
-    nameInput.value = "Untitled";
-    let nameLabel = document.createElement("label");
-    nameLabel.innerText = "Name: ";
-    nameLabel.appendChild(nameInput);
-    createDiv.appendChild(nameLabel);
-    createDiv.appendChild(br());
+    const nameInput = input(
+        {
+            type: "text",
+            value: "Untitled"
+        }
+    )
+    const nameLabel = label(
+        {
+            text: "Name: ",
+            children: [nameInput]
+        }
+    )
 
+    let widthInput = input(
+        {
+            type: "number",
+            value: "100"
+        }
+    )
+    let widthLabel = label(
+        {
+            text: "Width: ",
+            children: [widthInput]
+        }
+    )
 
-    let widthInput = document.createElement("input");
-    widthInput.type = "number";
-    widthInput.value = "100";
-    let widthLabel = document.createElement("label");
-    widthLabel.innerText = "Width: ";
-    widthLabel.appendChild(widthInput);
-    createDiv.appendChild(widthLabel);
-    createDiv.appendChild(br());
-
-
-    let heightInput = document.createElement("input");
-    heightInput.type = "number";
-    heightInput.value = "100";
-    let heightLabel = document.createElement("label");
-    heightLabel.innerText = "Height: ";
-    heightLabel.appendChild(heightInput);
-    createDiv.appendChild(heightLabel);
-    createDiv.appendChild(br());
-
-
-    let createBtn = document.createElement("button");
-    createBtn.innerText = "Create";
-    createBtn.onclick = () => {
-        let name = nameInput.value;
-        let width = parseInt(widthInput.value);
-        let height = parseInt(heightInput.value);
-        finish(name, width, height);
-    }
-    createDiv.appendChild(createBtn);
+    let heightInput = input(
+        {
+            type: "number",
+            value: "100"
+        }
+    )
+    let heightLabel = label(
+        {
+            text: "Height: ",
+            children: [heightInput]
+        }
+    )
+    let createBtn = button(
+        {
+            text: "Create",
+            onclick: () => {
+                let name = nameInput.value;
+                let width = parseInt(widthInput.value);
+                let height = parseInt(heightInput.value);
+                if (name === "") {
+                    alert("Name cannot be empty");
+                    return;
+                }
+                if (width <= 0) {
+                    alert("Width must be greater than 0");
+                    return;
+                }
+                if (height <= 0) {
+                    alert("Height must be greater than 0");
+                    return;
+                }
+                if (isNaN(width)) {
+                    alert("Width must be a number");
+                    return;
+                }
+                if (isNaN(height)) {
+                    alert("Height must be a number");
+                    return;
+                }
+                props.createCallback(name, width, height);
+            }
+        }
+    )
 
     let templateDropdownChange = () => {
         let option = templateOptions.find((option) => option.name === templateDropdown.value);
@@ -179,7 +188,21 @@ function getCreateDiv(finish: (name: string, width: number, height: number) => v
     templateDropdown.onchange = templateDropdownChange;
 
     templateDropdownChange();
-
-
-    return createDiv;
+    return div(
+        {
+            children: [
+                title,
+                br(),
+                templateLabel,
+                br(),
+                nameLabel,
+                br(),
+                widthLabel,
+                br(),
+                heightLabel,
+                br(),
+                createBtn
+            ]
+        }
+    );
 }
