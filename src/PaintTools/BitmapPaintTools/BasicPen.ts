@@ -2,7 +2,6 @@ import {BitmapPaintTool} from "./BitmapPaintTool";
 import {PaintToolEvent} from "../../core/src/PaintToolEvent";
 import {BitmapLayerNode} from "../../core/src/Documents/DocNodes/Layers/BitmapLayerNode";
 import {drawHermitCurve} from "../../core/src/submodules/common-ts-utils/Canvas/PaintCanvas";
-import {Vec2} from "../../core/src/submodules/common-ts-utils/Math/Vector";
 
 export class BasicPen extends BitmapPaintTool {
     isDrawing: boolean = false;

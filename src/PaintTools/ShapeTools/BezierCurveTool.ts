@@ -2,7 +2,6 @@ import {ShapePaintTool} from "./ShapePaintTool";
 import {PaintToolEvent} from "../../core/src/PaintToolEvent";
 import {ShapeLayerNode} from "../../core/src/Documents/DocNodes/Layers/ShapeLayer/ShapeLayerNode";
 import {BezierCurveShape} from "./Shape/BezierCurveShape";
-import {Vec2} from "../../core/src/submodules/common-ts-utils/Math/Vector";
 
 export class BezierCurveTool extends ShapePaintTool {
     selectedShape: BezierCurveShape | null = null;

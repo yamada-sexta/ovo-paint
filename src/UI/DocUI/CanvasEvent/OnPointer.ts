@@ -19,7 +19,8 @@ export function onDown(e: PointerEvent) {
 
 function onRightClick(e: PointerEvent) {
     e.preventDefault();
-    openToolContextMenu([e.clientX, e.clientY], input({type: "text", value: "Hello World"}));
+    console.log("right click")
+    openToolContextMenu([e.clientX, e.clientY]);
 }
 
 function onMiddleClick(e: PointerEvent) {
