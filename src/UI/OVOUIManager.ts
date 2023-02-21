@@ -21,7 +21,10 @@ export class OVOUIManager {
         return this._currentDocument;
     }
 
-    set currentDocument(doc: OVODocument) {
+    set currentDocument(doc: OVODocument | null) {
+        if (doc === null) {
+            throw new Error("Cannot set current document to null");
+        }
         this._currentDocument = doc;
         let docIndex = this._documentList.indexOf(doc);
         if (docIndex === -1) {
@@ -51,18 +54,12 @@ export class OVOUIManager {
         `);
         // Create two buttons
         let createBtn = $(`<button>Create</button>`)
-            .on("click", () => {
-                openCreateWindow(
-                    arg => {
-                        console.log("Create button clicked");
-                        this.currentDocument = new OVODocument(
-                            arg.name,
-                            arg.width,
-                            arg.height
-                        );
-                        this.showDocumentUI();
-                    }
-                )
+            .on("click", async () => {
+                let doc = await openCreateWindow();
+                if (doc) {
+                    this.currentDocument = doc;
+                    this.showDocumentUI();
+                }
             });
         let openBtn = $(`<button>Open</button>`)
             .on("click", () => {
@@ -75,6 +72,10 @@ export class OVOUIManager {
     }
 
     showDocumentUI() {
+        if (this.currentDocument === null) {
+            throw new Error("Cannot show document UI when there is no document");
+        }
+
         const root = this.root;
         // Clear the root
         root.innerHTML = "";
@@ -85,6 +86,6 @@ export class OVOUIManager {
         canvas.style.width = "100%";
         canvas.style.height = "100%";
         $(root).append(canvas);
-        let docCanvasManager = new DocCanvasManager(canvas, this.currentDocument);
+        DocCanvasManager(canvas, this.currentDocument);
     }
 }
