@@ -1,5 +1,4 @@
 import {Shape} from "../../../core/src/Documents/DocNodes/Layers/ShapeLayer/Shape";
-import {Vec2} from "../../../core/src/submodules/common-ts-utils/Math/Vector";
 
 export class TextShape extends Shape {
     _content: string;

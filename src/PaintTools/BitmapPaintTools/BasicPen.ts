@@ -2,6 +2,7 @@ import {BitmapPaintTool} from "./BitmapPaintTool";
 import {PaintToolEvent} from "../../core/src/PaintToolEvent";
 import {BitmapLayerNode} from "../../core/src/Documents/DocNodes/Layers/BitmapLayerNode";
 import {drawHermitCurve} from "../../core/src/submodules/common-ts-utils/Canvas/PaintCanvas";
+import {br, div} from "../../UI/DOMFunctions";
 
 export class BasicPen extends BitmapPaintTool {
     isDrawing: boolean = false;
@@ -10,6 +11,8 @@ export class BasicPen extends BitmapPaintTool {
 
     maxSize: number = 20;
     minSize: number = 5;
+
+    color: string = "#000000";
 
     drawUI(e: PaintToolEvent<BitmapLayerNode>, size: number) {
 
@@ -20,6 +23,27 @@ export class BasicPen extends BitmapPaintTool {
         // Draw a circle at the current mouse position
         e.ui.ctx.arc(e.pos[0], e.pos[1], size, 0, 2 * Math.PI);
         e.ui.ctx.stroke();
+    }
+
+    getMenu(): HTMLElement {
+        let frame = div();
+        let sizeSlider = document.createElement("input");
+        sizeSlider.type = "range";
+        sizeSlider.min = "1";
+        sizeSlider.max = "100";
+        sizeSlider.value = "20";
+        sizeSlider.oninput = () => {
+            this.maxSize = Number(sizeSlider.value);
+        }
+        frame.appendChild(sizeSlider);
+        frame.append(br())
+        let colorPicker = document.createElement("input");
+        colorPicker.type = "color";
+        colorPicker.oninput = () => {
+            this.color = colorPicker.value;
+        }
+        frame.appendChild(colorPicker);
+        return frame;
     }
 
     onDown(e: PaintToolEvent<BitmapLayerNode>) {
@@ -35,6 +59,7 @@ export class BasicPen extends BitmapPaintTool {
             return;
         }
         const ctx = e.node.activeCtx;
+        ctx.fillStyle = this.color;
         if (this.lastPoints.length >= 4) {
             let p1 = this.lastPoints[0];
             let p2 = this.lastPoints[1];

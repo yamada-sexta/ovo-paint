@@ -2,7 +2,6 @@ import {ShapePaintTool} from "./ShapePaintTool";
 import {PaintToolEvent} from "../../core/src/PaintToolEvent";
 import {ShapeLayerNode} from "../../core/src/Documents/DocNodes/Layers/ShapeLayer/ShapeLayerNode";
 import {TextShape} from "./Shape/TextShape";
-import {Vec2} from "../../core/src/submodules/common-ts-utils/Math/Vector";
 
 export class TextTool extends ShapePaintTool {
     private downRelaPos: Vec2 | null = null;
