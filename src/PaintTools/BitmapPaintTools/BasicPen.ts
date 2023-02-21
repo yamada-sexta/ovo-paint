@@ -40,6 +40,7 @@ export class BasicPen extends BitmapPaintTool {
         colorPicker.type = "color";
         colorPicker.oninput = () => {
             this.color = colorPicker.value;
+            console.log(this.color)
         }
         frame.appendChild(colorPicker);
         return frame;
@@ -47,6 +48,7 @@ export class BasicPen extends BitmapPaintTool {
 
     async onDown(e: PaintToolEvent<BitmapLayerNode>) {
         await super.onDown(e);
+        // console.log(e);
         e.node.activeCtx.lineCap = "round";
         this.isDrawing = true;
     }
@@ -57,8 +59,11 @@ export class BasicPen extends BitmapPaintTool {
             this.drawUI(e, this.maxSize / 2);
             return;
         }
+
         const ctx = e.node.activeCtx;
-        ctx.fillStyle = this.color;
+        ctx.strokeStyle = this.color;
+        console.log(this.color)
+
         if (this.lastPoints.length >= 4) {
             let p1 = this.lastPoints[0];
             let p2 = this.lastPoints[1];
@@ -68,7 +73,7 @@ export class BasicPen extends BitmapPaintTool {
             ctx.lineWidth = size;
             drawHermitCurve(ctx, p1, p2, p3, p4)
             this.lastPoints.shift();
-            this.drawUI(e, size / 2)
+            // this.drawUI(e, size / 2)
         }
 
         this.lastPoints.push(e.pos);

@@ -1,43 +1,78 @@
 import {input} from "../../DOMFunctions";
 import {closeContextMenu, openToolContextMenu} from "./DocCanvasContextMenu";
-import {state} from "../DocCanvasState";
+import {IViewerState} from "../DocCanvasState";
+import {PaintToolEvent} from "../../../core/src/PaintToolEvent";
+import {DocNode} from "../../../core/src/Documents/DocNodes/DocNode";
 
-export function onDown(e: PointerEvent) {
+export async function onDown(state: IViewerState, e: PointerEvent) {
     state.input.downPos = [e.offsetX, e.offsetY];
     switch (e.button) {
         case 0:
-            onLeftClick(e);
+            await onLeftClick(state, e);
             break;
         case 1:
-            onMiddleClick(e);
+            await onMiddleClick(state, e);
             break;
         case 2:
-            onRightClick(e);
+            await onRightClick(state, e);
             break;
     }
 }
 
-function onRightClick(e: PointerEvent) {
+async function onRightClick(state: IViewerState, e: PointerEvent) {
     e.preventDefault();
     console.log("right click")
-    openToolContextMenu([e.clientX, e.clientY]);
+    openToolContextMenu(state, [e.clientX, e.clientY]);
 }
 
-function onMiddleClick(e: PointerEvent) {
+async function onMiddleClick(state: IViewerState, e: PointerEvent) {
     e.preventDefault();
 }
 
-function onLeftClick(e: PointerEvent) {
+async function onLeftClick(state: IViewerState, e: PointerEvent) {
     e.preventDefault();
     closeContextMenu();
+    await state.tool.currentTool.onDown(createPaintToolEvent(state, e));
+}
+
+function canvasCordToDocCord(state: IViewerState, pos: [number, number]): [number, number] {
+    return [
+        (pos[0] / state.viewer.scale - state.doc.pos[0]) / state.doc.scale,
+        (pos[1] / state.viewer.scale - state.doc.pos[1]) / state.doc.scale
+    ]
+}
+
+function createPaintToolEvent(state: IViewerState, e: PointerEvent): PaintToolEvent<DocNode> {
+    const doc = state.doc.doc;
+    const docPos: Vec2 = canvasCordToDocCord(state, [e.offsetX, e.offsetY]);
+    return {
+        pos: docPos,
+        doc: doc,
+        pressure: e.pressure,
+        node: state.doc.doc.activeNode,
+        ui: {
+            canvas: state.viewer.canvas,
+            ctx: state.viewer.ctx,
+            scale: state.doc.scale
+        },
+        key: {
+            shift: e.shiftKey,
+            ctrl: e.ctrlKey,
+            alt: e.altKey,
+        },
+        history: state.doc.doc._history,
+    }
 }
 
 
-export function onMove(e: PointerEvent) {
+export async function onMove(state: IViewerState, e: PointerEvent) {
     state.input.pointerAbsPos = [e.clientX, e.clientY];
     state.input.pointerRelaPos = [e.offsetX, e.offsetY];
+
+    await state.tool.currentTool.onMove(createPaintToolEvent(state, e));
 }
 
-export function onUp(e: PointerEvent) {
+export async function onUp(state: IViewerState, e: PointerEvent) {
     state.input.downPos = null;
+    await state.tool.currentTool.onUp(createPaintToolEvent(state, e));
 }

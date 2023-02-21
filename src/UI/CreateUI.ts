@@ -4,9 +4,14 @@ import {openPopUp} from "./OpenPopUp";
 
 const templateOptions = [
     {
-        name: "100x100",
-        width: 100,
-        height: 100
+        name: "4K",
+        width: 3840,
+        height: 2160
+    },
+    {
+        name: "1080p",
+        width: 1920,
+        height: 1080
     },
     {
         name: "A4 Portrait",
@@ -28,15 +33,21 @@ const templateOptions = [
         width: 420,
         height: 297
     },
+
     {
-        name: "4K",
-        width: 3840,
-        height: 2160
+        name: "100x100",
+        width: 100,
+        height: 100
     },
     {
-        name: "1080p",
-        width: 1920,
-        height: 1080
+        name: "128x128",
+        width: 128,
+        height: 128
+    },
+    {
+        name: "256x256",
+        width: 256,
+        height: 256
     }
 ];
 

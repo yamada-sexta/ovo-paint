@@ -1,31 +1,61 @@
 import {OVODocument} from "../../core/src/Documents/OVODocument";
-import { onWheel} from "./CanvasEvent/DocCanvasEvent";
+import {onWheel} from "./CanvasEvent/DocCanvasEvent";
 import {onDown, onMove, onUp} from "./CanvasEvent/OnPointer";
 import {onDocCanvasMenu} from "./CanvasEvent/DocCanvasContextMenu";
 import {getCheckBoard} from "../../core/src/Documents/BackgroundFills";
-import {state} from "./DocCanvasState";
+import {update} from "./CanvasEvent/ViewerRender";
+import {createState, IViewerState} from "./DocCanvasState";
+import {TextTool} from "../../PaintTools/ShapeTools/TextTool";
+import {ShapeLayerNode} from "../../core/src/Documents/DocNodes/Layers/ShapeLayer/ShapeLayerNode";
+import {BitmapLayerNode} from "../../core/src/Documents/DocNodes/Layers/BitmapLayerNode";
+import {BasicPen} from "../../PaintTools/BitmapPaintTools/BasicPen";
+import {printDocNodeTree} from "../../core/src/Debug";
+import {DebugPen} from "../../PaintTools/BitmapPaintTools/DebugPen";
 
-let checkBoard = getCheckBoard();
+//
+
 
 export function DocCanvasManager(canvas: HTMLCanvasElement, doc: OVODocument) {
     const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
     if (!ctx) {
         throw new Error("Could not get 2D context from canvas");
     }
-    state.viewer.scale = window.devicePixelRatio;
-    state.doc.pos = [canvas.width * state.viewer.scale / 2, canvas.height * state.viewer.scale / 2];
-    state.doc.doc = doc;
-    // DocCanvasState.docWidth = doc.width;
-    // DocCanvasState.docHeight = doc.height;
+    const state = createState(canvas, ctx, doc, new BasicPen())
 
+    // state.viewer.scale = ;
+    state.doc.pos = [canvas.width * state.viewer.scale / 2, canvas.height * state.viewer.scale / 2];
     let image = new Image();
     image.src = "./src/assets/paper.png";
+
+    let shapeLayer = new ShapeLayerNode();
+    shapeLayer.name = "Shape Layer";
+    doc.rootNode.addNode(shapeLayer);
+    let bitmapLayer = new BitmapLayerNode(doc.width, doc.height);
+    bitmapLayer.name = "Bitmap Layer";
+    doc.rootNode.addNode(bitmapLayer);
+    state.doc.doc.activeNode = bitmapLayer;
+    // state.doc.currentNode = shapeLayer;
+
+    printDocNodeTree(doc.rootNode);
+
+    // bitmapLayer.activeCtx.fillStyle = "red";
+    // bitmapLayer.activeCtx.fillRect(0, 0, 100, 100);
 
     image.onload = () => {
         const tmpCanvas = new OffscreenCanvas(image.width, image.height);
         const tmpCtx = tmpCanvas.getContext("2d") as OffscreenCanvasRenderingContext2D;
         tmpCtx.drawImage(image, 0, 0);
+        const alpha = 0.5;
+        tmpCtx.fillStyle = "rgba(0,0,0," + alpha + ")";
+        tmpCtx.fillRect(0, 0, image.width, image.height);
         state.viewer.background = ctx.createPattern(tmpCanvas.transferToImageBitmap(), "repeat") as CanvasPattern;
+
+        // let checkBoard = getCheckBoard();
+
+        tmpCtx.drawImage(image, 0, 0);
+        tmpCtx.fillStyle = `rgba(255,255,255,${1 - alpha})`
+        tmpCtx.fillRect(0, 0, image.width, image.height);
+        state.doc.background = ctx.createPattern(tmpCanvas.transferToImageBitmap(), "repeat") as CanvasPattern;
     }
 
     async function updateCanvasScale() {
@@ -47,119 +77,24 @@ export function DocCanvasManager(canvas: HTMLCanvasElement, doc: OVODocument) {
     });
 
     function callFrame() {
-        update(ctx, canvas, doc);
+        update(state, ctx, canvas, doc);
         requestAnimationFrame(callFrame);
     }
 
     callFrame();
-
-    setupCanvasEvents(canvas);
+    setupCanvasEvents(state, canvas);
 }
 
-function setupPaintTool(){
+function setupPaintTool() {
 
 }
 
-function setupCanvasEvents(canvas: HTMLCanvasElement) {
-    canvas.addEventListener("pointermove", onMove);
-    canvas.addEventListener("pointerdown", onDown);
-    canvas.addEventListener("pointerup", onUp);
-    canvas.addEventListener("contextmenu", onDocCanvasMenu);
-    canvas.addEventListener("wheel", onWheel);
-}
-
-function drawCanvasBackground(ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D,
-                              canvas: HTMLCanvasElement | OffscreenCanvas) {
-    // Initialize the canvas
-    ctx.save();
-    ctx.scale(1 / state.viewer.scale, 1 / state.viewer.scale);
-    ctx.fillStyle = state.viewer.background;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "rgba(0,0,0,0.61)";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.restore();
-    ctx.scale(state.viewer.scale, state.viewer.scale);
-}
-
-function drawDoc(ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D,
-                 canvas: HTMLCanvasElement | OffscreenCanvas,
-                 doc: OVODocument) {
-    // Draw the document
-    const w = doc.width;
-    const h = doc.height;
-
-    ctx.save();
-
-    // const docScale = state.doc.scale;
-
-    // ctx.strokeStyle = "rgba(0,0,0,0.2)";
-    // ctx.filter = "blur(10px)";
-    // ctx.strokeRect(
-    //     DocCanvasState.docPos[0],
-    //     DocCanvasState.docPos[1],
-    //     w * DocCanvasState.docScaleFactor,
-    //     h * DocCanvasState.docScaleFactor);
-    ctx.filter = "none";
-    ctx.imageSmoothingEnabled = false;
-
-    ctx.translate(state.doc.pos[0], state.doc.pos[1]);
-    ctx.scale(state.doc.scale, state.doc.scale);
-
-
-    doc.render({
-        renderMode: "export"
-    })
-    ctx.drawImage(doc.content, 0, 0);
-
-    ctx.restore();
-    // Draw grid
-    // console.log(state.doc.scale);
-    if (state.doc.scale > 5) {
-        drawPixelGrid(ctx, canvas);
-    }
-}
-
-function drawPixelGrid(ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D, canvas: HTMLCanvasElement | OffscreenCanvas) {
-    ctx.strokeStyle = "rgb(136,136,136)";
-    ctx.lineWidth = 0.3;
-
-    const startX = state.doc.pos[0];
-    const startY = state.doc.pos[1];
-
-    let docWidth = 0;
-
-    let docHeight = 0;
-    if (state.doc.doc) {
-        docWidth = state.doc.doc.width;
-        docHeight = state.doc.doc.height;
-    }
-
-
-    const endX = startX + docWidth * state.doc.scale;
-    const endY = startY + docHeight * state.doc.scale;
-
-
-    for (let i = startX + state.doc.scale; i < endX; i += state.doc.scale) {
-        ctx.beginPath();
-        ctx.moveTo(i, startY);
-        ctx.lineTo(i, endY);
-        ctx.stroke();
-    }
-    for (let i = startY + state.doc.scale; i < endY; i += state.doc.scale) {
-        ctx.beginPath();
-        ctx.moveTo(startX, i);
-        ctx.lineTo(endX, i);
-        ctx.stroke();
-    }
+function setupCanvasEvents(state: IViewerState, canvas: HTMLCanvasElement) {
+    canvas.addEventListener("pointermove", (e) => onMove(state, e))
+    canvas.addEventListener("pointerdown", (e) => onDown(state, e));
+    canvas.addEventListener("pointerup", (e) => onUp(state, e));
+    canvas.addEventListener("contextmenu", (e) => onDocCanvasMenu(state, e))
+    canvas.addEventListener("wheel", (e) => onWheel(state, e));
 }
 
 
-function update(ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D,
-                canvas: HTMLCanvasElement | OffscreenCanvas,
-                doc: OVODocument) {
-    ctx.save();
-    drawCanvasBackground(ctx, canvas);
-    // Draw the document
-    drawDoc(ctx, canvas, doc);
-    ctx.restore();
-}

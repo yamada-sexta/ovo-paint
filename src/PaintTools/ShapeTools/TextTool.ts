@@ -43,8 +43,13 @@ export class TextTool extends ShapePaintTool {
 
     async onDown(e: PaintToolEvent<ShapeLayerNode>) {
         await super.onDown(e);
+        if (!(e.doc.activeNode instanceof ShapeLayerNode)) {
+            return;
+        }
+        const node = e.doc.activeNode;
+
         const pos = e.pos;
-        let shape = e.node.getInRangeShapes(pos);
+        let shape = node.getInRangeShapes(pos);
         if (shape !== null) {
             if (!(shape instanceof TextShape)) return;
             // if (e.button === 1) {
@@ -76,7 +81,7 @@ export class TextTool extends ShapePaintTool {
             const size = prompt("Size", "20");
             if (size === null) return;
             const textNode = new TextShape(text, pos, font, parseInt(size));
-            e.node.addShape(textNode);
+            node.addShape(textNode);
         }
     }
 
@@ -84,13 +89,18 @@ export class TextTool extends ShapePaintTool {
     async onMove(e: PaintToolEvent<ShapeLayerNode>) {
         await super.onMove(e);
 
+
+        if (!(e.doc.activeNode instanceof ShapeLayerNode)) {
+            return;
+        }
+
         if (this.selectedShape !== null) {
             this.selectedShape.renderUI(e.ui.ctx);
             const pos = e.pos;
             this.selectedShape.position = [pos[0] - this.downRelaPos![0], pos[1] - this.downRelaPos![1]];
         } else {
             e.ui.ctx.clearRect(0, 0, e.ui.canvas.width, e.ui.canvas.height);
-            const currShape = e.node.getInRangeShapes(e.pos);
+            const currShape = e.doc.activeNode.getInRangeShapes(e.pos);
             if (currShape !== null) {
                 if (!(currShape instanceof TextShape)) return;
                 currShape.renderUI(e.ui.ctx);

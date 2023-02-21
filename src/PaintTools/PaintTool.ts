@@ -1,6 +1,11 @@
 import {PaintToolEvent} from "../core/src/PaintToolEvent";
 import {DocNode} from "../core/src/Documents/DocNodes/DocNode";
 
+interface PaintToolUIRenderEvent {
+    ctx: CanvasRenderingContext2D;
+    canvas: HTMLCanvasElement;
+}
+
 export abstract class PaintTool<NodeType extends DocNode = DocNode> {
 
     getMenu(): HTMLElement {
@@ -8,6 +13,8 @@ export abstract class PaintTool<NodeType extends DocNode = DocNode> {
         item.innerText = "NO CONTENT";
         return item;
     }
+
+    abstract checkNode(node: DocNode): boolean;
 
 
     async onDown(e: PaintToolEvent<NodeType>): Promise<void> {
@@ -19,6 +26,10 @@ export abstract class PaintTool<NodeType extends DocNode = DocNode> {
     }
 
     async onUp(e: PaintToolEvent<NodeType>): Promise<void> {
+
+    }
+
+    async renderUI(e: PaintToolUIRenderEvent): Promise<void> {
 
     }
 }

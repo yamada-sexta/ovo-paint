@@ -1,8 +1,8 @@
 import {ContextMenu} from "../../ContextMenu/ShowContextMenu";
 import {div, label, text} from "../../DOMFunctions";
-import {state} from "../DocCanvasState";
 import {BasicPen} from "../../../PaintTools/BitmapPaintTools/BasicPen";
 import {TextTool} from "../../../PaintTools/ShapeTools/TextTool";
+import {IViewerState} from "../DocCanvasState";
 
 let toolContextMenu = new ContextMenu(
     [0, 0],
@@ -19,19 +19,19 @@ export function closeContextMenu() {
     toolContextMenu.close();
 }
 
-export function openToolContextMenu(pos: [number, number]) {
+export function openToolContextMenu(
+    state: IViewerState,
+    pos: [number, number]) {
     console.log("open tool context menu")
     toolContextMenu.pos = pos;
     let tool = state.tool.currentTool;
-    if (!tool) {
-        // return;
-        tool = new TextTool();
-    }
     toolContextMenu.content = tool.getMenu();
     toolContextMenu.open();
 }
 
-export function onDocCanvasMenu(e: MouseEvent) {
+export function onDocCanvasMenu(
+    state: IViewerState,
+    e: MouseEvent) {
     e.preventDefault();
-    openToolContextMenu([e.clientX, e.clientY]);
+    openToolContextMenu(state, [e.clientX, e.clientY]);
 }

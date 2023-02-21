@@ -1,6 +1,7 @@
 import {PaintTool} from "../../PaintTools/PaintTool";
 import {DocNode} from "../../core/src/Documents/DocNodes/DocNode";
 import {OVODocument} from "../../core/src/Documents/OVODocument";
+import {BitmapLayerNode} from "../../core/src/Documents/DocNodes/Layers/BitmapLayerNode";
 
 interface IDocUIState {
     scaleMax: number;
@@ -12,13 +13,20 @@ interface IDocUIState {
 
     background: string | CanvasGradient | CanvasPattern;
 
-    doc: OVODocument | null;
+    doc: OVODocument;
+    // currentNode: DocNode | null;
+    // currentBitmapLayer: BitmapLayerNode | null;
+    // currentShapeLayer: DocNode | null;
+
 }
 
-interface IViewerState {
+interface IViewerCanvasState {
     background: string | CanvasGradient | CanvasPattern;
-
     scale: number;
+
+
+    canvas: HTMLCanvasElement | OffscreenCanvas;
+    ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D;
 }
 
 interface IInputState {
@@ -28,40 +36,48 @@ interface IInputState {
 }
 
 interface IToolState {
-    currentTool: PaintTool<DocNode> | null;
+    currentTool: PaintTool;
 }
 
-interface IDocumentViewerState {
+export interface IViewerState {
     doc: IDocUIState;
     input: IInputState;
-    viewer: IViewerState;
+    viewer: IViewerCanvasState;
     tool: IToolState;
 }
 
-export const state: IDocumentViewerState = {
-    doc: {
-        scaleMax: 10,
-        scaleMin: 0.1,
+export function createState(
+    canvas:HTMLCanvasElement | OffscreenCanvas,
+    ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D,
+    doc: OVODocument,
+    tool: PaintTool
+): IViewerState {
+    return {
+        doc: {
+            scaleMax: 30,
+            scaleMin: 0.01,
 
-        scale: 1,
+            scale: 1,
 
-        pos: [0, 0],
+            pos: [0, 0],
 
-        background: "#ff6b6b",
+            background: "#ff6b6b",
 
-        doc: null
-    },
-    input: {
-        pointerRelaPos: [0, 0],
-        pointerAbsPos: [0, 0],
-        downPos: null
-    },
-    viewer: {
-        background: "#1f1f1f",
-
-        scale: 1
-    },
-    tool: {
-        currentTool: null
+            doc: doc
+        },
+        input: {
+            pointerRelaPos: [0, 0],
+            pointerAbsPos: [0, 0],
+            downPos: null
+        },
+        viewer: {
+            background: "#1f1f1f",
+            scale: window.devicePixelRatio,
+            canvas: canvas,
+            ctx: ctx
+        },
+        tool: {
+            currentTool: tool
+        }
     }
 }
