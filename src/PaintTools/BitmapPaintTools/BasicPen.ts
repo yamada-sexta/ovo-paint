@@ -18,13 +18,15 @@ export class BasicPen extends BitmapPaintTool {
     _pointerPos: Vec2 = [0, 0];
     _pointerPressure: number = 0;
 
+    currEvent: "draw" |"resize" | "none" = "none";
+
     async renderUI(e: PaintToolUIRenderEvent): Promise<void> {
         // return super.renderUI(e);
         const pos = this._pointerPos;
         // pos[0] *= e.state.viewer.scale;
         // pos[1] *= e.state.viewer.scale;
         e.ctx.strokeStyle = "#969696";
-        e.ctx.lineWidth = 0.5 / e.state.doc.scale;
+        e.ctx.lineWidth = 1 / e.state.doc.scale;
         e.ctx.beginPath();
         let size;
         if (this._pointerPressure > 0) {
@@ -36,8 +38,8 @@ export class BasicPen extends BitmapPaintTool {
         e.ctx.arc(pos[0], pos[1], size, 0, 2 * Math.PI);
         e.ctx.stroke();
 
-        if (e.state.viewer.canvas instanceof HTMLCanvasElement) {
-            e.state.viewer.canvas.style.cursor = "none";
+        if (e.dom){
+            e.dom.style.cursor = "none";
         }
     }
 
@@ -80,6 +82,9 @@ export class BasicPen extends BitmapPaintTool {
 
     async onDown(e: PaintToolEvent<BitmapLayerNode>) {
         await super.onDown(e);
+        if (e.key.ctrl && e.key.alt) {
+            this.currEvent = "resize";
+        }
         // console.log(e);
         e.node.activeCtx.lineCap = "round";
         this.isDrawing = true;

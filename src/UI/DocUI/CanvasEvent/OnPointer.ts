@@ -5,8 +5,9 @@ import {PaintToolEvent} from "../../../core/src/PaintToolEvent";
 import {DocNode} from "../../../core/src/Documents/DocNodes/DocNode";
 
 // let isDown = false;
-export async function onDown(state: IViewerState, e: PointerEvent) {
+let rightDown = false;
 
+export async function onDown(state: IViewerState, e: PointerEvent) {
     state.input.downPos = [e.offsetX, e.offsetY];
     switch (e.button) {
         case 0:
@@ -72,15 +73,13 @@ export async function onMove(state: IViewerState, e: PointerEvent) {
     state.input.pointerAbsPos = [e.clientX, e.clientY];
     state.input.pointerRelaPos = [e.offsetX, e.offsetY];
 
-    // if (isDown) {
-    //     if (e.pressure === 0) {
-    //         await onUp(state, e);
-    //         return;
-    //     }
-    // }
+    console.log(e.buttons)
 
-    await state.tool.currentTool.onMove(createPaintToolEvent(state, e));
+    if (e.buttons === 0 || e.buttons === 1) {
+        await state.tool.currentTool.onMove(createPaintToolEvent(state, e));
+    }
 }
+
 
 export async function onUp(state: IViewerState, e: PointerEvent) {
     state.input.downPos = null;

@@ -7,6 +7,8 @@ export interface PaintToolUIRenderEvent {
     canvas: HTMLCanvasElement | OffscreenCanvas;
 
     state:IViewerState;
+
+    dom:HTMLElement | null;
 }
 
 export abstract class PaintTool<NodeType extends DocNode = DocNode> {

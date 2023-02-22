@@ -38,10 +38,15 @@ async function drawDoc(
     })
     ctx.drawImage(doc.content, 0, 0);
     // console.log("Rendered doc");
+    let dom = null;
+    if (state.viewer.canvas instanceof HTMLCanvasElement){
+        dom = state.viewer.canvas.parentElement;
+    }
     await state.tool.currentTool.renderUI({
         canvas: canvas,
         ctx: ctx,
         state: state,
+        dom: dom
     })
     ctx.restore();
     if (state.doc.scale > 5) {
