@@ -39,14 +39,30 @@ async function drawDoc(
     ctx.drawImage(doc.content, 0, 0);
     // console.log("Rendered doc");
     let dom = null;
-    if (state.viewer.canvas instanceof HTMLCanvasElement){
+    if (state.viewer.canvas instanceof HTMLCanvasElement) {
         dom = state.viewer.canvas.parentElement;
     }
+
+    let pointerPos = state.input.pointerRelaPos;
+
+    let inRange = true;
+    const baseX = state.doc.pos[0] * state.viewer.scale;
+    if (pointerPos[0] < baseX ||
+        pointerPos[0] > (baseX + w * state.doc.scale * state.viewer.scale)) {
+        inRange = false;
+    }
+    const baseY = state.doc.pos[1] * state.viewer.scale;
+    if (pointerPos[1] < baseY ||
+        pointerPos[1] > (baseY + h * state.doc.scale * state.viewer.scale)) {
+        inRange = false;
+    }
+
     await state.tool.currentTool.renderCanvasUI({
         canvas: canvas,
         ctx: ctx,
         state: state,
-        dom: dom
+        dom: dom,
+        inDocRange: inRange
     })
     ctx.restore();
     if (state.doc.scale > 5) {

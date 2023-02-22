@@ -22,7 +22,7 @@ self.MonacoEnvironment = {
 
 function main() {
     let root = document.getElementById("ovo-root") as HTMLDivElement;
-    // let manager = new OVOUIManager(root);
+    let manager = new OVOUIManager(root);
     //
     // let div = document.createElement("div");
     // div.style.width = "100%";
@@ -30,10 +30,10 @@ function main() {
     // root.appendChild(div);
 
     // document.body.append(div);
-    let editor = monaco.editor.create(document.getElementById("container") as HTMLDivElement, {
-        value: "function hello() { alert('Hello world!'); }",
-        language: "javascript"
-    });
+    // let editor = monaco.editor.create(document.getElementById("container") as HTMLDivElement, {
+    //     value: "function hello() { alert('Hello world!'); }",
+    //     language: "javascript"
+    // });
 }
 
 main()

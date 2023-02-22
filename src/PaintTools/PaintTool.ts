@@ -5,10 +5,9 @@ import {IViewerState} from "../UI/DocUI/DocCanvasState";
 export interface PaintToolUIRenderEvent {
     ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D;
     canvas: HTMLCanvasElement | OffscreenCanvas;
-
-    state:IViewerState;
-
-    dom:HTMLElement | null;
+    state: IViewerState;
+    dom: HTMLElement | null;
+    inDocRange: boolean;
 }
 
 export abstract class PaintTool<NodeType extends DocNode = DocNode> {

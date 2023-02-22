@@ -48,9 +48,18 @@ export class BasicPen extends BitmapPaintTool {
             e.ctx.stroke();
         }
 
+        // if (e.inDocRange){
+        //     console.log("in doc range")
+        // }
+
 
         if (e.dom) {
-            e.dom.style.cursor = "none";
+            if (e.inDocRange){
+
+                e.dom.style.cursor = "none";
+            }else{
+                e.dom.style.cursor = "default";
+            }
         }
     }
 
