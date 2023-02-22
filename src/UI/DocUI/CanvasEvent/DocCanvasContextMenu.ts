@@ -2,7 +2,7 @@ import {ContextMenu} from "../../ContextMenu/ShowContextMenu";
 import {div, label, text} from "../../DOMFunctions";
 import {BasicPen} from "../../../PaintTools/BitmapPaintTools/BasicPen";
 import {TextTool} from "../../../PaintTools/ShapeTools/TextTool";
-import {IViewerState} from "../DocCanvasState";
+import {OVOState} from "../DocCanvasState";
 
 let toolContextMenu = new ContextMenu(
     [0, 0],
@@ -20,7 +20,7 @@ export function closeContextMenu() {
 }
 
 export function openToolContextMenu(
-    state: IViewerState,
+    state: OVOState,
     pos: [number, number]) {
     console.log("open tool context menu")
     toolContextMenu.pos = pos;
@@ -30,7 +30,7 @@ export function openToolContextMenu(
 }
 
 export function onDocCanvasMenu(
-    state: IViewerState,
+    state: OVOState,
     e: MouseEvent) {
     e.preventDefault();
     openToolContextMenu(state, [e.clientX, e.clientY]);

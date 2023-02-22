@@ -6,45 +6,34 @@ import {BitmapLayerNode} from "../../core/src/Documents/DocNodes/Layers/BitmapLa
 interface IDocUIState {
     scaleMax: number;
     scaleMin: number;
-
     scale: number;
-
     pos: [number, number];
-
     background: string | CanvasGradient | CanvasPattern;
-
     doc: OVODocument;
-    // currentNode: DocNode | null;
-    // currentBitmapLayer: BitmapLayerNode | null;
-    // currentShapeLayer: DocNode | null;
-
 }
 
 interface IViewerCanvasState {
     background: string | CanvasGradient | CanvasPattern;
     scale: number;
-
-
     canvas: HTMLCanvasElement | OffscreenCanvas;
     ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D;
 }
 
 interface IInputState {
-    pointerRelaPos: [number, number];
-    pointerAbsPos: [number, number];
+    canvasRawPos: [number, number]; // Absolute position on canvas
+    pointerAbsPos: [number, number]; // Absolute position on window
     downPos: [number, number] | null;
-
+    docRelaPos: [number, number]; // Position relative to the document
     ctrlDown: boolean;
     shiftDown: boolean;
     altDown: boolean;
-
 }
 
 interface IToolState {
     currentTool: PaintTool;
 }
 
-export interface IViewerState {
+export interface OVOState {
     doc: IDocUIState;
     input: IInputState;
     viewer: IViewerCanvasState;
@@ -52,27 +41,24 @@ export interface IViewerState {
 }
 
 export function createState(
-    canvas:HTMLCanvasElement | OffscreenCanvas,
+    canvas: HTMLCanvasElement | OffscreenCanvas,
     ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D,
     doc: OVODocument,
     tool: PaintTool
-): IViewerState {
+): OVOState {
     return {
         doc: {
             scaleMax: 30,
             scaleMin: 0.01,
-
             scale: 1,
-
             pos: [0, 0],
-
-            background: "#ff6b6b",
-
+            background: "#000000",
             doc: doc
         },
         input: {
-            pointerRelaPos: [0, 0],
+            canvasRawPos: [0, 0],
             pointerAbsPos: [0, 0],
+            docRelaPos: [0, 0],
             downPos: null,
             ctrlDown: false,
             shiftDown: false,

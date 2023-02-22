@@ -1,6 +1,6 @@
-import {IViewerState} from "../DocCanvasState";
+import {OVOState} from "../DocCanvasState";
 
-export function onKeyDown(state: IViewerState, e: KeyboardEvent) {
+export function onKeyDown(state: OVOState, e: KeyboardEvent) {
 
     if (e.key === "Control") {
         state.input.ctrlDown = true;
@@ -13,7 +13,7 @@ export function onKeyDown(state: IViewerState, e: KeyboardEvent) {
     }
 }
 
-export function onKeyUp(state: IViewerState, e: KeyboardEvent) {
+export function onKeyUp(state: OVOState, e: KeyboardEvent) {
 
     if (e.key === "Control") {
         state.input.ctrlDown = false;

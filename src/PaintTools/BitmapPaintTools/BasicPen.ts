@@ -4,6 +4,7 @@ import {BitmapLayerNode} from "../../core/src/Documents/DocNodes/Layers/BitmapLa
 import {drawHermitCurve} from "../../core/src/submodules/common-ts-utils/Canvas/PaintCanvas";
 import {br, div} from "../../UI/DOMFunctions";
 import {PaintToolUIRenderEvent} from "../PaintTool";
+import {checkShortcut} from "../../Shortcuts/ShortcutsChecker";
 
 export class BasicPen extends BitmapPaintTool {
     isDrawing: boolean = false;
@@ -54,10 +55,10 @@ export class BasicPen extends BitmapPaintTool {
 
 
         if (e.dom) {
-            if (e.inDocRange){
+            if (e.inDocRange) {
 
                 e.dom.style.cursor = "none";
-            }else{
+            } else {
                 e.dom.style.cursor = "default";
             }
         }
@@ -83,8 +84,9 @@ export class BasicPen extends BitmapPaintTool {
         colorPicker.type = "color";
         colorPicker.oninput = () => {
             this.color = colorPicker.value;
-            console.log(this.color)
+            // console.log(this.color)
         }
+        colorPicker.value = this.color;
         frame.appendChild(colorPicker);
         return frame;
     }
@@ -92,13 +94,18 @@ export class BasicPen extends BitmapPaintTool {
     async onDown(e: PaintToolEvent<BitmapLayerNode>) {
         await super.onDown(e);
         this._downPos = e.pos;
-        console.log(e.key)
-        if (e.key.ctrl && e.key.alt) {
+        // console.log(e.key)
+        if (checkShortcut("resizePen", {
+            ctrlKey: e.key.ctrl,
+            shiftKey: e.key.shift,
+            altKey: e.key.alt,
+            key: ""
+        })) {
             this.currEvent = "resize";
-            console.log("resize")
+            // console.log("resize")
         } else {
             this.currEvent = "draw";
-            console.log("draw")
+            // console.log("draw")
         }
         // console.log(e);
         e.node.activeCtx.lineCap = "round";
@@ -126,15 +133,14 @@ export class BasicPen extends BitmapPaintTool {
             return;
         }
 
-        console.log("resize")
+        // console.log("resize")
 
         function distance(a: Vec2, b: Vec2) {
             return Math.sqrt((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2);
         }
 
 
-        let newSize = distance(e.pos, this._downPos);
-        this.maxSize = newSize;
+        this.maxSize = distance(e.pos, this._downPos);
     }
 
     drawLine(e: PaintToolEvent<BitmapLayerNode>) {

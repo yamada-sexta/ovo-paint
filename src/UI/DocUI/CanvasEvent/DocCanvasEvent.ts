@@ -1,6 +1,6 @@
-import {IViewerState} from "../DocCanvasState";
+import {OVOState} from "../DocCanvasState";
 
-export async function onWheel(state: IViewerState, e: WheelEvent) {
+export async function onWheel(state: OVOState, e: WheelEvent) {
     e.preventDefault();
     if (state.doc.scale < state.doc.scaleMin && e.deltaY > 0) {
         return;

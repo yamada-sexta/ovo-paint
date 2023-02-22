@@ -1,9 +1,9 @@
 import {OVODocument} from "../../../core/src/Documents/OVODocument";
-import {IViewerState} from "../DocCanvasState";
+import {OVOState} from "../DocCanvasState";
 
 
 async function drawDoc(
-    state: IViewerState,
+    state: OVOState,
     ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D,
     canvas: HTMLCanvasElement | OffscreenCanvas,
     doc: OVODocument) {
@@ -43,20 +43,12 @@ async function drawDoc(
         dom = state.viewer.canvas.parentElement;
     }
 
-    let pointerPos = state.input.pointerRelaPos;
+    let relaPos = state.input.docRelaPos;
 
     let inRange = true;
-    const baseX = state.doc.pos[0] * state.viewer.scale;
-    if (pointerPos[0] < baseX ||
-        pointerPos[0] > (baseX + w * state.doc.scale * state.viewer.scale)) {
+    if (relaPos[0] < 0 || relaPos[1] < 0 || relaPos[0] > w || relaPos[1] > h) {
         inRange = false;
     }
-    const baseY = state.doc.pos[1] * state.viewer.scale;
-    if (pointerPos[1] < baseY ||
-        pointerPos[1] > (baseY + h * state.doc.scale * state.viewer.scale)) {
-        inRange = false;
-    }
-
     await state.tool.currentTool.renderCanvasUI({
         canvas: canvas,
         ctx: ctx,
@@ -70,7 +62,7 @@ async function drawDoc(
     }
 }
 
-function drawPixelGrid(state: IViewerState, ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D, canvas: HTMLCanvasElement | OffscreenCanvas) {
+function drawPixelGrid(state: OVOState, ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D, canvas: HTMLCanvasElement | OffscreenCanvas) {
     ctx.strokeStyle = "rgb(136,136,136)";
     ctx.lineWidth = 0.3;
 
@@ -104,7 +96,7 @@ function drawPixelGrid(state: IViewerState, ctx: CanvasRenderingContext2D | Offs
     }
 }
 
-function drawCanvasBackground(state: IViewerState,
+function drawCanvasBackground(state: OVOState,
                               ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D,
                               canvas: HTMLCanvasElement | OffscreenCanvas) {
     // Initialize the canvas
@@ -118,7 +110,7 @@ function drawCanvasBackground(state: IViewerState,
 
 
 export async function update(
-    state: IViewerState,
+    state: OVOState,
     ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D,
     canvas: HTMLCanvasElement | OffscreenCanvas,
     doc: OVODocument) {

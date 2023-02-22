@@ -4,7 +4,7 @@ import {onDown, onMove, onUp} from "./CanvasEvent/OnPointer";
 import {onDocCanvasMenu} from "./CanvasEvent/DocCanvasContextMenu";
 import {getCheckBoard} from "../../core/src/Documents/BackgroundFills";
 import {update} from "./CanvasEvent/ViewerRender";
-import {createState, IViewerState} from "./DocCanvasState";
+import {createState, OVOState} from "./DocCanvasState";
 import {TextTool} from "../../PaintTools/ShapeTools/TextTool";
 import {ShapeLayerNode} from "../../core/src/Documents/DocNodes/Layers/ShapeLayer/ShapeLayerNode";
 import {BitmapLayerNode} from "../../core/src/Documents/DocNodes/Layers/BitmapLayerNode";
@@ -94,7 +94,7 @@ function setupPaintTool() {
 
 }
 
-function setupCanvasEvents(state: IViewerState, canvas: HTMLCanvasElement) {
+function setupCanvasEvents(state: OVOState, canvas: HTMLCanvasElement) {
     canvas.addEventListener("pointermove", (e) => onMove(state, e))
     canvas.addEventListener("pointerdown", (e) => onDown(state, e));
     canvas.addEventListener("pointerup", (e) => onUp(state, e));
