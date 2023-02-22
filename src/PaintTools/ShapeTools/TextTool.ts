@@ -10,7 +10,6 @@ export class TextTool extends ShapePaintTool {
 
     getMenu(): HTMLElement {
         // if (!this.selectedShape) return div();
-
         let frame = div();
         let input = document.createElement("input");
         input.type = "text";

@@ -31,7 +31,7 @@ export function DocCanvasManager(canvas: HTMLCanvasElement, doc: OVODocument) {
         canvas.height * state.viewer.scale / 2 - doc.height / 2
     ];
     let image = new Image();
-    image.src = "./src/assets/paper.png";
+    image.src = "./assets/paper.png";
 
     let shapeLayer = new ShapeLayerNode();
     shapeLayer.name = "Shape Layer";
@@ -49,17 +49,20 @@ export function DocCanvasManager(canvas: HTMLCanvasElement, doc: OVODocument) {
     image.onload = () => {
         const tmpCanvas = new OffscreenCanvas(image.width, image.height);
         const tmpCtx = tmpCanvas.getContext("2d") as OffscreenCanvasRenderingContext2D;
-        tmpCtx.drawImage(image, 0, 0);
-        const alpha = 0.5;
-        tmpCtx.fillStyle = "rgba(0,0,0," + alpha + ")";
+        tmpCtx.save();
+        tmpCtx.fillStyle = "rgba(0,0,0,1)";
         tmpCtx.fillRect(0, 0, image.width, image.height);
+        // tmpCtx.globalCompositeOperation = "source-in";
+        tmpCtx.globalAlpha = 0.5;
+        tmpCtx.drawImage(image, 0, 0);
         state.viewer.background = ctx.createPattern(tmpCanvas.transferToImageBitmap(), "repeat") as CanvasPattern;
+        tmpCtx.restore();
 
         // let checkBoard = getCheckBoard();
 
         tmpCtx.drawImage(image, 0, 0);
-        tmpCtx.fillStyle = `rgba(255,255,255,${1 - alpha})`
-        tmpCtx.fillRect(0, 0, image.width, image.height);
+        // tmpCtx.fillStyle = `rgba(255,255,255,${1 - alpha})`
+        // tmpCtx.fillRect(0, 0, image.width, image.height);
         state.doc.background = ctx.createPattern(tmpCanvas.transferToImageBitmap(), "repeat") as CanvasPattern;
     }
 
