@@ -25,7 +25,10 @@ export function DocCanvasManager(canvas: HTMLCanvasElement, doc: OVODocument) {
     const state = createState(canvas, ctx, doc, new BasicPen())
 
     // state.viewer.scale = ;
-    state.doc.pos = [canvas.width * state.viewer.scale / 2, canvas.height * state.viewer.scale / 2];
+    state.doc.pos = [
+        canvas.width * state.viewer.scale / 2 - doc.width / 2,
+        canvas.height * state.viewer.scale / 2 - doc.height / 2
+    ];
     let image = new Image();
     image.src = "./src/assets/paper.png";
 
@@ -36,7 +39,6 @@ export function DocCanvasManager(canvas: HTMLCanvasElement, doc: OVODocument) {
     bitmapLayer.name = "Bitmap Layer";
     doc.rootNode.addNode(bitmapLayer);
     state.doc.doc.activeNode = bitmapLayer;
-    // state.doc.currentNode = shapeLayer;
 
     printDocNodeTree(doc.rootNode);
 

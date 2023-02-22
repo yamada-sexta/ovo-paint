@@ -3,6 +3,7 @@ import {PaintToolEvent} from "../../core/src/PaintToolEvent";
 import {BitmapLayerNode} from "../../core/src/Documents/DocNodes/Layers/BitmapLayerNode";
 import {drawHermitCurve} from "../../core/src/submodules/common-ts-utils/Canvas/PaintCanvas";
 import {br, div} from "../../UI/DOMFunctions";
+import {PaintToolUIRenderEvent} from "../PaintTool";
 
 export class BasicPen extends BitmapPaintTool {
     isDrawing: boolean = false;
@@ -14,15 +15,46 @@ export class BasicPen extends BitmapPaintTool {
 
     color: string = "#000000";
 
-    drawUI(e: PaintToolEvent<BitmapLayerNode>, size: number) {
-        e.ui.ctx.clearRect(0, 0, e.ui.canvas.width, e.ui.canvas.height);
-        e.ui.ctx.strokeStyle = "#969696";
-        e.ui.ctx.lineWidth = 1;
-        e.ui.ctx.beginPath();
-        // Draw a circle at the current mouse position
-        e.ui.ctx.arc(e.pos[0], e.pos[1], size, 0, 2 * Math.PI);
-        e.ui.ctx.stroke();
+    _pointerPos: Vec2 = [0, 0];
+    _pointerPressure: number = 0;
+
+    async renderUI(e: PaintToolUIRenderEvent): Promise<void> {
+        // return super.renderUI(e);
+        const pos = this._pointerPos;
+        // pos[0] *= e.state.viewer.scale;
+        // pos[1] *= e.state.viewer.scale;
+        e.ctx.strokeStyle = "#969696";
+        e.ctx.lineWidth = 0.5 / e.state.doc.scale;
+        e.ctx.beginPath();
+        let size;
+        if (this._pointerPressure > 0) {
+            size = this.getSize(this._pointerPressure) / 2;
+        } else {
+            size = this.getSize(0.5) / 2;
+        }
+        //Draw a circle at the current mouse position
+        e.ctx.arc(pos[0], pos[1], size, 0, 2 * Math.PI);
+        e.ctx.stroke();
+
+        if (e.state.viewer.canvas instanceof HTMLCanvasElement) {
+            e.state.viewer.canvas.style.cursor = "none";
+        }
     }
+
+    getSize(pressure: number): number {
+        return (this.maxSize - this.minSize) * pressure + this.minSize;
+    }
+
+    // drawUI(e: PaintToolEvent<BitmapLayerNode>, size: number) {
+    //
+    //     e.ui.ctx.clearRect(0, 0, e.ui.canvas.width, e.ui.canvas.height);
+    //     e.ui.ctx.strokeStyle = "#969696";
+    //     e.ui.ctx.lineWidth = 1;
+    //     e.ui.ctx.beginPath();
+    //     // Draw a circle at the current mouse position
+    //     e.ui.ctx.arc(e.pos[0], e.pos[1], size, 0, 2 * Math.PI);
+    //     e.ui.ctx.stroke();
+    // }
 
     getMenu(): HTMLElement {
         let frame = div();
@@ -55,11 +87,12 @@ export class BasicPen extends BitmapPaintTool {
 
     async onMove(e: PaintToolEvent<BitmapLayerNode>) {
         await super.onMove(e);
-        if (!this.isDrawing) {
-            this.drawUI(e, this.maxSize / 2);
+        this._pointerPos = e.pos;
+        this._pointerPressure = e.pressure;
+        if (e.pressure < 0.06) {
             return;
         }
-
+        console.log(e.pressure)
         const ctx = e.node.activeCtx;
         ctx.strokeStyle = this.color;
         console.log(this.color)
@@ -69,11 +102,9 @@ export class BasicPen extends BitmapPaintTool {
             let p2 = this.lastPoints[1];
             let p3 = this.lastPoints[2];
             let p4 = this.lastPoints[3];
-            let size = (this.maxSize - this.minSize) * e.pressure + this.minSize;
-            ctx.lineWidth = size;
+            ctx.lineWidth = this.getSize(e.pressure)
             drawHermitCurve(ctx, p1, p2, p3, p4)
             this.lastPoints.shift();
-            // this.drawUI(e, size / 2)
         }
 
         this.lastPoints.push(e.pos);

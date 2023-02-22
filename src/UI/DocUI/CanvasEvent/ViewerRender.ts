@@ -2,7 +2,7 @@ import {OVODocument} from "../../../core/src/Documents/OVODocument";
 import {IViewerState} from "../DocCanvasState";
 
 
-function drawDoc(
+async function drawDoc(
     state: IViewerState,
     ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D,
     canvas: HTMLCanvasElement | OffscreenCanvas,
@@ -37,10 +37,13 @@ function drawDoc(
         renderMode: "export"
     })
     ctx.drawImage(doc.content, 0, 0);
-
+    // console.log("Rendered doc");
+    await state.tool.currentTool.renderUI({
+        canvas: canvas,
+        ctx: ctx,
+        state: state,
+    })
     ctx.restore();
-    // Draw grid
-    // console.log(state.doc.scale);
     if (state.doc.scale > 5) {
         drawPixelGrid(state, ctx, canvas);
     }
@@ -93,7 +96,7 @@ function drawCanvasBackground(state: IViewerState,
 }
 
 
-export function update(
+export async function update(
     state: IViewerState,
     ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D,
     canvas: HTMLCanvasElement | OffscreenCanvas,
@@ -101,6 +104,7 @@ export function update(
     ctx.save();
     drawCanvasBackground(state, ctx, canvas);
     // Draw the document
-    drawDoc(state, ctx, canvas, doc);
+    await drawDoc(state, ctx, canvas, doc);
     ctx.restore();
+    // ctx.restore();
 }

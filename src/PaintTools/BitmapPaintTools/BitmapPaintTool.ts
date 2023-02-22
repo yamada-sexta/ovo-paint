@@ -1,4 +1,3 @@
-import {PaintToolEvent} from "../../core/src/PaintToolEvent";
 import {PaintTool} from "../PaintTool";
 import {BitmapLayerNode} from "../../core/src/Documents/DocNodes/Layers/BitmapLayerNode";
 import {DocNode} from "../../core/src/Documents/DocNodes/DocNode";

@@ -1,9 +1,12 @@
 import {PaintToolEvent} from "../core/src/PaintToolEvent";
 import {DocNode} from "../core/src/Documents/DocNodes/DocNode";
+import {IViewerState} from "../UI/DocUI/DocCanvasState";
 
-interface PaintToolUIRenderEvent {
-    ctx: CanvasRenderingContext2D;
-    canvas: HTMLCanvasElement;
+export interface PaintToolUIRenderEvent {
+    ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D;
+    canvas: HTMLCanvasElement | OffscreenCanvas;
+
+    state:IViewerState;
 }
 
 export abstract class PaintTool<NodeType extends DocNode = DocNode> {
