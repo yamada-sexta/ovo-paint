@@ -48,11 +48,16 @@ function canvasCordToDocCord(state: IViewerState, pos: [number, number]): [numbe
 function createPaintToolEvent(state: IViewerState, e: PointerEvent): PaintToolEvent<DocNode> {
     const doc = state.doc.doc;
     const docPos: Vec2 = canvasCordToDocCord(state, [e.offsetX, e.offsetY]);
+    let pressure = e.pressure;
+    if (e.pointerType === "mouse") {
+        // console.log("mouse")
+        pressure = 1;
+    }
     // console.log(docPos)
     return {
         pos: docPos,
         doc: doc,
-        pressure: e.pressure,
+        pressure: pressure,
         node: state.doc.doc.activeNode,
         ui: {
             canvas: state.viewer.canvas,
@@ -73,7 +78,7 @@ export async function onMove(state: IViewerState, e: PointerEvent) {
     state.input.pointerAbsPos = [e.clientX, e.clientY];
     state.input.pointerRelaPos = [e.offsetX, e.offsetY];
 
-    console.log(e.buttons)
+    // console.log(e.buttons)
 
     if (e.buttons === 0 || e.buttons === 1) {
         await state.tool.currentTool.onMove(createPaintToolEvent(state, e));

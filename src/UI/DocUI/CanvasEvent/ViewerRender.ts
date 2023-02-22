@@ -42,7 +42,7 @@ async function drawDoc(
     if (state.viewer.canvas instanceof HTMLCanvasElement){
         dom = state.viewer.canvas.parentElement;
     }
-    await state.tool.currentTool.renderUI({
+    await state.tool.currentTool.renderCanvasUI({
         canvas: canvas,
         ctx: ctx,
         state: state,

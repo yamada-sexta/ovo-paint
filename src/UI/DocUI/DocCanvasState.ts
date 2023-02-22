@@ -33,6 +33,11 @@ interface IInputState {
     pointerRelaPos: [number, number];
     pointerAbsPos: [number, number];
     downPos: [number, number] | null;
+
+    ctrlDown: boolean;
+    shiftDown: boolean;
+    altDown: boolean;
+
 }
 
 interface IToolState {
@@ -68,7 +73,10 @@ export function createState(
         input: {
             pointerRelaPos: [0, 0],
             pointerAbsPos: [0, 0],
-            downPos: null
+            downPos: null,
+            ctrlDown: false,
+            shiftDown: false,
+            altDown: false
         },
         viewer: {
             background: "#1f1f1f",

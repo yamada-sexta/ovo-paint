@@ -34,7 +34,7 @@ export abstract class PaintTool<NodeType extends DocNode = DocNode> {
 
     }
 
-    async renderUI(e: PaintToolUIRenderEvent): Promise<void> {
+    async renderCanvasUI(e: PaintToolUIRenderEvent): Promise<void> {
 
     }
 }

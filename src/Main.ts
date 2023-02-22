@@ -26,7 +26,7 @@ function main() {
         if (e.key == "Alt") {
             state.alt = true;
         }
-        console.log(state)
+        // console.log(state)
     })
     document.body.addEventListener("keyup" , (e) => {
         if (e.key == "Control") {

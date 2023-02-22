@@ -11,6 +11,7 @@ import {BitmapLayerNode} from "../../core/src/Documents/DocNodes/Layers/BitmapLa
 import {BasicPen} from "../../PaintTools/BitmapPaintTools/BasicPen";
 import {printDocNodeTree} from "../../core/src/Debug";
 import {DebugPen} from "../../PaintTools/BitmapPaintTools/DebugPen";
+import {onKeyDown, onKeyUp} from "./CanvasEvent/OnKey";
 
 //
 
@@ -99,6 +100,9 @@ function setupCanvasEvents(state: IViewerState, canvas: HTMLCanvasElement) {
     canvas.addEventListener("pointerup", (e) => onUp(state, e));
     canvas.addEventListener("contextmenu", (e) => onDocCanvasMenu(state, e))
     canvas.addEventListener("wheel", (e) => onWheel(state, e));
+
+    canvas.addEventListener("keydown", (e) => {onKeyDown(state, e)})
+    canvas.addEventListener("keyup", (e) => {onKeyUp(state, e)})
 }
 
 

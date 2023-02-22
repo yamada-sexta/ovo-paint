@@ -18,27 +18,38 @@ export class BasicPen extends BitmapPaintTool {
     _pointerPos: Vec2 = [0, 0];
     _pointerPressure: number = 0;
 
-    currEvent: "draw" |"resize" | "none" = "none";
+    currEvent: "draw" | "resize" | "none" = "none";
 
-    async renderUI(e: PaintToolUIRenderEvent): Promise<void> {
+    _downPos: Vec2 | null = null;
+
+    async renderCanvasUI(e: PaintToolUIRenderEvent): Promise<void> {
         // return super.renderUI(e);
-        const pos = this._pointerPos;
+        let pos = this._pointerPos;
         // pos[0] *= e.state.viewer.scale;
         // pos[1] *= e.state.viewer.scale;
         e.ctx.strokeStyle = "#969696";
-        e.ctx.lineWidth = 1 / e.state.doc.scale;
+        e.ctx.lineWidth = 1 / e.state.doc.scale * e.state.viewer.scale;
         e.ctx.beginPath();
-        let size;
-        if (this._pointerPressure > 0) {
+        let size = this.getSize(1) / 2;
+        if (this._pointerPressure > 0 && this.currEvent == "draw") {
             size = this.getSize(this._pointerPressure) / 2;
-        } else {
-            size = this.getSize(0.5) / 2;
         }
-        //Draw a circle at the current mouse position
-        e.ctx.arc(pos[0], pos[1], size, 0, 2 * Math.PI);
-        e.ctx.stroke();
+        if (this.currEvent == "resize") {
+            if (this._downPos) {
+                // set pos to the center
+                let x = this._downPos[0] + (pos[0] - this._downPos[0]) / 2;
+                let y = this._downPos[1] + (pos[1] - this._downPos[1]) / 2;
+                e.ctx.arc(x, y, size, 0, 2 * Math.PI);
+                e.ctx.stroke();
+            }
+        } else {
+            //Draw a circle at the current mouse position
+            e.ctx.arc(pos[0], pos[1], size, 0, 2 * Math.PI);
+            e.ctx.stroke();
+        }
 
-        if (e.dom){
+
+        if (e.dom) {
             e.dom.style.cursor = "none";
         }
     }
@@ -46,17 +57,6 @@ export class BasicPen extends BitmapPaintTool {
     getSize(pressure: number): number {
         return (this.maxSize - this.minSize) * pressure + this.minSize;
     }
-
-    // drawUI(e: PaintToolEvent<BitmapLayerNode>, size: number) {
-    //
-    //     e.ui.ctx.clearRect(0, 0, e.ui.canvas.width, e.ui.canvas.height);
-    //     e.ui.ctx.strokeStyle = "#969696";
-    //     e.ui.ctx.lineWidth = 1;
-    //     e.ui.ctx.beginPath();
-    //     // Draw a circle at the current mouse position
-    //     e.ui.ctx.arc(e.pos[0], e.pos[1], size, 0, 2 * Math.PI);
-    //     e.ui.ctx.stroke();
-    // }
 
     getMenu(): HTMLElement {
         let frame = div();
@@ -82,8 +82,14 @@ export class BasicPen extends BitmapPaintTool {
 
     async onDown(e: PaintToolEvent<BitmapLayerNode>) {
         await super.onDown(e);
+        this._downPos = e.pos;
+        console.log(e.key)
         if (e.key.ctrl && e.key.alt) {
             this.currEvent = "resize";
+            console.log("resize")
+        } else {
+            this.currEvent = "draw";
+            console.log("draw")
         }
         // console.log(e);
         e.node.activeCtx.lineCap = "round";
@@ -94,13 +100,41 @@ export class BasicPen extends BitmapPaintTool {
         await super.onMove(e);
         this._pointerPos = e.pos;
         this._pointerPressure = e.pressure;
+        if (this.currEvent == "draw") {
+            this.drawLine(e);
+        } else if (this.currEvent == "resize") {
+            this.handleResize(e);
+        }
+    }
+
+    handleResize(e: PaintToolEvent<BitmapLayerNode>) {
+        if (e.pressure === 0) {
+            console.log("Pressure is 0")
+            return;
+        }
+        if (this._downPos === null) {
+            console.log("Down pos is null")
+            return;
+        }
+
+        console.log("resize")
+
+        function distance(a: Vec2, b: Vec2) {
+            return Math.sqrt((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2);
+        }
+
+
+        let newSize = distance(e.pos, this._downPos);
+        this.maxSize = newSize;
+    }
+
+    drawLine(e: PaintToolEvent<BitmapLayerNode>) {
+
         if (e.pressure < 0.06) {
             return;
         }
-        console.log(e.pressure)
         const ctx = e.node.activeCtx;
         ctx.strokeStyle = this.color;
-        console.log(this.color)
 
         if (this.lastPoints.length >= 4) {
             let p1 = this.lastPoints[0];
@@ -111,12 +145,13 @@ export class BasicPen extends BitmapPaintTool {
             drawHermitCurve(ctx, p1, p2, p3, p4)
             this.lastPoints.shift();
         }
-
         this.lastPoints.push(e.pos);
     }
 
     async onUp(e: PaintToolEvent<BitmapLayerNode>) {
         await super.onUp(e);
+        this._downPos = null;
+        this.currEvent = "none";
         this.isDrawing = false;
         e.node.createSnapshot();
         this.lastPoints = [];
