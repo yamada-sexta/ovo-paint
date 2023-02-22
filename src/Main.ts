@@ -1,46 +1,39 @@
 import {OVOUIManager} from "./UI/OVOUIManager";
 import {DraggableWindow} from "./UI/DraggableWindow";
 import {div, text} from "./UI/DOMFunctions";
+import * as monaco from "monaco-editor";
+self.MonacoEnvironment = {
+    getWorkerUrl: function (moduleId, label) {
+        if (label === 'json') {
+            return './vs/language/json/json.worker.js';
+        }
+        if (label === 'css' || label === 'scss' || label === 'less') {
+            return './vs/language/css/css.worker.js';
+        }
+        if (label === 'html' || label === 'handlebars' || label === 'razor') {
+            return './vs/language/html/html.worker.js';
+        }
+        if (label === 'typescript' || label === 'javascript') {
+            return './vs/language/typescript/ts.worker.js';
+        }
+        return './vs/editor/editor.worker.js';
+    }
+};
 
 function main() {
-    // new DraggableWindow([0, 0], div(
-    //     {
-    //         children: [
-    //             text("Hello World")
-    //         ]
-    //     }
-    // ), "Test Window");
-    let state ={
-        ctrl: false,
-        shift: false,
-        alt: false
-    }
-    document.body.addEventListener("keydown" , (e) => {
-
-        if (e.key == "Control") {
-            state.ctrl = true;
-        }
-        if (e.key == "Shift") {
-            state.shift = true;
-        }
-        if (e.key == "Alt") {
-            state.alt = true;
-        }
-        // console.log(state)
-    })
-    document.body.addEventListener("keyup" , (e) => {
-        if (e.key == "Control") {
-            state.ctrl = false;
-        }
-        if (e.key == "Shift") {
-            state.shift = false;
-        }
-        if (e.key == "Alt") {
-            state.alt = false;
-        }
-    })
     let root = document.getElementById("ovo-root") as HTMLDivElement;
-    let manager = new OVOUIManager(root);
+    // let manager = new OVOUIManager(root);
+    //
+    // let div = document.createElement("div");
+    // div.style.width = "100%";
+    // div.style.height = "500px";
+    // root.appendChild(div);
+
+    // document.body.append(div);
+    let editor = monaco.editor.create(document.getElementById("container") as HTMLDivElement, {
+        value: "function hello() { alert('Hello world!'); }",
+        language: "javascript"
+    });
 }
 
 main()
