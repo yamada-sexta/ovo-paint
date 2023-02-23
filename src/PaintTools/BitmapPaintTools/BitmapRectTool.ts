@@ -20,12 +20,12 @@ export class BitmapRectTool extends BitmapPaintTool {
 
     async onMove(e: PaintToolEvent<BitmapLayerNode>) {
         await super.onMove(e);
-        this.drawRect(e.node.activeCtx, e.pos);
+        this.drawRect(e.node.ctx, e.pos);
     }
 
     async onUp(e: PaintToolEvent<BitmapLayerNode>) {
         await super.onUp(e);
-        this.drawRect(e.node.activeCtx, e.pos)
+        this.drawRect(e.node.ctx, e.pos)
         this.downPos = null;
         e.node.createSnapshot();
     }

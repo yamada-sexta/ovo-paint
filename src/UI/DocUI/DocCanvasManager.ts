@@ -84,12 +84,17 @@ export function DocCanvasManager(canvas: HTMLCanvasElement, doc: OVODocument) {
         await updateCanvasScale();
     });
 
-    function callFrame() {
-        update(state, ctx, canvas, doc);
+    async function callFrame() {
+        await update(state, ctx, canvas, doc);
         requestAnimationFrame(callFrame);
     }
 
-    callFrame();
+    (
+        async () => {
+            await callFrame();
+        }
+    )()
+
     setupCanvasEvents(state, canvas);
 }
 
@@ -104,8 +109,12 @@ function setupCanvasEvents(state: OVOState, canvas: HTMLCanvasElement) {
     canvas.addEventListener("contextmenu", (e) => onDocCanvasMenu(state, e))
     canvas.addEventListener("wheel", (e) => onWheel(state, e));
 
-    canvas.addEventListener("keydown", (e) => {onKeyDown(state, e)})
-    canvas.addEventListener("keyup", (e) => {onKeyUp(state, e)})
+    canvas.addEventListener("keydown", (e) => {
+        onKeyDown(state, e)
+    })
+    canvas.addEventListener("keyup", (e) => {
+        onKeyUp(state, e)
+    })
 }
 
 

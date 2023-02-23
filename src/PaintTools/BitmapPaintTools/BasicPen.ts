@@ -108,7 +108,7 @@ export class BasicPen extends BitmapPaintTool {
             // console.log("draw")
         }
         // console.log(e);
-        e.node.activeCtx.lineCap = "round";
+        e.node.ctx.lineCap = "round";
         this.isDrawing = true;
     }
 
@@ -148,7 +148,7 @@ export class BasicPen extends BitmapPaintTool {
         if (e.pressure < 0.06) {
             return;
         }
-        const ctx = e.node.activeCtx;
+        const ctx = e.node.ctx;
         ctx.strokeStyle = this.color;
 
         if (this.lastPoints.length >= 4) {

@@ -12,7 +12,7 @@ export class DebugPen extends BitmapPaintTool {
     async onMove(e: PaintToolEvent<BitmapLayerNode>) {
         if (!this.isDrawing) return;
         console.log(e)
-        const ctx = e.node.activeCtx;
+        const ctx = e.node.ctx;
         drawPointDebug(ctx, e.pos);
     }
 
