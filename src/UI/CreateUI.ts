@@ -87,9 +87,15 @@ export async function openCreateWindow(
             );
         }
 
-        let createDiv = getCreateDiv({createCallback: finish});
+
+        let createDiv = getCreateDiv({createCallback: finish, errorCallback: errorCallback});
 
         let createWindow = openPopUp("Create New Document", windowWidth, windowHeight, createDiv);
+
+        function errorCallback(error: string) {
+            createWindow?.alert(error)
+        }
+
         (createWindow as any).callback = finish;
         if (!createWindow) {
             reject("Could not open window");
@@ -100,7 +106,8 @@ export async function openCreateWindow(
 
 
 function getCreateDiv(props: {
-    createCallback: (name: string, width: number, height: number) => void
+    createCallback: (name: string, width: number, height: number) => void,
+    errorCallback: (error: string) => void
 }) {
 
     let title = text("Create New Document");
@@ -165,23 +172,23 @@ function getCreateDiv(props: {
                 let width = parseInt(widthInput.value);
                 let height = parseInt(heightInput.value);
                 if (name === "") {
-                    alert("Name cannot be empty");
+                    props.errorCallback("Name cannot be empty");
                     return;
                 }
                 if (width <= 0) {
-                    alert("Width must be greater than 0");
+                    props.errorCallback("Width must be greater than 0");
                     return;
                 }
                 if (height <= 0) {
-                    alert("Height must be greater than 0");
+                    props.errorCallback("Height must be greater than 0");
                     return;
                 }
                 if (isNaN(width)) {
-                    alert("Width must be a number");
+                    props.errorCallback("Width must be a number");
                     return;
                 }
                 if (isNaN(height)) {
-                    alert("Height must be a number");
+                    props.errorCallback("Height must be a number");
                     return;
                 }
                 props.createCallback(name, width, height);

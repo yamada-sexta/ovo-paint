@@ -3,6 +3,7 @@ import {DraggableWindow} from "./UI/DraggableWindow";
 import {div, text} from "./UI/DOMFunctions";
 import * as monaco from "monaco-editor";
 import {OVOPaint} from "./OVOPaint";
+import {showTempMessage} from "./UI/MessageBox/Message";
 
 self.MonacoEnvironment = {
     getWorkerUrl: function (moduleId, label) {
@@ -24,8 +25,12 @@ self.MonacoEnvironment = {
 
 function main() {
     let root = document.getElementById("ovo-root") as HTMLDivElement;
+
+    root.style.overflow = "hidden";
+
     let ovo = new OVOPaint(root, true);
     //
+    showTempMessage("Hello", root)
     // let div = document.createElement("div");
     // div.style.width = "100%";
     // div.style.height = "500px";
