@@ -164,6 +164,20 @@ function getCreateDiv(props: {
             children: [heightInput]
         }
     )
+
+    let scaleInput = input(
+        {
+            type: "number",
+            value: "1"
+        }
+    )
+
+    let scaleLabel = label(
+        {
+            text: "Scale: ",
+            children: [scaleInput]
+        }
+    )
     let createBtn = button(
         {
             text: "Create",
@@ -171,6 +185,7 @@ function getCreateDiv(props: {
                 let name = nameInput.value;
                 let width = parseInt(widthInput.value);
                 let height = parseInt(heightInput.value);
+                let scale = parseFloat(scaleInput.value);
                 if (name === "") {
                     props.errorCallback("Name cannot be empty");
                     return;
@@ -189,6 +204,16 @@ function getCreateDiv(props: {
                 }
                 if (isNaN(height)) {
                     props.errorCallback("Height must be a number");
+                    return;
+                }
+                if (isNaN(scale)) {
+                    props.errorCallback("Scale must be a number");
+                    return;
+                }
+                width *= scale;
+                height *= scale;
+                if (width > 10000 || height > 10000) {
+                    props.errorCallback("Width and height cannot be greater than 10000");
                     return;
                 }
                 props.createCallback(name, width, height);
@@ -218,6 +243,8 @@ function getCreateDiv(props: {
                 widthLabel,
                 br(),
                 heightLabel,
+                br(),
+                scaleLabel,
                 br(),
                 createBtn
             ]
