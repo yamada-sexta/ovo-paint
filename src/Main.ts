@@ -2,6 +2,8 @@ import {OVOUIManager} from "./UI/OVOUIManager";
 import {DraggableWindow} from "./UI/DraggableWindow";
 import {div, text} from "./UI/DOMFunctions";
 import * as monaco from "monaco-editor";
+import {OVOPaint} from "./OVOPaint";
+
 self.MonacoEnvironment = {
     getWorkerUrl: function (moduleId, label) {
         if (label === 'json') {
@@ -22,7 +24,7 @@ self.MonacoEnvironment = {
 
 function main() {
     let root = document.getElementById("ovo-root") as HTMLDivElement;
-    let manager = new OVOUIManager(root);
+    let ovo = new OVOPaint(root, true);
     //
     // let div = document.createElement("div");
     // div.style.width = "100%";

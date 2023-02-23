@@ -25,11 +25,11 @@ export function DocCanvasManager(canvas: HTMLCanvasElement, doc: OVODocument) {
     canvas.style.touchAction = "none";
     const state = createState(canvas, ctx, doc, new BasicPen())
 
-    // state.viewer.scale = ;
     state.doc.pos = [
         canvas.width * state.viewer.scale / 2 - doc.width / 2,
         canvas.height * state.viewer.scale / 2 - doc.height / 2
     ];
+
     let image = new Image();
     image.src = "./assets/paper.png";
 
@@ -42,9 +42,6 @@ export function DocCanvasManager(canvas: HTMLCanvasElement, doc: OVODocument) {
     state.doc.doc.activeNode = bitmapLayer;
 
     printDocNodeTree(doc.rootNode);
-
-    // bitmapLayer.activeCtx.fillStyle = "red";
-    // bitmapLayer.activeCtx.fillRect(0, 0, 100, 100);
 
     image.onload = () => {
         const tmpCanvas = new OffscreenCanvas(image.width, image.height);
@@ -98,9 +95,6 @@ export function DocCanvasManager(canvas: HTMLCanvasElement, doc: OVODocument) {
     setupCanvasEvents(state, canvas);
 }
 
-function setupPaintTool() {
-
-}
 
 function setupCanvasEvents(state: OVOState, canvas: HTMLCanvasElement) {
     canvas.addEventListener("pointermove", (e) => onMove(state, e))
