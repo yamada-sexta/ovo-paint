@@ -37,4 +37,8 @@ export class OVOWelcomeScreen implements IOVORootUI {
             ]
         })
     }
+
+    onAppended(manager: OVOUIManager): void {
+        console.log("Welcome screen appended");
+    }
 }

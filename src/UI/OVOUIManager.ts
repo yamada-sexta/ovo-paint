@@ -23,6 +23,7 @@ export class OVOUIManager {
         this._currUI = ui;
         this.root.innerHTML = "";
         this.root.appendChild(ui.getUI(this));
+        ui.onAppended(this);
     }
 
     get currUI(): IOVORootUI {
@@ -54,6 +55,9 @@ export class OVOUIManager {
                         text("ERROR!")
                     ]
                 })
+            },
+            onAppended: (manager: OVOUIManager) => {
+                console.log("ERROR!");
             }
         }
         if (doc === null) {
@@ -64,19 +68,19 @@ export class OVOUIManager {
     }
 
 
-    showDocumentUI() {
-        if (this.currentDocument === null) {
-            throw new Error("Cannot show document UI when there is no document");
-        }
-
-        const root = this.root;
-        // Clear the root
-        root.innerHTML = "";
-        let canvas = document.createElement("canvas");
-        canvas.style.width = "100%";
-        canvas.style.height = "100%";
-        root.appendChild(canvas);
-        DocCanvasManager(canvas, this.currentDocument);
-    }
+    // showDocumentUI() {
+    //     if (this.currentDocument === null) {
+    //         throw new Error("Cannot show document UI when there is no document");
+    //     }
+    //
+    //     const root = this.root;
+    //     // Clear the root
+    //     root.innerHTML = "";
+    //     let canvas = document.createElement("canvas");
+    //     canvas.style.width = "100%";
+    //     canvas.style.height = "100%";
+    //     root.appendChild(canvas);
+    //
+    // }
 }
 

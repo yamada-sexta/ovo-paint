@@ -7,7 +7,7 @@ import {PaintToolUIRenderEvent} from "../PaintTool";
 import {checkShortcut} from "../../Shortcuts/ShortcutsChecker";
 
 export class BasicPen extends BitmapPaintTool {
-    isDrawing: boolean = false;
+    // isDrawing: boolean = false;
 
     lastPoints: Vec2[] = [];
 
@@ -24,10 +24,14 @@ export class BasicPen extends BitmapPaintTool {
     _downPos: Vec2 | null = null;
 
     async renderCanvasUI(e: PaintToolUIRenderEvent): Promise<void> {
-        // return super.renderUI(e);
+        if (!e.inDocRange){
+            if (e.dom){
+                e.dom.style.cursor = "default";
+
+            }
+            return
+        }
         let pos = this._pointerPos;
-        // pos[0] *= e.state.viewer.scale;
-        // pos[1] *= e.state.viewer.scale;
         e.ctx.strokeStyle = "#969696";
         e.ctx.lineWidth = 1 / e.state.doc.scale * e.state.viewer.scale;
         e.ctx.beginPath();
@@ -48,18 +52,9 @@ export class BasicPen extends BitmapPaintTool {
             e.ctx.arc(pos[0], pos[1], size, 0, 2 * Math.PI);
             e.ctx.stroke();
         }
-
-        // if (e.inDocRange){
-        //     console.log("in doc range")
-        // }
-
-
         if (e.dom) {
             if (e.inDocRange) {
-
                 e.dom.style.cursor = "none";
-            } else {
-                e.dom.style.cursor = "default";
             }
         }
     }
@@ -84,7 +79,6 @@ export class BasicPen extends BitmapPaintTool {
         colorPicker.type = "color";
         colorPicker.oninput = () => {
             this.color = colorPicker.value;
-            // console.log(this.color)
         }
         colorPicker.value = this.color;
         frame.appendChild(colorPicker);
@@ -94,7 +88,6 @@ export class BasicPen extends BitmapPaintTool {
     async onDown(e: PaintToolEvent<BitmapLayerNode>) {
         await super.onDown(e);
         this._downPos = e.pos;
-        // console.log(e.key)
         if (checkShortcut("resizePen", {
             ctrlKey: e.key.ctrl,
             shiftKey: e.key.shift,
@@ -109,7 +102,6 @@ export class BasicPen extends BitmapPaintTool {
         }
         // console.log(e);
         e.node.ctx.lineCap = "round";
-        this.isDrawing = true;
     }
 
     async onMove(e: PaintToolEvent<BitmapLayerNode>) {
@@ -132,9 +124,6 @@ export class BasicPen extends BitmapPaintTool {
             console.log("Down pos is null")
             return;
         }
-
-        // console.log("resize")
-
         function distance(a: Vec2, b: Vec2) {
             return Math.sqrt((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2);
         }
@@ -167,7 +156,6 @@ export class BasicPen extends BitmapPaintTool {
         await super.onUp(e);
         this._downPos = null;
         this.currEvent = "none";
-        this.isDrawing = false;
         e.node.createSnapshot();
         this.lastPoints = [];
     }

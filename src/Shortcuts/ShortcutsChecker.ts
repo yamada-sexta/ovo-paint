@@ -1,19 +1,18 @@
-interface IShortcut {
+export interface IShortcut {
     key: string;
     ctrlKey: boolean;
     shiftKey: boolean;
     altKey: boolean;
 }
 
-type shortcutKey = "resizePen" | "saveFile" | "redo" | "undo";
+type shortcutName = "resizePen" | "saveFile" | "redo" | "undo";
 
 
-
-export function checkShortcut(key: shortcutKey,
-                              e: { key: string, ctrlKey: boolean, shiftKey: boolean, altKey: boolean }): boolean {
-    switch (key){
+export function checkShortcut(key: shortcutName,
+                              e: IShortcut): boolean {
+    switch (key) {
         case "resizePen":
-            return  e.ctrlKey && e.altKey;
+            return e.ctrlKey && e.altKey;
         case "saveFile":
             return e.ctrlKey && e.key === "s";
         case "redo":

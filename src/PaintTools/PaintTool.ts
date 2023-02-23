@@ -1,6 +1,7 @@
 import {PaintToolEvent} from "../core/src/PaintToolEvent";
 import {DocNode} from "../core/src/Documents/DocNodes/DocNode";
 import {OVOState} from "../UI/DocUI/DocCanvasState";
+import {checkShortcut, IShortcut} from "../Shortcuts/ShortcutsChecker";
 
 export interface PaintToolUIRenderEvent {
     ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D;
@@ -8,6 +9,10 @@ export interface PaintToolUIRenderEvent {
     state: OVOState;
     dom: HTMLElement | null;
     inDocRange: boolean;
+}
+
+export interface PaintToolUIKey extends IShortcut {
+    pos: { x: number, y: number };
 }
 
 export abstract class PaintTool<NodeType extends DocNode = DocNode> {
@@ -34,6 +39,18 @@ export abstract class PaintTool<NodeType extends DocNode = DocNode> {
     }
 
     async renderCanvasUI(e: PaintToolUIRenderEvent): Promise<void> {
+
+    }
+
+    async onKeyDown(e: IShortcut): Promise<void> {
+
+    }
+
+    async onKeyUp(e: IShortcut): Promise<void> {
+
+    }
+
+    async onKeyPress(e: IShortcut): Promise<void> {
 
     }
 }
