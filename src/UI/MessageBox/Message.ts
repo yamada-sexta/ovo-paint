@@ -5,7 +5,7 @@ export function showTempMessage(message: string, root: HTMLElement = document.bo
     messageFrame.style.top = top + "px";
     messageFrame.style.left = root.offsetLeft + "px";
 
-    let state:"in"| "out"|"none" = "in"
+    let state: "in" | "out" | "none" = "in"
 
     messageFrame.style.width = "300px";
     messageFrame.style.height = "auto";
@@ -18,11 +18,9 @@ export function showTempMessage(message: string, root: HTMLElement = document.bo
     root.appendChild(messageFrame);
 
 
-
     setTimeout(() => {
         animationFrame();
     }, 1000);
-
 
 
     function animationFrame() {
@@ -42,6 +40,10 @@ export function showTempMessage(message: string, root: HTMLElement = document.bo
     }
 
     setTimeout(() => {
-        root.removeChild(messageFrame);
+        try {
+            root.removeChild(messageFrame);
+        } catch (e) {
+            console.log(e);
+        }
     }, 3000);
 }

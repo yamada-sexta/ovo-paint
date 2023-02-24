@@ -16,13 +16,14 @@ export class OVOUIManager {
     _documentList: OVODocument[] = [];
 
     root: HTMLDivElement;
+    frame: HTMLDivElement;
 
     _currUI: IOVORootUI;
 
     set currUI(ui: IOVORootUI) {
         this._currUI = ui;
-        this.root.innerHTML = "";
-        this.root.appendChild(ui.getUI(this));
+        this.frame.innerHTML = "";
+        this.frame.appendChild(ui.getUI(this));
         ui.onAppended(this);
     }
 
@@ -48,6 +49,15 @@ export class OVOUIManager {
 
     constructor(root: HTMLDivElement, doc: OVODocument | null = null) {
         this.root = root;
+        this.frame = document.createElement("div");
+        this.frame.style.width = "100%";
+        this.frame.style.height = "100%";
+        this.frame.style.visibility = "visible";
+        this.root.appendChild(this.frame);
+        this.root
+        .addEventListener("keydown", (e) => {
+            console.log(e)
+        });
         this._currUI = {
             getUI: (manager: OVOUIManager) => {
                 return div({
@@ -66,21 +76,5 @@ export class OVOUIManager {
             this.currentDocument = doc;
         }
     }
-
-
-    // showDocumentUI() {
-    //     if (this.currentDocument === null) {
-    //         throw new Error("Cannot show document UI when there is no document");
-    //     }
-    //
-    //     const root = this.root;
-    //     // Clear the root
-    //     root.innerHTML = "";
-    //     let canvas = document.createElement("canvas");
-    //     canvas.style.width = "100%";
-    //     canvas.style.height = "100%";
-    //     root.appendChild(canvas);
-    //
-    // }
 }
 

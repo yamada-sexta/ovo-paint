@@ -24,8 +24,8 @@ export class BasicPen extends BitmapPaintTool {
     _downPos: Vec2 | null = null;
 
     async renderCanvasUI(e: PaintToolUIRenderEvent): Promise<void> {
-        if (!e.inDocRange){
-            if (e.dom){
+        if (!e.inDocRange) {
+            if (e.dom) {
                 e.dom.style.cursor = "default";
 
             }
@@ -97,6 +97,9 @@ export class BasicPen extends BitmapPaintTool {
             this.currEvent = "resize";
             // console.log("resize")
         } else {
+
+
+            e.node.createSnapshot();
             this.currEvent = "draw";
             // console.log("draw")
         }
@@ -124,6 +127,7 @@ export class BasicPen extends BitmapPaintTool {
             console.log("Down pos is null")
             return;
         }
+
         function distance(a: Vec2, b: Vec2) {
             return Math.sqrt((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2);
         }
@@ -156,7 +160,6 @@ export class BasicPen extends BitmapPaintTool {
         await super.onUp(e);
         this._downPos = null;
         this.currEvent = "none";
-        e.node.createSnapshot();
         this.lastPoints = [];
     }
 }

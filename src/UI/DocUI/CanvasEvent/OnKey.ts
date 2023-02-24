@@ -1,4 +1,5 @@
 import {OVOState} from "../DocCanvasState";
+import {BitmapLayerNode} from "../../../core/src/Documents/DocNodes/Layers/BitmapLayerNode";
 
 export function onKeyDown(state: OVOState, e: KeyboardEvent) {
 
@@ -10,6 +11,12 @@ export function onKeyDown(state: OVOState, e: KeyboardEvent) {
     }
     if (e.key === "Alt") {
         state.input.altDown = true;
+    }
+
+    if (e.key === "z" && state.input.ctrlDown) {
+        if (state.doc.doc.activeNode instanceof BitmapLayerNode) {
+            state.doc.doc.activeNode.undo();
+        }
     }
 }
 

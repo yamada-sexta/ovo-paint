@@ -17,7 +17,6 @@ export class OVOWelcomeScreen implements IOVORootUI {
                 let doc = await openCreateWindow();
                 if (doc) {
                     manager.currentDocument = doc;
-                    manager.showDocumentUI();
                 }
             }
         })

@@ -4,6 +4,7 @@ import {div, text} from "./UI/DOMFunctions";
 import * as monaco from "monaco-editor";
 import {OVOPaint} from "./OVOPaint";
 import {showTempMessage} from "./UI/MessageBox/Message";
+import {PaintToolPreviewCanvas} from "./UI/PaintToolUI/PaintToolDemoCanvas";
 
 self.MonacoEnvironment = {
     getWorkerUrl: function (moduleId, label) {
@@ -27,6 +28,18 @@ function main() {
     let root = document.getElementById("ovo-root") as HTMLDivElement;
 
     root.style.overflow = "hidden";
+
+    let tmp =new PaintToolPreviewCanvas();
+    console.log(tmp.update());
+
+
+   // make user confirm before closing
+   //  window.onbeforeunload = function (e) {
+   //      e.preventDefault();
+   //      console.log("onbeforeunload");
+   //      e.returnValue = '';
+   //  }
+
 
     let ovo = new OVOPaint(root, true);
     //

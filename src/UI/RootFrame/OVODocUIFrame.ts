@@ -1,7 +1,6 @@
 import {IOVORootUI} from "./IOVORootUI";
 import {OVOUIManager} from "../OVOUIManager";
 import {DocCanvasManager} from "../DocUI/DocCanvasManager";
-import {div, text} from "../DOMFunctions";
 
 export class OVODocUIFrame implements IOVORootUI {
     canvas: HTMLCanvasElement;
@@ -11,7 +10,6 @@ export class OVODocUIFrame implements IOVORootUI {
         canvas.style.height = "100%";
         canvas.style.visibility = "visible";
         this.canvas = canvas;
-
     }
     getUI(manager: OVOUIManager): HTMLElement {
         if (manager.currentDocument === null) {

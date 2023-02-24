@@ -103,10 +103,11 @@ function setupCanvasEvents(state: OVOState, canvas: HTMLCanvasElement) {
     canvas.addEventListener("contextmenu", (e) => onDocCanvasMenu(state, e))
     canvas.addEventListener("wheel", (e) => onWheel(state, e));
 
-    canvas.addEventListener("keydown", (e) => {
+    document.body.addEventListener("keydown", (e) => {
+        console.log(e)
         onKeyDown(state, e)
     })
-    canvas.addEventListener("keyup", (e) => {
+    document.body.addEventListener("keyup", (e) => {
         onKeyUp(state, e)
     })
 }

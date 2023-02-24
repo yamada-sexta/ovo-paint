@@ -15,15 +15,13 @@ export class ContextMenu{
         menu.style.left = "0px";
         menu.style.top = "0px";
         menu.style.backgroundColor = "white";
-        menu.style.boxShadow = "0 0 10px rgba(0,0,0,0.5)";
+        menu.style.boxShadow = "0 0 3px rgba(0,0,0,0.5)";
         menu.style.padding = "5px";
         // menu.style.zIndex = "1000";
         menu.style.visibility = "hidden";
         menu.append(content);
         this._contentFrame = menu;
         root.append(menu);
-
-
 
         if (menu.clientWidth + pos[0] > window.innerWidth) {
             menu.style.left = (pos[0] - menu.clientWidth) + "px";
@@ -44,7 +42,7 @@ export class ContextMenu{
         // let scrollPos = [document.body.scrollLeft, document.body.scrollTop];
 
         let scrollPos = [window.scrollX, window.scrollY];
-        console.log("scrollPos", scrollPos)
+        // console.log("scrollPos", scrollPos)
 
         this._contentFrame.style.left = pos[0] + scrollPos[0]+ "px";
         this._contentFrame.style.top = pos[1] + scrollPos[1] + "px";
@@ -73,7 +71,6 @@ export class ContextMenu{
         const menu = this._contentFrame;
         menu.oncontextmenu = (e) => {
             // e.preventDefault();
-
             return false;
         }
         setTimeout(() => {
