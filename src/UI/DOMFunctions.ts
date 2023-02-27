@@ -1,3 +1,5 @@
+export const baseClass = "ovo-ui";
+
 export function div(
     props?: {
         id?: string,
@@ -7,6 +9,7 @@ export function div(
     }
 ) {
     let div = document.createElement("div");
+    div.classList.add(baseClass);
     if (!props) {
         return div;
     }
@@ -32,7 +35,9 @@ export function div(
 }
 
 export function br() {
-    return document.createElement("br");
+    let out = document.createElement("br");
+    out.classList.add(baseClass);
+    return out;
 }
 
 export function label(
@@ -41,6 +46,7 @@ export function label(
         children?: HTMLElement[]
     }) {
     let label = document.createElement("label");
+    label.classList.add(baseClass);
     label.innerText = props.text;
     if (props.children) {
         for (let child of props.children) {
@@ -53,13 +59,18 @@ export function label(
 export function input(props: {
     description?: string,
     type: string,
-    value: string
+    value: string,
+    onchange?: (e: Event) => void
 }) {
     let input = document.createElement("input");
+    input.classList.add(baseClass);
     input.type = props.type;
     input.value = props.value;
     if (props.description) {
         input.title = props.description;
+    }
+    if (props.onchange) {
+        input.addEventListener("change", props.onchange)
     }
     return input;
 }
@@ -71,6 +82,7 @@ export function button(
     }
 ) {
     let button = document.createElement("button");
+    button.classList.add(baseClass);
     button.innerText = props.text;
     button.onclick = props.onclick;
     return button;
@@ -82,6 +94,7 @@ export function select(
     }
 ) {
     let select = document.createElement("select");
+    select.classList.add(baseClass);
     for (let child of props.children) {
         select.appendChild(child);
     }
@@ -95,6 +108,7 @@ export function option(
     }
 ) {
     let option = document.createElement("option");
+    option.classList.add(baseClass);
     option.innerText = props.text;
     option.value = props.value;
     return option;
@@ -104,6 +118,7 @@ export function text(
     text: string
 ) {
     let textElement = document.createElement("span");
+    textElement.classList.add(baseClass);
     textElement.innerText = text;
     return textElement;
 }

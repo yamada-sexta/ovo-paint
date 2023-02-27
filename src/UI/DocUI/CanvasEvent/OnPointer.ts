@@ -25,7 +25,8 @@ export async function onDown(state: OVOState, e: PointerEvent) {
 async function onRightClick(state: OVOState, e: PointerEvent) {
     e.preventDefault();
     console.log("right click")
-    openToolContextMenu(state, [e.clientX, e.clientY]);
+    openToolContextMenu(state, [e.clientX + 100,
+        e.clientY + 100]);
 }
 
 async function onMiddleClick(state: OVOState, e: PointerEvent) {

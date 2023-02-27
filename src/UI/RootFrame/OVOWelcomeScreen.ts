@@ -1,7 +1,7 @@
 import {IOVORootUI} from "./IOVORootUI";
 import {OVOUIManager} from "../OVOUIManager";
 import {br, button, div, text} from "../DOMFunctions";
-import {openCreateWindow} from "../CreateUI";
+import {openCreateWindow} from "../DocumentCreateUI";
 
 export class OVOWelcomeScreen implements IOVORootUI {
     getUI(manager: OVOUIManager): HTMLElement {
