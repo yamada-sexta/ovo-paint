@@ -7,7 +7,6 @@ export interface ContextMenuObject {
 type  verticalAlignment = "top" | "bottom" | "center";
 type horizontalAlignment = "left" | "right" | "center";
 
-
 export class ContextMenu {
     _contentFrame: HTMLElement;
     _root: HTMLElement;
@@ -37,13 +36,6 @@ export class ContextMenu {
 
         this.horizontalAlignment = horizontalAlignment;
         this.verticalAlignment = verticalAlignment;
-        // if (menu.clientWidth + pos[0] > window.innerWidth) {
-        //     menu.style.left = (pos[0] - menu.clientWidth) + "px";
-        // }
-        // if (menu.clientHeight + pos[1] > window.innerHeight) {
-        //     menu.style.top = (pos[1] - menu.clientHeight) + "px";
-        // }
-        // console.log("menu", menu.clientWidth, menu.clientHeight, menu.style.left, menu.style.top)
     }
 
     close() {
@@ -79,7 +71,7 @@ export class ContextMenu {
 
         this._contentFrame.style.left = thisPos[0] + scrollPos[0] + "px";
         this._contentFrame.style.top = thisPos[1] + scrollPos[1] + "px";
-        
+
     }
 
     get pos(): [number, number] {

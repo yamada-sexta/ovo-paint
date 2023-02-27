@@ -3,6 +3,7 @@ import {OVODocument} from "../../../core/src/Documents/OVODocument";
 import {DocNode} from "../../../core/src/Documents/DocNodes/DocNode";
 import {GroupNode} from "../../../core/src/Documents/DocNodes/GroupNode";
 import {openFileContextMenu} from "./DocCanvasContextMenu";
+import {docNodeUI} from "../DocNodeUI";
 
 function docBackgroundDropdown(doc: OVODocument) {
     const docBackgroundOptions = [
@@ -34,54 +35,6 @@ function docBackgroundDropdown(doc: OVODocument) {
     return out;
 }
 
-function docNodeUI(node: DocNode, doc:OVODocument) {
-
-
-    const out = div({
-        children: [
-            text("Name: "),
-            text(node.name)
-        ]
-    })
-    out.draggable = true;
-
-    out.ondragstart = (e) => {
-        // e.preventDefault();
-        console.log("drag start", node.name, e)
-    }
-    out.ondrop = (e) => {
-        e.preventDefault();
-        console.log("drop", node.name, e)
-        console.log("drop on", e.target)
-    }
-
-    let background = "#ffffff";
-    if (node === doc.activeNode){
-        background = "#ffd1d1";
-    }
-
-    out.style.backgroundColor = background;
-    out.ondragenter = (e) => {
-        e.preventDefault();
-        out.style.backgroundColor = "#e2e2e2";
-    }
-    out.ondragleave = (e) => {
-        e.preventDefault();
-        out.style.backgroundColor = background;
-    }
-
-    if (node instanceof GroupNode){
-        const childrenDiv = div()
-        childrenDiv.style.paddingLeft = "20px";
-
-        for (let child of node.children) {
-            childrenDiv.appendChild(docNodeUI(child, doc));
-        }
-        out.appendChild(childrenDiv);
-    }
-    return out;
-}
-
 
 export function documentUI(doc: OVODocument) {
     return div(
@@ -101,9 +54,7 @@ export function documentUI(doc: OVODocument) {
                 label({text: "Background: "}),
                 docBackgroundDropdown(doc),
                 br(),
-                // text("Layers: " + doc.activeNode.name),
-                // docNodeUI(doc.activeNode),
-                docNodeUI(doc.rootNode, doc)
+                docNodeUI(doc.rootNode, {activeNode: doc.activeNode})
             ]
         }
     )

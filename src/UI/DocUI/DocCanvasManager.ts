@@ -33,13 +33,17 @@ export function DocCanvasManager(canvas: HTMLCanvasElement, doc: OVODocument) {
     let image = new Image();
     image.src = "./assets/paper.png";
 
-    let shapeLayer = new ShapeLayerNode();
-    shapeLayer.name = "Shape Layer";
-    doc.rootNode.addNode(shapeLayer);
-    let bitmapLayer = new BitmapLayerNode(doc.width, doc.height);
-    bitmapLayer.name = "Bitmap Layer";
-    doc.rootNode.addNode(bitmapLayer);
-    state.doc.doc.activeNode = bitmapLayer;
+    if (state.doc.doc.activeNode ==state.doc.doc.rootNode) {
+        throw new Error("No active node");
+    }
+    //
+    // let shapeLayer = new ShapeLayerNode();
+    // shapeLayer.name = "Shape Layer";
+    // doc.rootNode.addNode(shapeLayer);
+    // let bitmapLayer = new BitmapLayerNode(doc.width, doc.height);
+    // bitmapLayer.name = "Bitmap Layer";
+    // doc.rootNode.addNode(bitmapLayer);
+    // state.doc.doc.activeNode = bitmapLayer;
 
     printDocNodeTree(doc.rootNode);
 
