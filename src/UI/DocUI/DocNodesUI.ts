@@ -4,11 +4,47 @@ import {GroupNode} from "../../core/src/Documents/DocNodes/GroupNode";
 import * as events from "events";
 import {OVODocument} from "../../core/src/Documents/OVODocument";
 
-export function dragDivider(index: number, group: GroupNode) {
+export function dragDivider(index: number, group: GroupNode, state: dragState, rerender: () => void) {
     const out = div();
+    const isFirst = index === 0;
+    const isLast = index === group.children.length - 1;
     out.style.width = "100%";
-    out.style.height = "1px";
-    out.style.backgroundColor = "#000000";
+    out.style.height = "5px";
+    out.style.backgroundColor = "#ffffff";
+    out.ondragover = (e) => {
+        out.style.backgroundColor = "#a1a1a1";
+        e.preventDefault();
+        e.stopPropagation();
+    }
+    out.ondragleave = (e) => {
+        out.style.backgroundColor = "#ffffff";
+        e.preventDefault();
+        e.stopPropagation();
+    }
+    out.ondrop = (e) => {
+        out.style.backgroundColor = "#e5e5e5";
+        e.preventDefault();
+        e.stopPropagation();
+        if (!state.draggedNode) {
+            return;
+        }
+        const parent = findParentNode(state.draggedNode, group);
+        if (!parent) {
+            console.log("dragged node not found in tree")
+            return;
+        }
+        parent.removeNode(state.draggedNode);
+        if (isFirst && isLast) {
+            group.addNode(state.draggedNode);
+        }else if (isFirst) {
+            group.children.splice(0, 0, state.draggedNode);
+        }else if (isLast) {
+            group.children.push(state.draggedNode);
+        }else{
+            group.children.splice(index, 0, state.draggedNode);
+        }
+        rerender();
+    }
     return out;
 }
 
@@ -41,7 +77,7 @@ export function signalNodeUI(node: DocNode, doc: OVODocument, rerender: () => vo
         name += `/`;
     }
     if (isActive) {
-        name = `[${name}]`;
+        name = `${name} *`;
     }
 
     const nameTag = div()
@@ -66,7 +102,6 @@ export function signalNodeUI(node: DocNode, doc: OVODocument, rerender: () => vo
                 console.log("can't drop on non-group node")
                 return;
             }
-
             const draggedNode = state.draggedNode;
             if (node === draggedNode) {
                 console.log("can't drop on self")
@@ -95,7 +130,7 @@ export function signalNodeUI(node: DocNode, doc: OVODocument, rerender: () => vo
         background = activeBackground;
     }
 
-    out.style.backgroundColor = background;
+    nameTag.style.backgroundColor = background;
     nameTag.ondragover = (e) => {
         e.preventDefault();
         nameTag.style.backgroundColor = "#afafaf";
@@ -120,12 +155,11 @@ export function signalNodeUI(node: DocNode, doc: OVODocument, rerender: () => vo
     if (node instanceof GroupNode) {
         const childrenDiv = div()
         childrenDiv.style.paddingLeft = "10px";
+        childrenDiv.appendChild(dragDivider(0, node, state, rerender));
         for (let i = 0; i < node.children.length; i++) {
             const child = node.children[i];
             childrenDiv.appendChild(signalNodeUI(child, doc, rerender, state));
-            if (i < node.children.length - 1) {
-                childrenDiv.appendChild(dragDivider(i, node));
-            }
+            childrenDiv.appendChild(dragDivider(i, node, state, rerender));
         }
         out.appendChild(childrenDiv);
     }
