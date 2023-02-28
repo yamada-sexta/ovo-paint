@@ -30,13 +30,14 @@ function docBackgroundDropdown(doc: OVODocument) {
     out.onchange = (e) => {
         console.log("doc background dropdown", e.target)
         // @ts-ignore
-        state.doc.doc.background = e.target.value;
+        doc.background = e.target.value;
     }
     return out;
 }
 
 
 export function documentUI(doc: OVODocument) {
+
     return div(
         {
             children: [

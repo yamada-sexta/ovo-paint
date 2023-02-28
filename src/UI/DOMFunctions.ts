@@ -122,3 +122,15 @@ export function text(
     textElement.innerText = text;
     return textElement;
 }
+export function mdIcon(
+    iconName: string, size: number = 24
+) {
+    const icon = document.createElement("span");
+    icon.classList.add("material-symbols-outlined");
+    icon.style.fontSize = size + "px";
+    // icon.classList.add(baseClass);
+    icon.innerText = iconName.toLowerCase().replace(/ /g, "_");
+
+
+    return icon;
+}

@@ -100,5 +100,4 @@ export class ContextMenu {
 
         this._contentFrame.style.visibility = "visible";
     }
-
 }

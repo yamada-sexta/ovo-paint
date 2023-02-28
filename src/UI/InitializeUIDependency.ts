@@ -3,6 +3,7 @@ import {baseClass} from "./DOMFunctions";
 export function initializeUIDependencyOn(win: Window = window) {
     initializeGoogleFonts(win)
     initializeCSS(win)
+    initializeMaterialIcons(win)
 }
 
 function initializeGoogleFonts(win:Window) {
@@ -25,7 +26,13 @@ function initializeGoogleFonts(win:Window) {
     // <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     // <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet">
 }
-
+function initializeMaterialIcons(win:Window) {
+    let document = win.document;
+    let link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0";
+    document.head.appendChild(link);
+}
 function initializeCSS(win:Window) {
     let document = win.document;
     let style = document.createElement("style");

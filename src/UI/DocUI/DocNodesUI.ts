@@ -1,7 +1,6 @@
 import {DocNode} from "../../core/src/Documents/DocNodes/DocNode";
-import {div, text} from "../DOMFunctions";
+import {div, mdIcon, text} from "../DOMFunctions";
 import {GroupNode} from "../../core/src/Documents/DocNodes/GroupNode";
-import * as events from "events";
 import {OVODocument} from "../../core/src/Documents/OVODocument";
 
 export function dragDivider(index: number, group: GroupNode, state: dragState, rerender: () => void) {
@@ -35,13 +34,15 @@ export function dragDivider(index: number, group: GroupNode, state: dragState, r
         }
         parent.removeNode(state.draggedNode);
         if (isFirst && isLast) {
-            group.addNode(state.draggedNode);
+            group.children.push(state.draggedNode)
         }else if (isFirst) {
             group.children.splice(0, 0, state.draggedNode);
         }else if (isLast) {
             group.children.push(state.draggedNode);
-        }else{
+        }else if (parent === group) {
             group.children.splice(index, 0, state.draggedNode);
+        } else{
+            group.children.splice(index + 1, 0, state.draggedNode);
         }
         rerender();
     }
@@ -72,16 +73,19 @@ export function signalNodeUI(node: DocNode, doc: OVODocument, rerender: () => vo
     const out = div()
     const isActive = node === doc.activeNode;
     out.draggable = true;
-    let name = node.name;
+    let name = " "+ node.name;
+    let icon = mdIcon("draft", 16);
     if (node instanceof GroupNode) {
         name += `/`;
+        icon = mdIcon("folder", 16);
     }
     if (isActive) {
         name = `${name} *`;
+        // icon = mdIcon("star", 16);
     }
-
     const nameTag = div()
     nameTag.append(
+        icon,
         text(name),
     )
     out.appendChild(nameTag)
@@ -122,6 +126,7 @@ export function signalNodeUI(node: DocNode, doc: OVODocument, rerender: () => vo
             rerender();
         }
     }
+
     let background = "#ffffff";
     const activeBackground = "#adadad";
     const hoverBackground = "#efefef";
@@ -155,7 +160,9 @@ export function signalNodeUI(node: DocNode, doc: OVODocument, rerender: () => vo
     if (node instanceof GroupNode) {
         const childrenDiv = div()
         childrenDiv.style.paddingLeft = "10px";
-        childrenDiv.appendChild(dragDivider(0, node, state, rerender));
+        if (node.children.length !== 0){
+            childrenDiv.appendChild(dragDivider(0, node, state, rerender));
+        }
         for (let i = 0; i < node.children.length; i++) {
             const child = node.children[i];
             childrenDiv.appendChild(signalNodeUI(child, doc, rerender, state));
