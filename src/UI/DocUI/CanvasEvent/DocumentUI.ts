@@ -3,7 +3,7 @@ import {OVODocument} from "../../../core/src/Documents/OVODocument";
 import {DocNode} from "../../../core/src/Documents/DocNodes/DocNode";
 import {GroupNode} from "../../../core/src/Documents/DocNodes/GroupNode";
 import {openFileContextMenu} from "./DocCanvasContextMenu";
-import {docNodeUI} from "../DocNodeUI";
+import {docNodesUI} from "../DocNodesUI";
 
 function docBackgroundDropdown(doc: OVODocument) {
     const docBackgroundOptions = [
@@ -54,7 +54,7 @@ export function documentUI(doc: OVODocument) {
                 label({text: "Background: "}),
                 docBackgroundDropdown(doc),
                 br(),
-                docNodeUI(doc.rootNode, {activeNode: doc.activeNode})
+                docNodesUI(doc)
             ]
         }
     )
