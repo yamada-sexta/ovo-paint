@@ -10,6 +10,8 @@ export class BezierCurveShape extends Shape {
         this.points = [p0, c0, c1, p1];
     }
 
+
+
     inDotRange(p0: Vec2, p1: Vec2): boolean {
         let distance = Math.sqrt(Math.pow(p0[0] - p1[0], 2) + Math.pow(p0[1] - p1[1], 2));
         return distance <= this.radius;

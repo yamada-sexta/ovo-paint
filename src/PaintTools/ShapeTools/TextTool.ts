@@ -3,7 +3,9 @@ import {PaintToolEvent} from "../../core/src/PaintToolEvent";
 import {ShapeLayerNode} from "../../core/src/Documents/DocNodes/Layers/ShapeLayer/ShapeLayerNode";
 import {TextShape} from "./Shape/TextShape";
 import {br, div} from "../../UI/DOMFunctions";
-
+import {registerPaintTool} from "../PaintTools";
+import {Shape} from "../../core/src/Documents/DocNodes/Layers/ShapeLayer/Shape";
+// @registerPaintTool
 export class TextTool extends ShapePaintTool {
     private downRelaPos: Vec2 | null = null;
     private selectedShape: TextShape | null = null;
@@ -48,7 +50,7 @@ export class TextTool extends ShapePaintTool {
         const node = e.doc.activeNode;
 
         const pos = e.pos;
-        let shape = node.getInRangeShapes(pos);
+        let shape = node.getShape(this);
         if (shape !== null) {
             if (!(shape instanceof TextShape)) return;
             // if (e.button === 1) {
@@ -99,7 +101,7 @@ export class TextTool extends ShapePaintTool {
             this.selectedShape.position = [pos[0] - this.downRelaPos![0], pos[1] - this.downRelaPos![1]];
         } else {
             e.ui.ctx.clearRect(0, 0, e.ui.canvas.width, e.ui.canvas.height);
-            const currShape = e.doc.activeNode.getInRangeShapes(e.pos);
+            const currShape = e.doc.activeNode.getShape(this);
             if (currShape !== null) {
                 if (!(currShape instanceof TextShape)) return;
                 currShape.renderUI(e.ui.ctx);
@@ -112,5 +114,17 @@ export class TextTool extends ShapePaintTool {
         e.ui.ctx.clearRect(0, 0, e.ui.canvas.width, e.ui.canvas.height);
         // this.downPos = null;
         this.selectedShape = null;
+    }
+
+    isCompatibleWithShape(shape: Shape): boolean {
+        return shape instanceof TextShape;
+    }
+
+    shapeCompatible(shape: Shape): boolean {
+        return false;
+    }
+
+    shapeInRange(shape: Shape, pos: Vec2): boolean {
+        return false;
     }
 }

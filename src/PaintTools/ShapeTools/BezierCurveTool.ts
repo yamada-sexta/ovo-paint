@@ -2,11 +2,12 @@ import {ShapePaintTool} from "./ShapePaintTool";
 import {PaintToolEvent} from "../../core/src/PaintToolEvent";
 import {ShapeLayerNode} from "../../core/src/Documents/DocNodes/Layers/ShapeLayer/ShapeLayerNode";
 import {BezierCurveShape} from "./Shape/BezierCurveShape";
+import {registerPaintTool} from "../PaintTools";
+import {Shape} from "../../core/src/Documents/DocNodes/Layers/ShapeLayer/Shape";
 
+// @registerPaintTool
 export class BezierCurveTool extends ShapePaintTool {
-    selectedShape: BezierCurveShape | null = null;
-    // downPos: Vec2 | null = null;
-    // downRelaPos: Vec2 | null = null;
+    // selectedShape: BezierCurveShape | null = null;
     selectedPointIndex: number | null = null;
 
     pointBuffer: Vec2[] = [];
@@ -21,19 +22,13 @@ export class BezierCurveTool extends ShapePaintTool {
 
     async onDown(e: PaintToolEvent<ShapeLayerNode>) {
         await super.onDown(e);
-        let shape = e.node.getInRangeShapes(e.pos);
+        let shape = this.currentShape;
         if (shape !== null) {
             if (!(shape instanceof BezierCurveShape)) return;
             this.selectedShape = shape;
             this.selectedPointIndex = shape.getPointIndex(e.pos);
             shape.renderUI(e.ui.ctx)
         } else {
-            // if (e.button === 2) {
-            //     console.log("right click")
-            //     this.pointBuffer = [];
-            //     e.ui.ctx.clearRect(0, 0, e.ui.canvas.width, e.ui.canvas.height);
-            //     return;
-            // }
             if (this.pointBuffer.length < 3) {
                 this.pointBuffer.push(e.pos);
                 this.drawPoint(e.ui.ctx, e.pos);
@@ -52,6 +47,7 @@ export class BezierCurveTool extends ShapePaintTool {
         }
     }
 
+
     drawPoint(ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D, pos: Vec2) {
         ctx.strokeStyle = "red";
         ctx.beginPath();
@@ -61,11 +57,9 @@ export class BezierCurveTool extends ShapePaintTool {
 
     async onMove(e: PaintToolEvent<ShapeLayerNode>) {
         await super.onMove(e);
-
-        this.drawThisUI(e)
-
+        this.drawThisUI(e);
         if (this.selectedShape === null) {
-            let currentShape = e.node.getInRangeShapes(e.pos);
+            let currentShape = this.selectedShape
             if (currentShape !== null) {
                 if (!(currentShape instanceof BezierCurveShape)) return;
                 currentShape.renderUI(e.ui.ctx);
@@ -82,5 +76,9 @@ export class BezierCurveTool extends ShapePaintTool {
         await super.onUp(e);
         this.selectedShape = null;
         this.selectedPointIndex = null;
+    }
+
+    shapeInRange(shape: Shape, pos: Vec2): boolean {
+        return false;
     }
 }

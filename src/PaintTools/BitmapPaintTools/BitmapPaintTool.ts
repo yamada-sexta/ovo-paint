@@ -3,7 +3,7 @@ import {BitmapLayerNode} from "../../core/src/Documents/DocNodes/Layers/BitmapLa
 import {DocNode} from "../../core/src/Documents/DocNodes/DocNode";
 
 export abstract class BitmapPaintTool extends PaintTool<BitmapLayerNode> {
-    checkNode(node: DocNode): boolean {
+    isCompatibleWithNode(node: DocNode): boolean {
         return node instanceof BitmapLayerNode;
     }
 }

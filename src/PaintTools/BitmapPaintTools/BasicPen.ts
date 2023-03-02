@@ -5,7 +5,8 @@ import {drawHermitCurve} from "../../core/src/submodules/common-ts-utils/Canvas/
 import {br, div} from "../../UI/DOMFunctions";
 import {PaintToolUIRenderEvent} from "../PaintTool";
 import {checkShortcut} from "../../Shortcuts/ShortcutsChecker";
-
+import {registerPaintTool} from "../PaintTools";
+// @registerPaintTool
 export class BasicPen extends BitmapPaintTool {
     // isDrawing: boolean = false;
 

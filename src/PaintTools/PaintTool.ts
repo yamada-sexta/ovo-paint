@@ -23,7 +23,7 @@ export abstract class PaintTool<NodeType extends DocNode = DocNode> {
         return item;
     }
 
-    abstract checkNode(node: DocNode): boolean;
+    abstract isCompatibleWithNode(node: DocNode): boolean;
 
 
     async onDown(e: PaintToolEvent<NodeType>): Promise<void> {

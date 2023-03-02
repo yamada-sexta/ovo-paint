@@ -6,6 +6,7 @@ import {OVOPaint} from "./OVOPaint";
 import {showTempMessage} from "./UI/MessageBox/Message";
 import {PaintToolPreviewCanvas} from "./UI/PaintToolUI/PaintToolDemoCanvas";
 import {initializeUIDependencyOn} from "./UI/InitializeUIDependency";
+import {paintTools} from "./PaintTools/PaintTools";
 
 self.MonacoEnvironment = {
     getWorkerUrl: function (moduleId, label) {
@@ -41,6 +42,7 @@ function main() {
     }
 
     let ovo = new OVOPaint(root, true);
+    console.log(paintTools);
     //
     // showTempMessage("Hello", root)
     // let div = document.createElement("div");

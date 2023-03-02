@@ -61,16 +61,9 @@ export class TextShape extends Shape {
                 )
             }
         })
-
-
-
-
         link.href = url;
         link.rel = "stylesheet";
         document.head.appendChild(link);
-
-
-
         [this.width, this.height] = this.getSize();
     }
 
