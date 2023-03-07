@@ -2,6 +2,7 @@ import {OVOUIManager} from "./UI/OVOUIManager";
 import {OVODocument} from "./core/src/Documents/OVODocument";
 import {BitmapLayerNode} from "./core/src/Documents/DocNodes/Layers/BitmapLayerNode";
 import {GroupNode} from "./core/src/Documents/DocNodes/GroupNode";
+import {Serializer} from "./core/src/submodules/common-ts-utils/Serializer";
 
 export class OVOPaint {
     manager: OVOUIManager;
@@ -28,6 +29,14 @@ export class OVOPaint {
         doc.rootNode.addNode(new GroupNode("folder4"));
         folder1.addNode(layer);
         doc.activeNode = layer;
+
+        const serializer = new Serializer();
+        serializer.registerType(OVODocument);
+        const jsonDoc = serializer.serialize(doc);
+        console.log(jsonDoc);
+        const doc2 =serializer.deserialize(jsonDoc);
+        console.log(doc)
+        console.log(doc2);
         this.manager = new OVOUIManager(root, doc);
         if (isPublic) {
             this.setPublic();
