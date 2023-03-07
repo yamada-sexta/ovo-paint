@@ -1,8 +1,6 @@
 import {build} from "esbuild";
 import {glsl} from "esbuild-plugin-glsl";
-import * as path from "path";
-
-console.log("Building...");
+console.log("Loading build script...");
 
 
 async function buildProject(watch: boolean) {
@@ -42,11 +40,8 @@ async function main() {
     await buildProject(watch);
 }
 
-(
-    async () => {
-        await main();
+main().then(
+    () => {
+        console.log("Build script finished");
     }
-)();
-
-
-console.log("Done.");
+)

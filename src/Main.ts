@@ -16,18 +16,6 @@ function main() {
 
     let ovo = new OVOPaint(root, true);
     console.log(paintTools);
-    //
-    // showTempMessage("Hello", root)
-    // let div = document.createElement("div");
-    // div.style.width = "100%";
-    // div.style.height = "500px";
-    // root.appendChild(div);
-
-    // document.body.append(div);
-    // let editor = monaco.editor.create(document.getElementById("container") as HTMLDivElement, {
-    //     value: "function hello() { alert('Hello world!'); }",
-    //     language: "javascript"
-    // });
 }
 
 main()
