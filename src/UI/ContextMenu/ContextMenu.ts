@@ -26,7 +26,7 @@ export class ContextMenu {
         menu.style.top = "0px";
         menu.style.backgroundColor = "white";
         menu.style.boxShadow = "0 0 3px rgba(0,0,0,0.5)";
-        menu.style.padding = "5px";
+        menu.style.padding = "10px";
         // menu.style.zIndex = "1000";
         menu.style.visibility = "hidden";
         menu.append(content);

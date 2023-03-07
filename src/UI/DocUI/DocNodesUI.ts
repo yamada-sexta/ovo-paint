@@ -112,13 +112,11 @@ export function signalNodeUI(node: DocNode, doc: OVODocument, rerender: () => vo
         text(name),
     )
     out.appendChild(nameTag)
-
     out.ondragstart = (e) => {
         console.log("drag start", node.name, e)
         e.stopPropagation();
         state.draggedNode = node;
     }
-
     out.ondrop = (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -140,16 +138,12 @@ export function signalNodeUI(node: DocNode, doc: OVODocument, rerender: () => vo
             return;
         }
         const parent = findParentNode(draggedNode, doc.rootNode);
-
         const inPath =!notInPath(doc.rootNode, draggedNode, node)
-
         console.log("inPath", inPath)
-
         if (inPath) {
             console.log("can't drop on potential detached node")
             return;
         }
-
         if (!parent) {
             console.log("dragged node not found in tree")
             return;
@@ -213,6 +207,13 @@ export function signalNodeUI(node: DocNode, doc: OVODocument, rerender: () => vo
 
 export function docNodesUI(doc: OVODocument) {
     const out = div();
+    out.style.overflow = "auto";
+    out.style.height = "150px";
+    // out.style.margin = "5px";
+    out.style.padding = "5px";
+
+    //
+    out.style.border = "1px solid " + "#c9c9c9";
     const state = {
         draggedNode: null,
         nodeDict: {}
@@ -221,7 +222,7 @@ export function docNodesUI(doc: OVODocument) {
         out.innerHTML = "";
         state.draggedNode = null;
         state.nodeDict = {};
-        out.appendChild(text("Document Nodes:"))
+        // out.appendChild(text("Document Nodes:"))
         out.appendChild(signalNodeUI(doc.rootNode, doc, rerender, state));
     }
     rerender();

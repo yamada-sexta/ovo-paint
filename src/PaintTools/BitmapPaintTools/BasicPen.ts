@@ -6,6 +6,7 @@ import {br, div} from "../../UI/DOMFunctions";
 import {PaintToolUIRenderEvent} from "../PaintTool";
 import {checkShortcut} from "../../Shortcuts/ShortcutsChecker";
 import {registerPaintTool} from "../PaintTools";
+import {Vec2} from "../../core/src/submodules/common-ts-utils/Math/Vector";
 // @registerPaintTool
 export class BasicPen extends BitmapPaintTool {
     // isDrawing: boolean = false;
@@ -70,7 +71,7 @@ export class BasicPen extends BitmapPaintTool {
         sizeSlider.type = "range";
         sizeSlider.min = "1";
         sizeSlider.max = "100";
-        sizeSlider.value = "20";
+        sizeSlider.value = this.maxSize + "";
         sizeSlider.oninput = () => {
             this.maxSize = Number(sizeSlider.value);
         }
