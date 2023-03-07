@@ -30,13 +30,13 @@ export class OVOPaint {
         folder1.addNode(layer);
         doc.activeNode = layer;
 
-        const serializer = new Serializer();
-        serializer.registerType(OVODocument);
-        const jsonDoc = serializer.serialize(doc);
-        console.log(jsonDoc);
-        const doc2 =serializer.deserialize(jsonDoc);
-        console.log(doc)
-        console.log(doc2);
+        // const serializer = new Serializer();
+        // serializer.registerType(OVODocument);
+        // const jsonDoc = serializer.serialize(doc);
+        // console.log(jsonDoc);
+        // const doc2 =serializer.deserialize(jsonDoc);
+        // console.log(doc)
+        // console.log(doc2);
         this.manager = new OVOUIManager(root, doc);
         if (isPublic) {
             this.setPublic();

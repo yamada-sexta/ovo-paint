@@ -1,3 +1,6 @@
 [submodule "src/core"]
 	path = src/core
 	url = https://github.com/NaNnoda/ovo-paint-core.git
+[submodule "src/ez-codemirror"]
+	path = src/ez-codemirror
+	url = https://github.com/nannoda/ez-codemirror.git

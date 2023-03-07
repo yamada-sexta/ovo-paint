@@ -4,29 +4,8 @@ import * as path from "path";
 
 console.log("Building...");
 
-const workerEntryPoints = [
-    'vs/language/json/json.worker.js',
-    'vs/language/css/css.worker.js',
-    'vs/language/html/html.worker.js',
-    'vs/language/typescript/ts.worker.js',
-    'vs/editor/editor.worker.js'
-];
-
-
 
 async function buildProject(watch: boolean) {
-    await build({
-
-        entryPoints: workerEntryPoints.map((entry) => `./node_modules/monaco-editor/esm/${entry}`),
-        bundle: true,
-        format: 'iife',
-        outbase: '../node_modules/monaco-editor/esm/',
-        outdir: path.join(__dirname, 'dist')
-    });
-    console.log("Done building workers.")
-
-
-
     build
     (
         {
