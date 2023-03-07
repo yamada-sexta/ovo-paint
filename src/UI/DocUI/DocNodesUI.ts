@@ -35,13 +35,13 @@ export function dragDivider(index: number, group: GroupNode, state: dragState, r
         parent.removeNode(state.draggedNode);
         if (isFirst && isLast) {
             group.children.push(state.draggedNode)
-        }else if (isFirst) {
+        } else if (isFirst) {
             group.children.splice(0, 0, state.draggedNode);
-        }else if (isLast) {
+        } else if (isLast) {
             group.children.push(state.draggedNode);
-        }else if (parent === group) {
+        } else if (parent === group) {
             group.children.splice(index, 0, state.draggedNode);
-        } else{
+        } else {
             group.children.splice(index + 1, 0, state.draggedNode);
         }
         rerender();
@@ -69,11 +69,34 @@ export function findParentNode(node: DocNode, root: GroupNode): GroupNode | null
     return null;
 }
 
+/**
+ * Returns true if the target node is not in the path from the parent to the destination node.
+ * @param parent
+ * @param destination
+ * @param target
+ */
+export function notInPath(parent: DocNode, destination: DocNode, target: DocNode): boolean {
+    if (parent === destination) {
+        return false;
+    }
+    if (parent === target) {
+        return true;
+    }
+    if (parent instanceof GroupNode) {
+        for (let child of parent.children) {
+            if (notInPath(child, destination, target)) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 export function signalNodeUI(node: DocNode, doc: OVODocument, rerender: () => void, state: dragState) {
     const out = div()
     const isActive = node === doc.activeNode;
     out.draggable = true;
-    let name = " "+ node.name;
+    let name = " " + node.name;
     let icon = mdIcon("draft", 16);
     if (node instanceof GroupNode) {
         name += `/`;
@@ -101,30 +124,44 @@ export function signalNodeUI(node: DocNode, doc: OVODocument, rerender: () => vo
         e.stopPropagation();
         console.log("drop", node.name, e)
         console.log("drop on", e.target)
-        if (state.draggedNode) {
-            if (!(node instanceof GroupNode)) {
-                console.log("can't drop on non-group node")
-                return;
-            }
-            const draggedNode = state.draggedNode;
-            if (node === draggedNode) {
-                console.log("can't drop on self")
-                return;
-            }
-            const parent = findParentNode(draggedNode, doc.rootNode);
-            if (!parent) {
-                console.log("dragged node not found in tree")
-                return;
-            }
-            if (parent === node) {
-                console.log("NOT IMPLEMENTED: drop on parent")
-                return;
-            }
-            parent.removeNode(draggedNode);
-            node.children.push(draggedNode);
-            state.draggedNode = null;
-            rerender();
+        if (!state.draggedNode) {
+            console.log("no dragged node")
+            return;
         }
+
+        if (!(node instanceof GroupNode)) {
+            console.log("can't drop on non-group node")
+            return;
+        }
+
+        const draggedNode = state.draggedNode;
+        if (node === draggedNode) {
+            console.log("can't drop on self")
+            return;
+        }
+        const parent = findParentNode(draggedNode, doc.rootNode);
+
+        const inPath =!notInPath(doc.rootNode, draggedNode, node)
+
+        console.log("inPath", inPath)
+
+        if (inPath) {
+            console.log("can't drop on potential detached node")
+            return;
+        }
+
+        if (!parent) {
+            console.log("dragged node not found in tree")
+            return;
+        }
+        if (parent === node) {
+            console.log("NOT IMPLEMENTED: drop on parent")
+            return;
+        }
+        parent.removeNode(draggedNode);
+        node.children.push(draggedNode);
+        state.draggedNode = null;
+        rerender();
     }
 
     let background = "#ffffff";
@@ -160,7 +197,7 @@ export function signalNodeUI(node: DocNode, doc: OVODocument, rerender: () => vo
     if (node instanceof GroupNode) {
         const childrenDiv = div()
         childrenDiv.style.paddingLeft = "10px";
-        if (node.children.length !== 0){
+        if (node.children.length !== 0) {
             childrenDiv.appendChild(dragDivider(0, node, state, rerender));
         }
         for (let i = 0; i < node.children.length; i++) {

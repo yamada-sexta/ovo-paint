@@ -4,30 +4,29 @@ console.log("Loading build script...");
 
 
 async function buildProject(watch: boolean) {
-    build
-    (
-        {
-            entryPoints: ["src/Main.ts"],
-            bundle: true,
-            sourcemap: true,
-            outfile: "main.js",
-            plugins: [glsl()],
-            watch: watch,
-            minify: false,
-            minifySyntax: true,
-            logLevel: "info",
-            loader: {
-                ".glsl": "text",
-                ".ttf": "file"
+    try {
+        await build
+        (
+            {
+                entryPoints: ["src/Main.ts"],
+                bundle: true,
+                sourcemap: true,
+                outfile: "main.js",
+                plugins: [glsl()],
+                watch: watch,
+                minify: false,
+                minifySyntax: true,
+                logLevel: "info",
+                loader: {
+                    ".glsl": "text",
+                    ".ttf": "file"
+                }
             }
-        }
-    ).catch(
-        (e) => {
-            console.log(e);
-
-            process.exit(1);
-        }
-    );
+        );
+    }
+    catch (e) {
+        console.error(e);
+    }
 }
 
 async function main() {
