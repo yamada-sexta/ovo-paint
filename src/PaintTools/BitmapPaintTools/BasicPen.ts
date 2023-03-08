@@ -2,7 +2,7 @@ import {BitmapPaintTool} from "./BitmapPaintTool";
 import {PaintToolEvent} from "../../core/src/PaintToolEvent";
 import {BitmapLayerNode} from "../../core/src/Documents/DocNodes/Layers/BitmapLayerNode";
 import {drawHermitCurve} from "../../core/src/submodules/common-ts-utils/Canvas/PaintCanvas";
-import {br, div} from "../../UI/DOMFunctions";
+import {br, div, text} from "../../UI/DOMFunctions";
 import {PaintToolUIRenderEvent} from "../PaintTool";
 import {checkShortcut} from "../../Shortcuts/ShortcutsChecker";
 import {registerPaintTool} from "../PaintTools";
@@ -67,6 +67,7 @@ export class BasicPen extends BitmapPaintTool {
 
     getMenu(): HTMLElement {
         let frame = div();
+        frame.append(text("size: "))
         let sizeSlider = document.createElement("input");
         sizeSlider.type = "range";
         sizeSlider.min = "1";
@@ -77,6 +78,7 @@ export class BasicPen extends BitmapPaintTool {
         }
         frame.appendChild(sizeSlider);
         frame.append(br())
+        frame.append(text("color: "))
         let colorPicker = document.createElement("input");
         colorPicker.type = "color";
         colorPicker.oninput = () => {
