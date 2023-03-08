@@ -12,6 +12,7 @@ import {BasicPen} from "../../PaintTools/BitmapPaintTools/BasicPen";
 import {printDocNodeTree} from "../../core/src/Debug";
 import {DebugPen} from "../../PaintTools/BitmapPaintTools/DebugPen";
 import {onKeyDown, onKeyUp} from "./CanvasEvent/OnKey";
+import {paperImage} from "../../Assets/Images/PaperImage";
 
 //
 
@@ -30,8 +31,9 @@ export function DocCanvasManager(canvas: HTMLCanvasElement, doc: OVODocument) {
         canvas.height * state.viewer.scale / 2 - doc.height / 2
     ];
 
-    let image = new Image();
-    image.src = "./assets/paper.png";
+    // let image = new Image();
+    // image.src = "./assets/paper.png";
+    const image = paperImage;
 
     if (state.doc.doc.activeNode ==state.doc.doc.rootNode) {
         throw new Error("No active node");
