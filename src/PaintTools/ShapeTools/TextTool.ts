@@ -2,7 +2,7 @@ import {ShapePaintTool} from "./ShapePaintTool";
 import {PaintToolEvent} from "../../core/src/PaintToolEvent";
 import {ShapeLayerNode} from "../../core/src/Documents/DocNodes/Layers/ShapeLayer/ShapeLayerNode";
 import {TextShape} from "./Shape/TextShape";
-import {br, div} from "../../UI/DOMFunctions";
+import {br, div} from "../../UI/DOM/DOMFunctions";
 import {registerPaintTool} from "../PaintTools";
 import {Shape} from "../../core/src/Documents/DocNodes/Layers/ShapeLayer/Shape";
 // @registerPaintTool

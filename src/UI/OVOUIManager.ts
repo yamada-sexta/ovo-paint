@@ -1,7 +1,7 @@
 import {OVODocument} from "../core/src/Documents/OVODocument";
 import {openCreateWindow} from "./DocumentCreateUI";
 import {DocCanvasManager} from "./DocUI/DocCanvasManager";
-import {button, div, text} from "./DOMFunctions";
+import {button, div, text} from "./DOM/DOMFunctions";
 import {IOVORootUI} from "./RootFrame/IOVORootUI";
 import {OVOWelcomeScreen} from "./RootFrame/OVOWelcomeScreen";
 import {OVODocUIFrame} from "./RootFrame/OVODocUIFrame";

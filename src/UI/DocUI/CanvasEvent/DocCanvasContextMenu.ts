@@ -1,5 +1,5 @@
 import {ContextMenu} from "../../ContextMenu/ContextMenu";
-import {br, div, input, label, text} from "../../DOMFunctions";
+import {br, div, input, label, text} from "../../DOM/DOMFunctions";
 import {BasicPen} from "../../../PaintTools/BitmapPaintTools/BasicPen";
 import {TextTool} from "../../../PaintTools/ShapeTools/TextTool";
 import {OVOState} from "../DocCanvasState";

@@ -1,6 +1,6 @@
 import {OVOUIManager} from "./UI/OVOUIManager";
 import {DraggableWindow} from "./UI/DraggableWindow";
-import {baseClass, div, text} from "./UI/DOMFunctions";
+import {baseClass, div, text} from "./UI/DOM/DOMFunctions";
 import * as monaco from "monaco-editor";
 import {OVOPaint} from "./OVOPaint";
 import {showTempMessage} from "./UI/MessageBox/Message";

@@ -1,5 +1,5 @@
 import {DocNode} from "../../core/src/Documents/DocNodes/DocNode";
-import {div, mdIcon, text} from "../DOMFunctions";
+import {div, mdIcon, text} from "../DOM/DOMFunctions";
 import {GroupNode} from "../../core/src/Documents/DocNodes/GroupNode";
 import {OVODocument} from "../../core/src/Documents/OVODocument";
 

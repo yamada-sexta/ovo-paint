@@ -1,4 +1,4 @@
-import {baseClass} from "./DOMFunctions";
+import {baseClass} from "./DOM/DOMFunctions";
 
 export function initializeUIDependencyOn(win: Window = window) {
     initializeGoogleFonts(win)

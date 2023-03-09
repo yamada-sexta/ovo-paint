@@ -1,4 +1,4 @@
-import {input} from "../../DOMFunctions";
+import {input} from "../../DOM/DOMFunctions";
 import {closeContextMenu, openToolContextMenu} from "./DocCanvasContextMenu";
 import {OVOState} from "../DocCanvasState";
 import {PaintToolEvent} from "../../../core/src/PaintToolEvent";

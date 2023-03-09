@@ -1,5 +1,5 @@
 import {OVODocument} from "../core/src/Documents/OVODocument";
-import {br, button, div, input, label, text} from "./DOMFunctions";
+import {br, button, div, input, label, text} from "./DOM/DOMFunctions";
 import {openPopUp} from "./OpenPopUp";
 
 const templateOptions = [

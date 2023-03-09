@@ -1,4 +1,4 @@
-import {div} from "../DOMFunctions";
+import {div} from "../DOM/DOMFunctions";
 
 export interface ContextMenuObject {
     getContextMenu: () => HTMLElement;

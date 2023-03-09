@@ -1,4 +1,4 @@
-import {br, div, input, label, text} from "../../DOMFunctions";
+import {br, div, input, label, text} from "../../DOM/DOMFunctions";
 import {OVODocument} from "../../../core/src/Documents/OVODocument";
 import {DocNode} from "../../../core/src/Documents/DocNodes/DocNode";
 import {GroupNode} from "../../../core/src/Documents/DocNodes/GroupNode";
