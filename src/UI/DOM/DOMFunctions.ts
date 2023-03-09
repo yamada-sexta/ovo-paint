@@ -113,6 +113,7 @@ export function select(
     let select = document.createElement("select");
     select.classList.add(baseClass);
     select.style.color = currentTheme.text;
+    select.style.borderColor = currentTheme.border;
     select.style.backgroundColor = currentTheme.background;
     for (let child of props.children) {
         select.appendChild(child);

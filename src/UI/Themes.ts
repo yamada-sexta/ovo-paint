@@ -105,8 +105,8 @@ export let currentTheme: OVOTheme = new OVOTheme({
     name: "Default",
     description: "The default theme",
     primary: "#3b3b3b",
-    secondary: "#ffffff",
-    accent: "#e8e8e8",
-    hint: "#efefef",
+    secondary: "#efefef",
+    accent: "#c9c9c9",
+    hint: "#dadada",
     accentText: "#000000",
 });
