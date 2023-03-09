@@ -2,11 +2,12 @@ import {BitmapPaintTool} from "./BitmapPaintTool";
 import {PaintToolEvent} from "../../core/src/PaintToolEvent";
 import {BitmapLayerNode} from "../../core/src/Documents/DocNodes/Layers/BitmapLayerNode";
 import {drawHermitCurve} from "../../core/src/submodules/common-ts-utils/Canvas/PaintCanvas";
-import {br, div, text} from "../../UI/DOMFunctions";
+import {br, div, input, text} from "../../UI/DOMFunctions";
 import {PaintToolUIRenderEvent} from "../PaintTool";
 import {checkShortcut} from "../../Shortcuts/ShortcutsChecker";
 import {registerPaintTool} from "../PaintTools";
 import {Vec2} from "../../core/src/submodules/common-ts-utils/Math/Vector";
+
 // @registerPaintTool
 export class BasicPen extends BitmapPaintTool {
     // isDrawing: boolean = false;
@@ -68,7 +69,72 @@ export class BasicPen extends BitmapPaintTool {
     getMenu(): HTMLElement {
         let frame = div();
         frame.append(text("size: "))
-        let sizeSlider = document.createElement("input");
+        const txt = text(this.maxSize + "");
+        txt.draggable = true;
+        let dragStartPos = [0, 0];
+        txt.id = "sizeText";
+
+
+        txt.style.cssText = `
+            cursor: move;
+            
+            :active {
+                opacity: 0;
+                cursor: move;
+            }
+        `
+
+        txt.ondragstart = (e) => {
+            dragStartPos = [e.clientX, e.clientY];
+            txt.style.opacity = "0";
+
+            if (e.dataTransfer) {
+                e.dataTransfer.effectAllowed = "copyMove";
+            }
+            // document.body.style.cursor = "move";
+
+            setTimeout(() => {
+                txt.style.opacity = "1";
+            })
+            // return false;
+        }
+        txt.ondrag = (e) => {
+
+            e.preventDefault();
+            // console.log(e.buttons)
+            if (e.buttons == 0) {
+                return;
+            }
+
+            let diff = [e.clientX - dragStartPos[0], e.clientY - dragStartPos[1]];
+            let dSize = diff[0];
+            // if (dSize<-500) {
+            //     console.log("too small")
+            //     return;
+            // }
+            dSize = Math.round(dSize);
+
+            
+
+            // console.log(dSize)
+            this.maxSize += dSize;
+
+            if (this.maxSize < 0) {
+                this.maxSize = 0;
+            }
+
+            txt.textContent = this.maxSize + "";
+            dragStartPos = [e.clientX, e.clientY];
+        }
+        txt.ondragend = (e) => {
+            e.preventDefault();
+            console.log("drag end")
+        }
+        txt.ondrop = (e) => {
+            return false;
+        }
+        frame.appendChild(txt);
+        let sizeSlider = input({type: "range", value: this.maxSize + ""});
         sizeSlider.type = "range";
         sizeSlider.min = "1";
         sizeSlider.max = "100";
@@ -76,7 +142,7 @@ export class BasicPen extends BitmapPaintTool {
         sizeSlider.oninput = () => {
             this.maxSize = Number(sizeSlider.value);
         }
-        frame.appendChild(sizeSlider);
+        // frame.appendChild(sizeSlider);
         frame.append(br())
         frame.append(text("color: "))
         let colorPicker = document.createElement("input");
