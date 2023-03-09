@@ -2,6 +2,7 @@ import {DocNode} from "../../core/src/Documents/DocNodes/DocNode";
 import {div, mdIcon, text} from "../DOM/DOMFunctions";
 import {GroupNode} from "../../core/src/Documents/DocNodes/GroupNode";
 import {OVODocument} from "../../core/src/Documents/OVODocument";
+import {currentTheme} from "../Themes";
 
 export function dragDivider(index: number, group: GroupNode, state: dragState, rerender: () => void) {
     const out = div();
@@ -9,19 +10,19 @@ export function dragDivider(index: number, group: GroupNode, state: dragState, r
     const isLast = index === group.children.length - 1;
     out.style.width = "100%";
     out.style.height = "5px";
-    out.style.backgroundColor = "#ffffff";
+    out.style.backgroundColor = currentTheme.background;
     out.ondragover = (e) => {
-        out.style.backgroundColor = "#a1a1a1";
+        out.style.backgroundColor = currentTheme.hover;
         e.preventDefault();
         e.stopPropagation();
     }
     out.ondragleave = (e) => {
-        out.style.backgroundColor = "#ffffff";
+        out.style.backgroundColor = currentTheme.background;
         e.preventDefault();
         e.stopPropagation();
     }
     out.ondrop = (e) => {
-        out.style.backgroundColor = "#e5e5e5";
+        out.style.backgroundColor = currentTheme.background;
         e.preventDefault();
         e.stopPropagation();
         if (!state.draggedNode) {
@@ -102,14 +103,15 @@ export function signalNodeUI(node: DocNode, doc: OVODocument, rerender: () => vo
         name += `/`;
         icon = mdIcon("folder", 16);
     }
+    const textElement = text(name);
     if (isActive) {
-        name = `${name} *`;
-        // icon = mdIcon("star", 16);
+        textElement.style.color = currentTheme.accentText;
+        textElement.innerText =  node.name + " (active)";
     }
     const nameTag = div()
     nameTag.append(
         icon,
-        text(name),
+        textElement,
     )
     out.appendChild(nameTag)
     out.ondragstart = (e) => {
@@ -138,7 +140,7 @@ export function signalNodeUI(node: DocNode, doc: OVODocument, rerender: () => vo
             return;
         }
         const parent = findParentNode(draggedNode, doc.rootNode);
-        const inPath =!notInPath(doc.rootNode, draggedNode, node)
+        const inPath = !notInPath(doc.rootNode, draggedNode, node)
         console.log("inPath", inPath)
         if (inPath) {
             console.log("can't drop on potential detached node")
@@ -158,9 +160,9 @@ export function signalNodeUI(node: DocNode, doc: OVODocument, rerender: () => vo
         rerender();
     }
 
-    let background = "#ffffff";
-    const activeBackground = "#adadad";
-    const hoverBackground = "#efefef";
+    let background = currentTheme.background;
+    const activeBackground = currentTheme.selected;
+    const hoverBackground = currentTheme.hover;
 
     if (isActive) {
         background = activeBackground;
@@ -169,7 +171,7 @@ export function signalNodeUI(node: DocNode, doc: OVODocument, rerender: () => vo
     nameTag.style.backgroundColor = background;
     nameTag.ondragover = (e) => {
         e.preventDefault();
-        nameTag.style.backgroundColor = "#afafaf";
+        nameTag.style.backgroundColor = currentTheme.hover;
     }
     nameTag.onpointerenter = (e) => {
         nameTag.style.backgroundColor = hoverBackground;
@@ -213,7 +215,12 @@ export function docNodesUI(doc: OVODocument) {
     out.style.padding = "5px";
 
     //
-    out.style.border = "1px solid " + "#c9c9c9";
+    out.style.borderColor = currentTheme.border;
+    out.style.borderStyle = "solid";
+    out.style.borderWidth = "1px";
+    out.style.backgroundColor = currentTheme.background;
+    out.style.color = currentTheme.text;
+
     const state = {
         draggedNode: null,
         nodeDict: {}
@@ -222,7 +229,6 @@ export function docNodesUI(doc: OVODocument) {
         out.innerHTML = "";
         state.draggedNode = null;
         state.nodeDict = {};
-        // out.appendChild(text("Document Nodes:"))
         out.appendChild(signalNodeUI(doc.rootNode, doc, rerender, state));
     }
     rerender();

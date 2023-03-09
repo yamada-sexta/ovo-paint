@@ -1,4 +1,5 @@
 import {div} from "../DOM/DOMFunctions";
+import {currentTheme} from "../Themes";
 
 export interface ContextMenuObject {
     getContextMenu: () => HTMLElement;
@@ -27,6 +28,7 @@ export class ContextMenu {
         menu.style.backgroundColor = "white";
         menu.style.boxShadow = "0 0 3px rgba(0,0,0,0.5)";
         menu.style.padding = "10px";
+        menu.style.backgroundColor = currentTheme.background;
         // menu.style.zIndex = "1000";
         menu.style.visibility = "hidden";
         menu.append(content);

@@ -2,6 +2,7 @@ import {IOVORootUI} from "./IOVORootUI";
 import {OVOUIManager} from "../OVOUIManager";
 import {br, button, div, text} from "../DOM/DOMFunctions";
 import {openCreateWindow} from "../DocumentCreateUI";
+import {currentTheme} from "../Themes";
 
 export class OVOWelcomeScreen implements IOVORootUI {
     getUI(manager: OVOUIManager): HTMLElement {
@@ -27,7 +28,7 @@ export class OVOWelcomeScreen implements IOVORootUI {
             }
         })
 
-        return div({
+        const out= div({
             children: [
                 title,
                 br(),
@@ -35,6 +36,8 @@ export class OVOWelcomeScreen implements IOVORootUI {
                 openBtn
             ]
         })
+        out.style.backgroundColor = currentTheme.secondary;
+        return out;
     }
 
     onAppended(manager: OVOUIManager): void {

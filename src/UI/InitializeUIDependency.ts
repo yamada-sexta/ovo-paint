@@ -42,5 +42,6 @@ function initializeCSS(win:Window) {
         font-size: 16px;
        }
     `;
+
     document.head.appendChild(style);
 }
