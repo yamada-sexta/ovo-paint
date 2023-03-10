@@ -9,6 +9,7 @@ let openState: DocUIState | null = null;
 
 export function openDocContextMenu(state: DocUIState, pos: [number, number] | null = null) {
     if (pos === null) {
+        console.log(`pos is null, using pointerAbsPos: ${state.input.pointerAbsPos}`);
         pos = state.input.pointerAbsPos;
     }
     openToolMenu(state, [pos[0] + 10, pos[1]]);
@@ -26,8 +27,9 @@ export function closeDocContextMenu() {
 }
 
 export function refreshDocContextMenu(state: DocUIState, openPos: [number, number] | null = null) {
+    const tmpPos = openPos;
     closeDocContextMenu();
-    openDocContextMenu(state, openPos);
+    openDocContextMenu(state, tmpPos);
 }
 
 export function statelessRefreshDocContextMenu() {

@@ -20,6 +20,17 @@ export class SimpleShapeTool extends ShapePaintTool {
         return pos[0] >= minX && pos[0] <= maxX && pos[1] >= minY && pos[1] <= maxY;
     }
 
+    async renderCanvasUI(e: PaintToolUIRenderEvent): Promise<void> {
+        await super.renderCanvasUI(e);
+
+        if (this.newShape !== null) {
+            console.log("rendering new shape");
+            if (e.dom) {
+                e.dom.style.cursor = "crosshair";
+            }
+        }
+    }
+
     newShape: SimpleShape | null = null;
     startPos: Vec2 | null = null;
 
@@ -34,7 +45,7 @@ export class SimpleShapeTool extends ShapePaintTool {
             return;
         }
         this.startPos = e.pos;
-        this.newShape = new SimpleShape(e.pos, [0, 0], this.shapeType,  this.fillStyle, this.strokeStyle, this.lineWidth);
+        this.newShape = new SimpleShape(e.pos, [0, 0], this.shapeType, this.fillStyle, this.strokeStyle, this.lineWidth);
         e.node.shapes.push(this.newShape);
     }
 

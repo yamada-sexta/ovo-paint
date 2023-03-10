@@ -90,6 +90,8 @@ export class SimpleShape extends Shape<SimpleShapeState> {
 function drawRect(ctx: CanvasCtx, pos: Vec2, size: Vec2) {
     ctx.beginPath();
     ctx.rect(pos[0], pos[1], size[0], size[1]);
+
+    ctx.fill();
     ctx.stroke();
 }
 
@@ -101,6 +103,8 @@ function drawCircle(ctx: CanvasCtx, pos: Vec2, size: Vec2) {
 
     ctx.beginPath();
     ctx.arc(center[0], center[1], radius, 0, 2 * Math.PI);
+
+    ctx.fill();
     ctx.stroke();
 }
 
@@ -110,6 +114,8 @@ function drawTriangle(ctx: CanvasCtx, pos: Vec2, size: Vec2) {
     ctx.lineTo(pos[0] + size[0] / 2, pos[1]);
     ctx.lineTo(pos[0] + size[0], pos[1] + size[1]);
     ctx.lineTo(pos[0], pos[1] + size[1]);
+
+    ctx.fill();
     ctx.stroke();
 }
 
@@ -117,6 +123,8 @@ function drawLine(ctx: CanvasCtx, pos: Vec2, size: Vec2) {
     ctx.beginPath();
     ctx.moveTo(pos[0], pos[1]);
     ctx.lineTo(pos[0] + size[0], pos[1] + size[1]);
+
+    ctx.fill();
     ctx.stroke();
 }
 
@@ -134,6 +142,8 @@ function drawStar(ctx: CanvasCtx, pos: Vec2, size: Vec2) {
     ctx.lineTo(center[0] - radius, center[1]);
     ctx.lineTo(center[0] - radius2, center[1] - radius2);
     ctx.lineTo(center[0], center[1] - radius);
+
+    ctx.fill();
     ctx.stroke();
 }
 
@@ -145,5 +155,7 @@ function drawEllipse(ctx: CanvasCtx, pos: Vec2, size: Vec2) {
     ctx.ellipse(center[0], center[1],
         radiusX, radiusY
         , 0, 0, 2 * Math.PI);
+
+    ctx.fill();
     ctx.stroke();
 }

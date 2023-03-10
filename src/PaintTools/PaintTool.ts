@@ -66,7 +66,9 @@ export abstract class PaintTool<NodeType extends DocNode = DocNode> {
      * @param e
      */
     async renderCanvasUI(e: PaintToolUIRenderEvent): Promise<void> {
-
+        if (e.dom) {
+            e.dom.style.cursor = "default";
+        }
     }
 
     /**

@@ -14,6 +14,8 @@ function getToolMenu(state: DocUIState) {
     for (const tool of state.tool.availableTools) {
         const radioInput = input({type: "radio", value: tool.name});
         radioInput.checked = state.tool.currentTool === tool;
+        radioInput.name = "tool";
+        radioInput.id = tool.name;
         const radioLabel = text(tool.name);
         radioInput.addEventListener("change", () => {
             state.tool.currentTool = tool;
