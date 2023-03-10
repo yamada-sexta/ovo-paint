@@ -26,6 +26,7 @@
     "webfontloader": "^1.6.28"
   },
   "dependencies": {
+    "@tensorflow-models/qna": "^1.0.1",
     "esbuild": "^0.16.1"
   }
 }
