@@ -9,20 +9,19 @@ import {Vec2} from "../../core/src/submodules/common-ts-utils/Math/Vector";
 import {PaintToolUIRenderEvent} from "../PaintTool";
 import {currentTheme} from "../../UI/Themes";
 import {closeDocContextMenu} from "../../UI/DocUI/DocContextMenu/MasterDocContextMenu";
+import {openToolMenu} from "../../UI/DocUI/DocContextMenu/ToolMenu";
 
-// @registerPaintTool
 export class TextTool extends ShapePaintTool {
-    // private downRelaPos: Vec2 | null = null;
+    pointerPos: Vec2 = [0, 0];
 
-    // private selectedShape: TextShape | null = null;
-
-    // internalTextShape: TextShape = new TextShape("Hello World", [0,0],"Arial", 20);
+    node: ShapeLayerNode | null = null;
 
     getMenu(): HTMLElement {
-        if (!this.selectedShape) return div();
-
-        const textShape = this.selectedShape as TextShape;
-
+        // if (!this.selectedShape) return div();
+        let textShape = this.selectedShape as TextShape;
+        if (!textShape) {
+            textShape = new TextShape("", this.pointerPos, "Arial", 20);
+        }
         let frame = div();
         let input = document.createElement("input");
         input.type = "text";
@@ -43,18 +42,33 @@ export class TextTool extends ShapePaintTool {
         frame.appendChild(size);
         frame.append(br());
         let button = document.createElement("button");
-        button.innerText = "Save";
-        button.onclick = () => {
-            if (input.value === "") return;
-            if (font.value === "") return;
-            if (size.value === "") return;
-            textShape.content = input.value;
-            textShape.font = font.value;
-            textShape.fontSize = parseInt(size.value);
-            textShape.updateSize();
-            this.selectedShape = null;
-            closeDocContextMenu();
+
+        if (this.selectedShape) {
+            button.innerText = "Save";
+            button.onclick = () => {
+                if (input.value === "") return;
+                if (font.value === "") return;
+                if (size.value === "") return;
+                textShape.content = input.value;
+                textShape.font = font.value;
+                textShape.fontSize = parseInt(size.value);
+                textShape.updateSize();
+                closeDocContextMenu();
+            }
+        }else if(this.node !== null){
+            button.innerText = "Create";
+            button.onclick = () => {
+                if (input.value === "") return;
+                if (font.value === "") return;
+                if (size.value === "") return;
+                let shape = new TextShape("Text", this.pointerPos, font.value, parseInt(size.value));
+                shape.content = input.value;
+                if (this.node === null) throw new Error("Node is null");
+                this.node.addShape(shape);
+                closeDocContextMenu();
+            }
         }
+
         frame.appendChild(button);
         return frame;
     }
@@ -62,35 +76,11 @@ export class TextTool extends ShapePaintTool {
     async onDown(e: PaintToolEvent<ShapeLayerNode>) {
         await super.onDown(e);
         if (!(this.selectedShape)) {
-            console.log("Creating new text shape");
-            let shape = new TextShape("Text", e.pos, "Climate Crisis", 20);
-            shape.position = e.pos;
-            e.node.addShape(shape);
+            this.node = e.node;
+            this.pointerPos = e.pos;
             return;
         }
         if (!(this.selectedShape instanceof TextShape)) return;
-        // this.internalTextShape = this.selectedShape;
-
-    }
-
-
-    async onMove(e: PaintToolEvent<ShapeLayerNode>) {
-        await super.onMove(e);
-    }
-
-    async onUp(e: PaintToolEvent<ShapeLayerNode>) {
-        await super.onUp(e);
-        // e.ui.ctx.clearRect(0, 0, e.ui.canvas.width, e.ui.canvas.height);
-        // this.downPos = null;
-        // this.selectedShape = null;
-    }
-
-    isCompatibleWithShape(shape: Shape): boolean {
-        return shape instanceof TextShape;
-    }
-
-    shapeCompatible(shape: Shape): boolean {
-        return false;
     }
 
     async renderCanvasUI(e: PaintToolUIRenderEvent): Promise<void> {
@@ -106,7 +96,6 @@ export class TextTool extends ShapePaintTool {
         ctx.strokeStyle = currentTheme.hover;
         // console.log(shape.position, shape.width, shape.height);
         ctx.strokeRect(shape.position[0], shape.position[1] - shape.height, shape.width, shape.height);
-        // console.log("drawing");
     }
 
     drawSelectedShapeUI(e: PaintToolUIRenderEvent, shape: Shape) {
@@ -118,9 +107,14 @@ export class TextTool extends ShapePaintTool {
         ctx.strokeRect(shape.position[0], shape.position[1] - shape.height, shape.width, shape.height);
     }
 
+    async onMove(e: PaintToolEvent<ShapeLayerNode>): Promise<void> {
+        await super.onMove(e);
+        this.pointerPos = e.pos;
+        this.node = e.node;
+    }
+
     shapeInRange(shape: Shape, pos: Vec2): boolean {
         if (!(shape instanceof TextShape)) return false;
-
         const shapePos = shape.position;
         const shapeWidth = shape.width;
         const shapeHeight = shape.height;
@@ -132,5 +126,10 @@ export class TextTool extends ShapePaintTool {
         const maxX = shapePos[0] + shapeWidth;
 
         return pos[0] >= minX && pos[0] <= maxX && pos[1] >= minY && pos[1] <= maxY;
+    }
+
+    async onSelect(e: { node: ShapeLayerNode }): Promise<void> {
+        // return super.onSelect(e);
+        this.node = e.node;
     }
 }

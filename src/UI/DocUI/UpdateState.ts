@@ -20,6 +20,7 @@ export function updateState(state: DocUIState) {
     state.tool.availableTools = newAvailableTools;
     if (!newAvailableTools.includes(state.tool.currentTool)) {
         state.tool.currentTool = newAvailableTools[0];
+        state.tool.currentTool.onSelect({node: state.doc.doc.activeNode});
     }
     return state;
 }

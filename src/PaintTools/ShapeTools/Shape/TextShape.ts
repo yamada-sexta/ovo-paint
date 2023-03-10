@@ -1,27 +1,34 @@
 import {Shape} from "../../../core/src/Documents/DocNodes/Layers/ShapeLayer/Shape";
 import {Vec2} from "../../../core/src/submodules/common-ts-utils/Math/Vector";
 
-export class TextShape extends Shape {
-    _content: string;
-    position: Vec2;
-
-    _knowSize: boolean = false;
-
-    _font: string;
+type TextState = {
+    content: string;
+    font: string;
     fontSize: number;
+    position: Vec2;
+}
+
+export class TextShape extends Shape<TextState> {
 
     width: number;
     height: number;
+    _state: TextState;
 
-    order: "v" | "h" = "h";
+    getState(): TextState {
+        return this._state
+    }
+    applyState(state: TextState): void {
+        this._state = state;
+        this.updateSize();
+    }
 
     set content(value: string) {
-        this._content = value;
+        this._state.content = value;
         this.updateSize();
     }
 
     get content(): string {
-        return this._content;
+        return this._state.content;
     }
 
     updateSize() {
@@ -36,6 +43,14 @@ export class TextShape extends Shape {
         let height = metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent;
         let width = metrics.width;
         return [width, height];
+    }
+
+    get fontSize(): number {
+        return this._state.fontSize;
+    }
+    set fontSize(value: number) {
+        this._state.fontSize = value;
+        this.updateSize();
     }
 
     getFont(font: string) {
@@ -60,40 +75,34 @@ export class TextShape extends Shape {
         }).catch((e) => {
             console.log(e);
         });
-
         this.updateSize();
     }
 
     get font(): string {
-        return this._font;
+        return this._state.font;
     }
 
     set font(value: string) {
-        this._font = value;
+        this._state.font = value;
         this.getFont(value);
     }
 
     constructor(content: string, position: Vec2, font: string, size: number) {
         super();
-        this._content = content;
-        this.position = position;
-        this._font = font;
-        this.fontSize = size;
-        this.getFont(font);
-
+        const state: TextState = {
+            content: content,
+            font: font,
+            fontSize: size,
+            position: position
+        };
+        this._state = state;
         [this.width, this.height] = this.getSize();
     }
 
     renderTo(e: OffscreenCanvasRenderingContext2D): void {
         e.fillStyle = "black";
         e.font = `${this.fontSize}px ${this.font}`;
-        if (this.order === "h") {
-            this.drawText(this.content, e);
-        } else {
-            let tmpText = this.content.split("").join("\n");
-            // console.log(tmpText)
-            this.drawText(tmpText, e);
-        }
+        this.drawText(this.content, e);
     }
 
     drawText(content: string, e: OffscreenCanvasRenderingContext2D): void {
@@ -105,29 +114,10 @@ export class TextShape extends Shape {
         }
     }
 
-    // inRange(pos: Vec2): boolean {
-    //     let minX = this.position[0];
-    //     let minY = this.position[1] - this.height;
-    //     let maxX = this.position[0] + this.width;
-    //     let maxY = this.position[1];
-    //     return pos[0] >= minX && pos[0] <= maxX && pos[1] >= minY && pos[1] <= maxY;
-    // }
-
-    // renderUI(e: OffscreenCanvasRenderingContext2D | CanvasRenderingContext2D): void {
-    //     if  (!this._knowSize){
-    //         [this.width, this.height] = this.getSize();
-    //         this._knowSize = true;
-    //     }
-    //
-    //     e.fillStyle = "black";
-    //     e.strokeStyle = "black";
-    //     let minX = this.position[0];
-    //     let minY = this.position[1] - this.height;
-    //     let maxX = this.position[0] + this.width;
-    //     let maxY = this.position[1];
-    //     e.clearRect(0, 0, e.canvas.width, e.canvas.height);
-    //     e.strokeRect(minX, minY, maxX - minX, maxY - minY)
-    //
-    //     // console.log("Render UI")
-    // }
+    get position(): Vec2 {
+        return this._state.position;
+    }
+    set position(value: Vec2) {
+        this._state.position = value;
+    }
 }

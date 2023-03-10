@@ -87,4 +87,11 @@ export abstract class PaintTool<NodeType extends DocNode = DocNode> {
     async onKeyPress(e: IShortcut): Promise<void> {
 
     }
+
+    /**
+     * When the tool is selected
+     */
+    onSelect(e: { node: NodeType }): void {
+
+    }
 }

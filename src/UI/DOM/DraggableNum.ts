@@ -27,7 +27,6 @@ export function draggableNum(prop?: DraggableNumOptions) {
     const frame = text("");
     let value = options.value || 0;
 
-
     const dragText = text("");
     const textInput = input({
         type: "number",

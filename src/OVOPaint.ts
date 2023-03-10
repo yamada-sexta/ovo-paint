@@ -1,12 +1,8 @@
 import {OVOUIManager} from "./UI/OVOUIManager";
 import {OVODocument} from "./core/src/Documents/OVODocument";
-import {BitmapLayerNode} from "./core/src/Documents/DocNodes/Layers/BitmapLayerNode";
-import {GroupNode} from "./core/src/Documents/DocNodes/GroupNode";
-import {Serializer} from "./core/src/submodules/common-ts-utils/Serializer";
 
 export class OVOPaint {
     manager: OVOUIManager;
-
     /**
      * Creates a new instance of OVOPaint.
      * @param root The root element of the OVO Paint UI.

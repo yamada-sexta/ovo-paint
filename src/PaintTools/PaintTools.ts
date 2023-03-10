@@ -1,9 +1,9 @@
 import {PaintTool} from "./PaintTool";
 import {BasicPen} from "./BitmapPaintTools/BasicPen";
 import {TextTool} from "./ShapeTools/TextTool";
-import {BezierCurveTool} from "./ShapeTools/BezierCurveTool";
 import {DebugPen} from "./BitmapPaintTools/DebugPen";
 import {GroupTool} from "./GroupPaintTools/GroupTool";
+import {SimpleShapeTool} from "./ShapeTools/SimpleShapeTool";
 
 export function registerPaintTool(constructor: Function) {
     if (constructor.prototype instanceof PaintTool) {
@@ -18,12 +18,11 @@ export function registerPaintTool(constructor: Function) {
             console.groupEnd();
         }
     }
-    // return constructor;
 }
 export const paintTools: PaintTool[] = [
     new BasicPen(),
     new TextTool(),
-    new BezierCurveTool(),
     new DebugPen(),
     new GroupTool(),
+    new SimpleShapeTool(),
 ];
