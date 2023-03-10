@@ -3,13 +3,11 @@ import {PaintToolEvent} from "../../core/src/PaintToolEvent";
 import {ShapeLayerNode} from "../../core/src/Documents/DocNodes/Layers/ShapeLayer/ShapeLayerNode";
 import {TextShape} from "./Shape/TextShape";
 import {br, div} from "../../UI/DOM/DOMFunctions";
-import {registerPaintTool} from "../PaintTools";
 import {Shape} from "../../core/src/Documents/DocNodes/Layers/ShapeLayer/Shape";
 import {Vec2} from "../../core/src/submodules/common-ts-utils/Math/Vector";
 import {PaintToolUIRenderEvent} from "../PaintTool";
 import {currentTheme} from "../../UI/Themes";
 import {closeDocContextMenu} from "../../UI/DocUI/DocContextMenu/MasterDocContextMenu";
-import {openToolMenu} from "../../UI/DocUI/DocContextMenu/ToolMenu";
 
 export class TextTool extends ShapePaintTool {
     pointerPos: Vec2 = [0, 0];
@@ -83,8 +81,7 @@ export class TextTool extends ShapePaintTool {
         if (!(this.selectedShape instanceof TextShape)) return;
     }
 
-    async renderCanvasUI(e: PaintToolUIRenderEvent): Promise<void> {
-        await super.renderCanvasUI(e);
+    drawSelfUI(e: PaintToolUIRenderEvent) {
         if (e.dom) {
             e.dom.style.cursor = "text";
         }

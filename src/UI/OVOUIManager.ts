@@ -54,10 +54,9 @@ export class OVOUIManager {
         this.frame.style.height = "100%";
         this.frame.style.visibility = "visible";
         this.root.appendChild(this.frame);
-        this.root
-        .addEventListener("keydown", (e) => {
-            console.log(e)
-        });
+        // this.root.addEventListener("keydown", (e) => {
+        //     console.log(e)
+        // });
         this._currUI = {
             getUI: (manager: OVOUIManager) => {
                 return div({
