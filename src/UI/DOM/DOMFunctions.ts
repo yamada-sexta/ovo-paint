@@ -134,6 +134,40 @@ export function option(
     return option;
 }
 
+export function colorPicker(
+    props: {
+        value?: string,
+        onchange?: (e: Event) => void
+
+    }) {
+    let input = document.createElement("input");
+    input.classList.add(baseClass);
+    input.style.color = currentTheme.text;
+    input.style.backgroundColor = currentTheme.background;
+    input.style.borderColor = currentTheme.border;
+    input.style.borderStyle = "solid";
+    input.style.borderWidth = "1px";
+    input.style.outline = "none";
+    input.onclick = (e) => {
+        input.style.borderColor = currentTheme.selected;
+    }
+    input.onblur = (e) => {
+        input.style.borderColor = currentTheme.border;
+    }
+
+    input.type = "color";
+    if (props.value){
+        input.value = props.value;
+    }
+
+        input.addEventListener("change", (e) => {
+            if (props.onchange) {
+                props.onchange(e);
+            }
+        })
+    return input;
+}
+
 export function text(
     text: string
 ) {
@@ -145,6 +179,7 @@ export function text(
     textElement.innerText = text;
     return textElement;
 }
+
 export function mdIcon(
     iconName: string, size: number = 24
 ) {

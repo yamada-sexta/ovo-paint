@@ -1,7 +1,7 @@
 import {ContextMenu} from "./ContextMenu";
 import {DocUIState} from "../DocUIState";
-import {br, button, div} from "../../DOM/DOMFunctions";
-import {refreshDocContextMenu} from "./MasterDocContextMenu";
+import {br, button, div, input, label, text} from "../../DOM/DOMFunctions";
+import {refreshDocContextMenu, statelessRefreshDocContextMenu} from "./MasterDocContextMenu";
 
 let toolMenu: ContextMenu | null = null;
 
@@ -10,16 +10,21 @@ function getToolMenu(state: DocUIState) {
 
     frame.append("Tool Menu")
     frame.append(br())
-    for (let tool of state.tool.availableTools) {
-        frame.append(button({
-            text: tool.constructor.name,
-            onclick: () => {
-                state.tool.currentTool = tool;
-                refreshDocContextMenu(state);
-                // closeToolMenu();
-            }
-        }));
+    const toolsDiv = div();
+    for (const tool of state.tool.availableTools) {
+        const radioInput = input({type: "radio", value: tool.name});
+        radioInput.checked = state.tool.currentTool === tool;
+        const radioLabel = text(tool.name);
+        radioInput.addEventListener("change", () => {
+            state.tool.currentTool = tool;
+            statelessRefreshDocContextMenu();
+        })
+        radioLabel.htmlFor = tool.name;
+        toolsDiv.append(radioInput);
+        toolsDiv.append(radioLabel);
+        toolsDiv.append(br())
     }
+    frame.append(toolsDiv);
     const tool = state.tool.currentTool;
     if (tool) {
         frame.append(tool.getMenu());

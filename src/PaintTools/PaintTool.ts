@@ -27,6 +27,10 @@ export abstract class PaintTool<NodeType extends DocNode = DocNode> {
         return item;
     }
 
+    get name(): string {
+        return this.constructor.name;
+    }
+
     /**
      * Returns true if the tool is compatible with the given node
      * @param node

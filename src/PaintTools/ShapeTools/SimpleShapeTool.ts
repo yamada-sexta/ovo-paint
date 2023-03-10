@@ -4,7 +4,7 @@ import {Shape} from "../../core/src/Documents/DocNodes/Layers/ShapeLayer/Shape";
 import {SimpleShape, SimpleShapeType} from "./Shape/SimpleShape";
 import {PaintToolEvent} from "../../core/src/PaintToolEvent";
 import {ShapeLayerNode} from "../../core/src/Documents/DocNodes/Layers/ShapeLayer/ShapeLayerNode";
-import {div, text} from "../../UI/DOM/DOMFunctions";
+import {br, colorPicker, div, text} from "../../UI/DOM/DOMFunctions";
 import {PaintToolUIRenderEvent} from "../PaintTool";
 import {currentTheme} from "../../UI/Themes";
 import {draggableNum} from "../../UI/DOM/DraggableNum";
@@ -25,7 +25,7 @@ export class SimpleShapeTool extends ShapePaintTool {
 
     shapeType: SimpleShapeType = "rectangle";
     lineWidth: number = 1;
-    fillStyle: string = "transparent";
+    fillStyle: string = "#fff";
     strokeStyle: string = "#000";
 
     async onDown(e: PaintToolEvent<ShapeLayerNode>): Promise<void> {
@@ -34,7 +34,7 @@ export class SimpleShapeTool extends ShapePaintTool {
             return;
         }
         this.startPos = e.pos;
-        this.newShape = new SimpleShape(e.pos, [0, 0], this.shapeType);
+        this.newShape = new SimpleShape(e.pos, [0, 0], this.shapeType,  this.fillStyle, this.strokeStyle, this.lineWidth);
         e.node.shapes.push(this.newShape);
     }
 
@@ -70,6 +70,7 @@ export class SimpleShapeTool extends ShapePaintTool {
         const shapeTypeLabel = text("Shape Type: ");
         shapeTypeLabel.append(shapeTypeSelect)
         menu.appendChild(shapeTypeLabel);
+        menu.append(br());
 
         const lineWithInput = draggableNum({
             onchange: (val) => {
@@ -81,7 +82,29 @@ export class SimpleShapeTool extends ShapePaintTool {
         const lineWidthLabel = text("Line Width: ");
         lineWidthLabel.append(lineWithInput);
         menu.appendChild(lineWidthLabel);
+        menu.append(br());
 
+        const fillStyleInput = colorPicker({
+            onchange: (e) => {
+                this.fillStyle = fillStyleInput.value;
+            }
+        })
+        fillStyleInput.value = this.fillStyle;
+        const fillStyleLabel = text("Fill Style: ");
+        fillStyleLabel.append(fillStyleInput);
+        menu.appendChild(fillStyleLabel);
+        menu.append(br());
+
+        const strokeStyleInput = colorPicker({
+            onchange: (e) => {
+                this.strokeStyle = strokeStyleInput.value;
+            }
+        })
+        strokeStyleInput.value = this.strokeStyle;
+        const strokeStyleLabel = text("Stroke Style: ");
+        strokeStyleLabel.append(strokeStyleInput);
+        menu.appendChild(strokeStyleLabel);
+        menu.append(br());
 
         return menu;
     }

@@ -25,13 +25,13 @@ export function closeDocContextMenu() {
     openState = null;
 }
 
-export function refreshDocContextMenu(state: DocUIState) {
+export function refreshDocContextMenu(state: DocUIState, openPos: [number, number] | null = null) {
     closeDocContextMenu();
     openDocContextMenu(state, openPos);
 }
 
 export function statelessRefreshDocContextMenu() {
     if (openState) {
-        refreshDocContextMenu(openState);
+        refreshDocContextMenu(openState, openPos);
     }
 }
