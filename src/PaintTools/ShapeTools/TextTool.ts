@@ -8,29 +8,38 @@ import {Shape} from "../../core/src/Documents/DocNodes/Layers/ShapeLayer/Shape";
 import {Vec2} from "../../core/src/submodules/common-ts-utils/Math/Vector";
 import {PaintToolUIRenderEvent} from "../PaintTool";
 import {currentTheme} from "../../UI/Themes";
+import {closeDocContextMenu} from "../../UI/DocUI/DocContextMenu/MasterDocContextMenu";
 
 // @registerPaintTool
 export class TextTool extends ShapePaintTool {
-    private downRelaPos: Vec2 | null = null;
+    // private downRelaPos: Vec2 | null = null;
 
     // private selectedShape: TextShape | null = null;
 
+    // internalTextShape: TextShape = new TextShape("Hello World", [0,0],"Arial", 20);
+
     getMenu(): HTMLElement {
-        // if (!this.selectedShape) return div();
+        if (!this.selectedShape) return div();
+
+        const textShape = this.selectedShape as TextShape;
+
         let frame = div();
         let input = document.createElement("input");
         input.type = "text";
         input.placeholder = "Text";
+        input.value = textShape.content;
         frame.appendChild(input);
         frame.append(br());
         let font = document.createElement("input");
         font.type = "text";
         font.placeholder = "Font";
+        font.value = textShape.font;
         frame.appendChild(font);
         frame.append(br());
         let size = document.createElement("input");
         size.type = "number";
         size.placeholder = "Size";
+        size.value = textShape.fontSize.toString();
         frame.appendChild(size);
         frame.append(br());
         let button = document.createElement("button");
@@ -39,9 +48,12 @@ export class TextTool extends ShapePaintTool {
             if (input.value === "") return;
             if (font.value === "") return;
             if (size.value === "") return;
-            // this.selectedShape!.content = input.value;
-            // this.selectedShape!.font = font.value;
-            // this.selectedShape!.fontSize = parseInt(size.value);
+            textShape.content = input.value;
+            textShape.font = font.value;
+            textShape.fontSize = parseInt(size.value);
+            textShape.updateSize();
+            this.selectedShape = null;
+            closeDocContextMenu();
         }
         frame.appendChild(button);
         return frame;
@@ -49,82 +61,28 @@ export class TextTool extends ShapePaintTool {
 
     async onDown(e: PaintToolEvent<ShapeLayerNode>) {
         await super.onDown(e);
-
         if (!(this.selectedShape)) {
             console.log("Creating new text shape");
-            let shape = new TextShape("Text", e.pos, "Source Han JP", 20);
+            let shape = new TextShape("Text", e.pos, "Climate Crisis", 20);
             shape.position = e.pos;
             e.node.addShape(shape);
+            return;
         }
+        if (!(this.selectedShape instanceof TextShape)) return;
+        // this.internalTextShape = this.selectedShape;
 
-        // if (!(e.doc.activeNode instanceof ShapeLayerNode)) {
-        //     return;
-        // }
-        // const node = e.node;
-        //
-        // const pos = e.pos;
-        // let shape = this.getShape(e);
-        // if (shape !== null) {
-        //     if (!(shape instanceof TextShape)) return;
-        //     // if (e.button === 1) {
-        //     //     e.node.removeShape(shape);
-        //     //     return;
-        //     // }
-        //     // if (e.button === 0) {
-        //     //     shape.renderUI(e.ui.ctx);
-        //     //     this.selectedShape = shape;
-        //     //     this.downRelaPos = [pos[0] - shape.position[0], pos[1] - shape.position[1]];
-        //     // }
-        //     // if (e.button === 2) {
-        //     //     const text = prompt("Text", shape.content);
-        //     //     if (text === null) return;
-        //     //     const font = prompt("Font", shape.font);
-        //     //     if (font === null) return;
-        //     //     const size = prompt("Size", shape.fontSize.toString());
-        //     //     if (size === null) return;
-        //     //     shape.font = font;
-        //     //     shape.fontSize = parseInt(size);
-        //     //
-        //     //     shape.content = text;
-        //     // }
-        // } else {
-        //     const text = prompt("Text", "Your Text Here");
-        //     if (text === null) return;
-        //     const font = prompt("Font", "Arial");
-        //     if (font === null) return;
-        //     const size = prompt("Size", "20");
-        //     if (size === null) return;
-        //     const textNode = new TextShape(text, pos, font, parseInt(size));
-        //     node.addShape(textNode);
-        // }
     }
 
 
     async onMove(e: PaintToolEvent<ShapeLayerNode>) {
         await super.onMove(e);
-        // if (!(e.node instanceof ShapeLayerNode)) {
-        //     return;
-        // }
-
-        // if (this.selectedShape !== null) {
-        //     // this.selectedShape.renderUI(e.ui.ctx);
-        //     const pos = e.pos;
-        //     // this.selectedShape.position = [pos[0] - this.downRelaPos![0], pos[1] - this.downRelaPos![1]];
-        // } else {
-        //     e.ui.ctx.clearRect(0, 0, e.ui.canvas.width, e.ui.canvas.height);
-        //     const currShape = this.getShape(e);
-        //     if (currShape !== null) {
-        //         if (!(currShape instanceof TextShape)) return;
-        //         currShape.renderUI(e.ui.ctx);
-        //     }
-        // }
     }
 
     async onUp(e: PaintToolEvent<ShapeLayerNode>) {
         await super.onUp(e);
         // e.ui.ctx.clearRect(0, 0, e.ui.canvas.width, e.ui.canvas.height);
         // this.downPos = null;
-        this.selectedShape = null;
+        // this.selectedShape = null;
     }
 
     isCompatibleWithShape(shape: Shape): boolean {
@@ -162,9 +120,11 @@ export class TextTool extends ShapePaintTool {
 
     shapeInRange(shape: Shape, pos: Vec2): boolean {
         if (!(shape instanceof TextShape)) return false;
+
         const shapePos = shape.position;
         const shapeWidth = shape.width;
         const shapeHeight = shape.height;
+
         const minY = shapePos[1] - shapeHeight;
         const maxY = shapePos[1];
 

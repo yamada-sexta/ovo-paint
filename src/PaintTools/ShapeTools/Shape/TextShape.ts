@@ -5,9 +5,9 @@ export class TextShape extends Shape {
     _content: string;
     position: Vec2;
 
-    _knowSize:boolean = false;
+    _knowSize: boolean = false;
 
-    font: string;
+    _font: string;
     fontSize: number;
 
     width: number;
@@ -17,12 +17,15 @@ export class TextShape extends Shape {
 
     set content(value: string) {
         this._content = value;
-        [this.width, this.height] = this.getSize();
+        this.updateSize();
     }
-
 
     get content(): string {
         return this._content;
+    }
+
+    updateSize() {
+        [this.width, this.height] = this.getSize();
     }
 
     getSize(): Vec2 {
@@ -35,13 +38,7 @@ export class TextShape extends Shape {
         return [width, height];
     }
 
-    constructor(content: string, position: Vec2, font: string, size: number) {
-        super();
-        this._content = content;
-        this.position = position;
-        this.font = font;
-        this.fontSize = size;
-
+    getFont(font: string) {
         let link = document.createElement("link") as HTMLLinkElement;
         let fontName = font.split(" ").join("+");
 
@@ -50,20 +47,40 @@ export class TextShape extends Shape {
         // let success = false;
 
         fetch(url).then((res) => {
-            if (res.status === 200){
+            if (res.status === 200) {
                 console.log("Font loaded")
                 res.text().then(
                     (text) => {
-                        console.log(text)
-                        let dict = CSS.escape(text);
-                        console.log(dict)
+                        link.href = url;
+                        link.rel = "stylesheet";
+                        document.head.appendChild(link);
                     }
                 )
             }
-        })
-        link.href = url;
-        link.rel = "stylesheet";
-        document.head.appendChild(link);
+        }).catch((e) => {
+            console.log(e);
+        });
+
+        this.updateSize();
+    }
+
+    get font(): string {
+        return this._font;
+    }
+
+    set font(value: string) {
+        this._font = value;
+        this.getFont(value);
+    }
+
+    constructor(content: string, position: Vec2, font: string, size: number) {
+        super();
+        this._content = content;
+        this.position = position;
+        this._font = font;
+        this.fontSize = size;
+        this.getFont(font);
+
         [this.width, this.height] = this.getSize();
     }
 
