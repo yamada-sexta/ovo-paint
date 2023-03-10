@@ -53,6 +53,7 @@ export abstract class ShapePaintTool extends PaintTool<ShapeLayerNode> {
         if (this.hoveredShape) {
             this.drawHoveredShapeUI(e, this.hoveredShape);
         }
+        this.drawSelfUI(e);
     }
 
     drawSelectedShapeUI(e: PaintToolUIRenderEvent, shape: Shape): void {
@@ -63,7 +64,7 @@ export abstract class ShapePaintTool extends PaintTool<ShapeLayerNode> {
         // throw new Error("Method not implemented.");
     }
 
-    drawThisUI(e: PaintToolEvent<ShapeLayerNode>): void {
+    drawSelfUI(e: PaintToolUIRenderEvent): void {
 
     }
 

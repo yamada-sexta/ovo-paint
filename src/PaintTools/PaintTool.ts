@@ -2,6 +2,7 @@ import {PaintToolEvent} from "../core/src/PaintToolEvent";
 import {DocNode} from "../core/src/Documents/DocNodes/DocNode";
 import {DocUIState} from "../UI/DocUI/DocUIState";
 import {IShortcut} from "../Shortcuts/ShortcutsChecker";
+import {OVODocument} from "../core/src/Documents/OVODocument";
 
 export interface PaintToolUIRenderEvent {
     ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D;
@@ -91,7 +92,7 @@ export abstract class PaintTool<NodeType extends DocNode = DocNode> {
     /**
      * When the tool is selected
      */
-    onSelect(e: { node: NodeType }): void {
+    onSelect(e: { node: NodeType, doc:OVODocument }): void {
 
     }
 }

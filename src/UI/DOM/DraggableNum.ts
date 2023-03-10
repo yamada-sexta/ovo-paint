@@ -105,7 +105,13 @@ export function draggableNum(prop?: DraggableNumOptions) {
             return;
         }
 
+
         let diff = e.clientX - lastX;
+
+        if (diff < -400){
+            return;
+        }
+        console.log(diff)
         if (options.step) {
             diff = Math.round(diff / options.step);
         }
@@ -131,11 +137,10 @@ export function draggableNum(prop?: DraggableNumOptions) {
     }
 
     dragText.ondragend = (e) => {
-        e.preventDefault();
+        // e.preventDefault();
         if (options.ondragend) {
             options.ondragend(value);
         }
-
     }
 
     dragText.ondrop = (e) => {
