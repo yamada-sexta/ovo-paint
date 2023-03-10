@@ -1,14 +1,14 @@
 import {input} from "../../DOM/DOMFunctions";
-import {closeContextMenu, openToolContextMenu} from "./DocCanvasContextMenu";
-import {OVOState} from "../DocCanvasState";
+import {DocUIState} from "../DocUIState";
 import {PaintToolEvent} from "../../../core/src/PaintToolEvent";
 import {DocNode} from "../../../core/src/Documents/DocNodes/DocNode";
 import {Vec2} from "../../../core/src/submodules/common-ts-utils/Math/Vector";
+import {closeDocContextMenu} from "../DocContextMenu/MasterDocContextMenu";
 
 // let isDown = false;
 let rightDown = false;
 
-export async function onDown(state: OVOState, e: PointerEvent) {
+export async function onDown(state: DocUIState, e: PointerEvent) {
     state.input.downPos = [e.offsetX, e.offsetY];
     switch (e.button) {
         case 0:
@@ -23,31 +23,35 @@ export async function onDown(state: OVOState, e: PointerEvent) {
     }
 }
 
-async function onRightClick(state: OVOState, e: PointerEvent) {
+async function onRightClick(state: DocUIState, e: PointerEvent) {
     e.preventDefault();
     console.log("right click")
-    openToolContextMenu(state, [e.clientX + 100,
-        e.clientY + 100]);
+    // openToolContextMenu(state, [e.clientX + 100,
+    //     e.clientY + 100]);
+
+    // state.contextMenu.open();
 }
 
-async function onMiddleClick(state: OVOState, e: PointerEvent) {
+async function onMiddleClick(state: DocUIState, e: PointerEvent) {
     e.preventDefault();
 }
 
-async function onLeftClick(state: OVOState, e: PointerEvent) {
+async function onLeftClick(state: DocUIState, e: PointerEvent) {
     e.preventDefault();
-    closeContextMenu();
+    // closeContextMenu();
+
+    closeDocContextMenu();
     await state.tool.currentTool.onDown(createPaintToolEvent(state, e));
 }
 
-function canvasCordToDocCord(state: OVOState, pos: [number, number]): [number, number] {
+function canvasCordToDocCord(state: DocUIState, pos: [number, number]): [number, number] {
     return [
         (pos[0] / state.viewer.scale - state.doc.pos[0]) / state.doc.scale,
         (pos[1] / state.viewer.scale - state.doc.pos[1]) / state.doc.scale
     ]
 }
 
-function createPaintToolEvent(state: OVOState, e: PointerEvent): PaintToolEvent<DocNode> {
+function createPaintToolEvent(state: DocUIState, e: PointerEvent): PaintToolEvent<DocNode> {
     const docPos: Vec2 = canvasCordToDocCord(state, [e.offsetX, e.offsetY]);
     let pressure = e.pressure;
     if (e.pointerType === "mouse") {
@@ -67,7 +71,7 @@ function createPaintToolEvent(state: OVOState, e: PointerEvent): PaintToolEvent<
 }
 
 
-export async function onMove(state: OVOState, e: PointerEvent) {
+export async function onMove(state: DocUIState, e: PointerEvent) {
     state.input.pointerAbsPos = [e.clientX, e.clientY];
     state.input.canvasRawPos = [e.offsetX, e.offsetY];
     state.input.docRelaPos = canvasCordToDocCord(state, [e.offsetX, e.offsetY]);
@@ -78,7 +82,7 @@ export async function onMove(state: OVOState, e: PointerEvent) {
 }
 
 
-export async function onUp(state: OVOState, e: PointerEvent) {
+export async function onUp(state: DocUIState, e: PointerEvent) {
     state.input.downPos = null;
     console.log("up")
     await state.tool.currentTool.onUp(createPaintToolEvent(state, e));

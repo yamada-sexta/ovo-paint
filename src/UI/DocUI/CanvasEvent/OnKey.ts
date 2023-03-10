@@ -1,8 +1,7 @@
-import {OVOState} from "../DocCanvasState";
+import {DocUIState} from "../DocUIState";
 import {BitmapLayerNode} from "../../../core/src/Documents/DocNodes/Layers/BitmapLayerNode";
 
-export function onKeyDown(state: OVOState, e: KeyboardEvent) {
-
+export function onKeyDown(state: DocUIState, e: KeyboardEvent) {
     if (e.key === "Control") {
         state.input.ctrlDown = true;
     }
@@ -20,7 +19,7 @@ export function onKeyDown(state: OVOState, e: KeyboardEvent) {
     }
 }
 
-export function onKeyUp(state: OVOState, e: KeyboardEvent) {
+export function onKeyUp(state: DocUIState, e: KeyboardEvent) {
 
     if (e.key === "Control") {
         state.input.ctrlDown = false;

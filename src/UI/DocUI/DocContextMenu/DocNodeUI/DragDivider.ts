@@ -1,6 +1,6 @@
-import {GroupNode} from "../../../core/src/Documents/DocNodes/GroupNode";
-import {div} from "../../DOM/DOMFunctions";
-import {currentTheme} from "../../Themes";
+import {GroupNode} from "../../../../core/src/Documents/DocNodes/GroupNode";
+import {div} from "../../../DOM/DOMFunctions";
+import {currentTheme} from "../../../Themes";
 import {DragState} from "./DragState";
 import {findParentNode} from "./PathFinding";
 

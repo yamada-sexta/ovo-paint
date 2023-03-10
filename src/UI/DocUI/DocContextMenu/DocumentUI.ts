@@ -1,6 +1,7 @@
 import {br, div, input, label, text} from "../../DOM/DOMFunctions";
 import {OVODocument} from "../../../core/src/Documents/OVODocument";
-import {nodeTreeUI} from "../DocNodeUI/NodeTreeUI";
+import {nodeTreeUI} from "./DocNodeUI/NodeTreeUI";
+import {DocUIState} from "../DocUIState";
 
 function docBackgroundDropdown(doc: OVODocument) {
     const docBackgroundOptions = [
@@ -37,12 +38,13 @@ function docBackgroundDropdown(doc: OVODocument) {
 }
 
 
-export function documentUI(doc: OVODocument) {
+export function documentUI(state:DocUIState) {
+    const doc = state.doc.doc;
     return div(
         {
             children: [
-                text("Current Document:"),
-                br(),
+                // text("Current Document:"),
+                // br(),
                 input({
                     type: "text",
                     value: doc.name,
@@ -55,7 +57,7 @@ export function documentUI(doc: OVODocument) {
                 label({text: "Background: "}),
                 docBackgroundDropdown(doc),
                 br(),
-                nodeTreeUI(doc)
+                nodeTreeUI(state)
             ]
         }
     )

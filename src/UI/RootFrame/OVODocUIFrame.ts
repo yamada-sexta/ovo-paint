@@ -1,6 +1,6 @@
 import {IOVORootUI} from "./IOVORootUI";
 import {OVOUIManager} from "../OVOUIManager";
-import {DocCanvasManager} from "../DocUI/DocCanvasManager";
+import {manageCanvas} from "../DocUI/ManageCanvas";
 
 export class OVODocUIFrame implements IOVORootUI {
     canvas: HTMLCanvasElement;
@@ -22,6 +22,6 @@ export class OVODocUIFrame implements IOVORootUI {
         if (manager.currentDocument === null) {
             throw new Error("Cannot show document UI with no current document");
         }
-        DocCanvasManager(this.canvas, manager.currentDocument);
+        manageCanvas(this.canvas, manager.currentDocument);
     }
 }

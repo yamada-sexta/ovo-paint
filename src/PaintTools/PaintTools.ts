@@ -3,6 +3,7 @@ import {BasicPen} from "./BitmapPaintTools/BasicPen";
 import {TextTool} from "./ShapeTools/TextTool";
 import {BezierCurveTool} from "./ShapeTools/BezierCurveTool";
 import {DebugPen} from "./BitmapPaintTools/DebugPen";
+import {GroupTool} from "./GroupPaintTools/GroupTool";
 
 export function registerPaintTool(constructor: Function) {
     if (constructor.prototype instanceof PaintTool) {
@@ -23,5 +24,6 @@ export const paintTools: PaintTool[] = [
     new BasicPen(),
     new TextTool(),
     new BezierCurveTool(),
-    new DebugPen()
+    new DebugPen(),
+    new GroupTool(),
 ];

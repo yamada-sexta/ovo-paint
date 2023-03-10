@@ -1,8 +1,9 @@
-import {PaintTool} from "../PaintTool";
+import {PaintTool, PaintToolUIRenderEvent} from "../PaintTool";
 import {ShapeLayerNode} from "../../core/src/Documents/DocNodes/Layers/ShapeLayer/ShapeLayerNode";
 import {DocNode} from "../../core/src/Documents/DocNodes/DocNode";
 import {Shape} from "../../core/src/Documents/DocNodes/Layers/ShapeLayer/Shape";
 import {PaintToolEvent} from "../../core/src/PaintToolEvent";
+import {Vec2} from "../../core/src/submodules/common-ts-utils/Math/Vector";
 
 export abstract class ShapePaintTool extends PaintTool<ShapeLayerNode> {
     selectedShape: Shape | null = null;
@@ -19,17 +20,20 @@ export abstract class ShapePaintTool extends PaintTool<ShapeLayerNode> {
      */
     abstract shapeInRange(shape: Shape, pos: Vec2): boolean;
 
+
+    async onDown(e: PaintToolEvent<ShapeLayerNode>): Promise<void> {
+        await super.onDown(e);
+        this.selectedShape = this.getShape(e);
+    }
+
     async onMove(e: PaintToolEvent<ShapeLayerNode>): Promise<void> {
         await super.onMove(e);
         this.hoveredShape = this.getShape(e);
-        if (this.hoveredShape) {
-            this.drawHoveredShapeUI(e, this.hoveredShape);
-        }
     }
 
     async onUp(e: PaintToolEvent<ShapeLayerNode>): Promise<void> {
         await super.onUp(e);
-        this.selectedShape = null;
+        // this.selectedShape = null;
     }
 
     getShape(e: PaintToolEvent<ShapeLayerNode>): Shape | null {
@@ -41,20 +45,22 @@ export abstract class ShapePaintTool extends PaintTool<ShapeLayerNode> {
         return null;
     }
 
-    async onDown(e: PaintToolEvent<ShapeLayerNode>): Promise<void> {
-        await super.onDown(e);
-        this.selectedShape = this.getShape(e);
+    async renderCanvasUI(e: PaintToolUIRenderEvent): Promise<void> {
+        await super.renderCanvasUI(e);
         if (this.selectedShape) {
             this.drawSelectedShapeUI(e, this.selectedShape);
         }
+        if (this.hoveredShape) {
+            this.drawHoveredShapeUI(e, this.hoveredShape);
+        }
     }
 
-    drawSelectedShapeUI(e: PaintToolEvent<ShapeLayerNode>, shape: Shape): void {
-
+    drawSelectedShapeUI(e: PaintToolUIRenderEvent, shape: Shape): void {
+        // throw new Error("Method not implemented.");
     }
 
-    drawHoveredShapeUI(e: PaintToolEvent<ShapeLayerNode>, shape: Shape): void {
-
+    drawHoveredShapeUI(e: PaintToolUIRenderEvent, shape: Shape): void {
+        // throw new Error("Method not implemented.");
     }
 
     drawThisUI(e: PaintToolEvent<ShapeLayerNode>): void {

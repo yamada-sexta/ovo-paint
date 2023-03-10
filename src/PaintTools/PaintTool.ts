@@ -1,12 +1,12 @@
 import {PaintToolEvent} from "../core/src/PaintToolEvent";
 import {DocNode} from "../core/src/Documents/DocNodes/DocNode";
-import {OVOState} from "../UI/DocUI/DocCanvasState";
+import {DocUIState} from "../UI/DocUI/DocUIState";
 import {IShortcut} from "../Shortcuts/ShortcutsChecker";
 
 export interface PaintToolUIRenderEvent {
     ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D;
     canvas: HTMLCanvasElement | OffscreenCanvas;
-    state: OVOState;
+    state: DocUIState;
     dom: HTMLElement | null;
     inDocRange: boolean;
 }

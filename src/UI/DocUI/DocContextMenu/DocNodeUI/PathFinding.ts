@@ -1,5 +1,5 @@
-import {DocNode} from "../../../core/src/Documents/DocNodes/DocNode";
-import {GroupNode} from "../../../core/src/Documents/DocNodes/GroupNode";
+import {DocNode} from "../../../../core/src/Documents/DocNodes/DocNode";
+import {GroupNode} from "../../../../core/src/Documents/DocNodes/GroupNode";
 
 export function findParentNode(node: DocNode, root: GroupNode): GroupNode | null {
     for (let child of root.children) {

@@ -1,6 +1,6 @@
-import {OVOState} from "../DocCanvasState";
+import {DocUIState} from "../DocUIState";
 
-export async function onWheel(state: OVOState, e: WheelEvent) {
+export async function onWheel(state: DocUIState, e: WheelEvent) {
     e.preventDefault();
     if (state.doc.scale < state.doc.scaleMin && e.deltaY > 0) {
         return;
@@ -8,9 +8,7 @@ export async function onWheel(state: OVOState, e: WheelEvent) {
     if (state.doc.scale > state.doc.scaleMax && e.deltaY < 0) {
         return;
     }
-
     let scaleCenter = [e.offsetX / state.viewer.scale, e.offsetY / state.viewer.scale];
-
     let scale = 1 - e.deltaY / 1000;
     state.doc.scale *= scale;
     state.doc.pos[0] -= (scaleCenter[0] - state.doc.pos[0]) * (scale - 1);

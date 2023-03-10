@@ -1,9 +1,9 @@
 import {OVODocument} from "../../../core/src/Documents/OVODocument";
-import {OVOState} from "../DocCanvasState";
+import {DocUIState} from "../DocUIState";
 
 
 async function drawDoc(
-    state: OVOState,
+    state: DocUIState,
     ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D,
     canvas: HTMLCanvasElement | OffscreenCanvas,
     doc: OVODocument) {
@@ -62,7 +62,7 @@ async function drawDoc(
     }
 }
 
-function drawPixelGrid(state: OVOState, ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D, canvas: HTMLCanvasElement | OffscreenCanvas) {
+function drawPixelGrid(state: DocUIState, ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D, canvas: HTMLCanvasElement | OffscreenCanvas) {
     ctx.strokeStyle = "rgb(136,136,136)";
     ctx.lineWidth = 0.3;
 
@@ -96,7 +96,7 @@ function drawPixelGrid(state: OVOState, ctx: CanvasRenderingContext2D | Offscree
     }
 }
 
-function drawCanvasBackground(state: OVOState,
+function drawCanvasBackground(state: DocUIState,
                               ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D,
                               canvas: HTMLCanvasElement | OffscreenCanvas) {
     // Initialize the canvas
@@ -110,7 +110,7 @@ function drawCanvasBackground(state: OVOState,
 
 
 export async function update(
-    state: OVOState,
+    state: DocUIState,
     ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D,
     canvas: HTMLCanvasElement | OffscreenCanvas,
     doc: OVODocument) {

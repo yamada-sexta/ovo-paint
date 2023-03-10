@@ -1,30 +1,28 @@
 import {OVODocument} from "../../core/src/Documents/OVODocument";
 import {onWheel} from "./CanvasEvent/DocCanvasEvent";
 import {onDown, onMove, onUp} from "./CanvasEvent/OnPointer";
-import {onDocCanvasMenu} from "./CanvasEvent/DocCanvasContextMenu";
-import {getCheckBoard} from "../../core/src/Documents/BackgroundFills";
 import {update} from "./CanvasEvent/ViewerRender";
-import {createState, OVOState} from "./DocCanvasState";
-import {TextTool} from "../../PaintTools/ShapeTools/TextTool";
-import {ShapeLayerNode} from "../../core/src/Documents/DocNodes/Layers/ShapeLayer/ShapeLayerNode";
-import {BitmapLayerNode} from "../../core/src/Documents/DocNodes/Layers/BitmapLayerNode";
+import {createDocUIState, DocUIState} from "./DocUIState";
 import {BasicPen} from "../../PaintTools/BitmapPaintTools/BasicPen";
 import {printDocNodeTree} from "../../core/src/Debug";
-import {DebugPen} from "../../PaintTools/BitmapPaintTools/DebugPen";
 import {onKeyDown, onKeyUp} from "./CanvasEvent/OnKey";
-import {paperImage} from "../../Assets/Images/PaperImage";
+import {onContextMenu} from "./CanvasEvent/OnContextMenu";
 
-//
-
-
-export function DocCanvasManager(canvas: HTMLCanvasElement, doc: OVODocument) {
+export function manageCanvas(canvas: HTMLCanvasElement, doc: OVODocument) {
     const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
     if (!ctx) {
         throw new Error("Could not get 2D context from canvas");
     }
+    const state = createDocUIState(canvas, ctx, doc, new BasicPen())
+    setupCanvasStyle(state, canvas, ctx);
+    setupCanvasEvents(state, canvas, ctx);
+}
+
+function setupCanvasStyle(state: DocUIState, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
+    const doc = state.doc.doc;
+
     canvas.style.overflow = "hidden";
     canvas.style.touchAction = "none";
-    const state = createState(canvas, ctx, doc, new BasicPen())
 
     state.doc.pos = [
         canvas.width * state.viewer.scale / 2 - doc.width / 2,
@@ -33,20 +31,9 @@ export function DocCanvasManager(canvas: HTMLCanvasElement, doc: OVODocument) {
 
     let image = new Image();
     image.src = "./assets/paper.png";
-    // const image = paperImage();
-
-    if (state.doc.doc.activeNode ==state.doc.doc.rootNode) {
+    if (state.doc.doc.activeNode == state.doc.doc.rootNode) {
         throw new Error("No active node");
     }
-    //
-    // let shapeLayer = new ShapeLayerNode();
-    // shapeLayer.name = "Shape Layer";
-    // doc.rootNode.addNode(shapeLayer);
-    // let bitmapLayer = new BitmapLayerNode(doc.width, doc.height);
-    // bitmapLayer.name = "Bitmap Layer";
-    // doc.rootNode.addNode(bitmapLayer);
-    // state.doc.doc.activeNode = bitmapLayer;
-
     printDocNodeTree(doc.rootNode);
 
     image.onload = () => {
@@ -55,19 +42,27 @@ export function DocCanvasManager(canvas: HTMLCanvasElement, doc: OVODocument) {
         tmpCtx.save();
         tmpCtx.fillStyle = "rgba(0,0,0,1)";
         tmpCtx.fillRect(0, 0, image.width, image.height);
-        // tmpCtx.globalCompositeOperation = "source-in";
         tmpCtx.globalAlpha = 0.5;
         tmpCtx.drawImage(image, 0, 0);
         state.viewer.background = ctx.createPattern(tmpCanvas.transferToImageBitmap(), "repeat") as CanvasPattern;
         tmpCtx.restore();
-
-        // let checkBoard = getCheckBoard();
-
         tmpCtx.drawImage(image, 0, 0);
-        // tmpCtx.fillStyle = `rgba(255,255,255,${1 - alpha})`
-        // tmpCtx.fillRect(0, 0, image.width, image.height);
         state.doc.background = ctx.createPattern(tmpCanvas.transferToImageBitmap(), "repeat") as CanvasPattern;
     }
+}
+
+function setupCanvasEvents(state: DocUIState, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
+    canvas.addEventListener("pointermove", (e) => onMove(state, e))
+    canvas.addEventListener("pointerdown", (e) => onDown(state, e));
+    canvas.addEventListener("pointerup", (e) => onUp(state, e));
+    canvas.addEventListener("contextmenu", (e) => onContextMenu(state, e))
+    canvas.addEventListener("wheel", (e) => onWheel(state, e));
+    document.body.addEventListener("keydown", (e) => {
+        onKeyDown(state, e)
+    })
+    document.body.addEventListener("keyup", (e) => {
+        onKeyUp(state, e)
+    })
 
     async function updateCanvasScale() {
         let scale = Math.max(window.devicePixelRatio, 1);
@@ -88,7 +83,7 @@ export function DocCanvasManager(canvas: HTMLCanvasElement, doc: OVODocument) {
     });
 
     async function callFrame() {
-        await update(state, ctx, canvas, doc);
+        await update(state, ctx, canvas, state.doc.doc);
         requestAnimationFrame(callFrame);
     }
 
@@ -97,25 +92,4 @@ export function DocCanvasManager(canvas: HTMLCanvasElement, doc: OVODocument) {
             await callFrame();
         }
     )()
-
-    setupCanvasEvents(state, canvas);
 }
-
-
-function setupCanvasEvents(state: OVOState, canvas: HTMLCanvasElement) {
-    canvas.addEventListener("pointermove", (e) => onMove(state, e))
-    canvas.addEventListener("pointerdown", (e) => onDown(state, e));
-    canvas.addEventListener("pointerup", (e) => onUp(state, e));
-    canvas.addEventListener("contextmenu", (e) => onDocCanvasMenu(state, e))
-    canvas.addEventListener("wheel", (e) => onWheel(state, e));
-
-    document.body.addEventListener("keydown", (e) => {
-        console.log(e)
-        onKeyDown(state, e)
-    })
-    document.body.addEventListener("keyup", (e) => {
-        onKeyUp(state, e)
-    })
-}
-
-

@@ -1,6 +1,6 @@
 import {PaintTool} from "../../PaintTools/PaintTool";
 import {BitmapPaintTool} from "../../PaintTools/BitmapPaintTools/BitmapPaintTool";
-import {createState} from "../DocUI/DocCanvasState";
+import {createDocUIState} from "../DocUI/DocUIState";
 import {OVODocument} from "../../core/src/Documents/OVODocument";
 
 export class PaintToolPreviewCanvas {

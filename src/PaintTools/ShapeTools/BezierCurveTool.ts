@@ -3,6 +3,7 @@ import {PaintToolEvent} from "../../core/src/PaintToolEvent";
 import {ShapeLayerNode} from "../../core/src/Documents/DocNodes/Layers/ShapeLayer/ShapeLayerNode";
 import {BezierCurveShape} from "./Shape/BezierCurveShape";
 import {Shape} from "../../core/src/Documents/DocNodes/Layers/ShapeLayer/Shape";
+import {Vec2} from "../../core/src/submodules/common-ts-utils/Math/Vector";
 
 // @registerPaintTool
 export class BezierCurveTool extends ShapePaintTool {

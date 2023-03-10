@@ -1,4 +1,5 @@
 import {Shape} from "../../../core/src/Documents/DocNodes/Layers/ShapeLayer/Shape";
+import {Vec2} from "../../../core/src/submodules/common-ts-utils/Math/Vector";
 
 export class TextShape extends Shape {
     _content: string;
@@ -17,7 +18,6 @@ export class TextShape extends Shape {
     set content(value: string) {
         this._content = value;
         [this.width, this.height] = this.getSize();
-
     }
 
 
@@ -47,7 +47,7 @@ export class TextShape extends Shape {
 
         let url = `https://fonts.googleapis.com/css2?family=${fontName}&display=swap`;
 
-        let success = false;
+        // let success = false;
 
         fetch(url).then((res) => {
             if (res.status === 200){
@@ -88,29 +88,29 @@ export class TextShape extends Shape {
         }
     }
 
-    inRange(pos: Vec2): boolean {
-        let minX = this.position[0];
-        let minY = this.position[1] - this.height;
-        let maxX = this.position[0] + this.width;
-        let maxY = this.position[1];
-        return pos[0] >= minX && pos[0] <= maxX && pos[1] >= minY && pos[1] <= maxY;
-    }
+    // inRange(pos: Vec2): boolean {
+    //     let minX = this.position[0];
+    //     let minY = this.position[1] - this.height;
+    //     let maxX = this.position[0] + this.width;
+    //     let maxY = this.position[1];
+    //     return pos[0] >= minX && pos[0] <= maxX && pos[1] >= minY && pos[1] <= maxY;
+    // }
 
-    renderUI(e: OffscreenCanvasRenderingContext2D | CanvasRenderingContext2D): void {
-        if  (!this._knowSize){
-            [this.width, this.height] = this.getSize();
-            this._knowSize = true;
-        }
-
-        e.fillStyle = "black";
-        e.strokeStyle = "black";
-        let minX = this.position[0];
-        let minY = this.position[1] - this.height;
-        let maxX = this.position[0] + this.width;
-        let maxY = this.position[1];
-        e.clearRect(0, 0, e.canvas.width, e.canvas.height);
-        e.strokeRect(minX, minY, maxX - minX, maxY - minY)
-
-        // console.log("Render UI")
-    }
+    // renderUI(e: OffscreenCanvasRenderingContext2D | CanvasRenderingContext2D): void {
+    //     if  (!this._knowSize){
+    //         [this.width, this.height] = this.getSize();
+    //         this._knowSize = true;
+    //     }
+    //
+    //     e.fillStyle = "black";
+    //     e.strokeStyle = "black";
+    //     let minX = this.position[0];
+    //     let minY = this.position[1] - this.height;
+    //     let maxX = this.position[0] + this.width;
+    //     let maxY = this.position[1];
+    //     e.clearRect(0, 0, e.canvas.width, e.canvas.height);
+    //     e.strokeRect(minX, minY, maxX - minX, maxY - minY)
+    //
+    //     // console.log("Render UI")
+    // }
 }
