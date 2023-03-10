@@ -14,7 +14,6 @@ type ThemeProp = {
     secondary?: string,
     accent?: string,
     accentText?: string,
-
     hint?: string,
 }
 
@@ -26,6 +25,12 @@ class OVOTheme {
     readonly accent: string;
     readonly accentText: string;
     readonly hint: string;
+
+    readonly deleteIconName: string = "delete";
+    readonly groupIconName: string = "folder";
+    readonly bitmapLayerIconName: string = "draft";
+    readonly shapeLayerIconName: string = "Deployed Code";
+
 
     constructor(props: ThemeProp) {
         if (props.name) {

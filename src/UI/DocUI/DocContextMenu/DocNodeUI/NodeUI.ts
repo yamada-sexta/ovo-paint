@@ -23,13 +23,13 @@ export function nodeUI(node: DocNode, doc: OVODocument, rerender: () => void, st
     const isActive = node === doc.activeNode;
     out.draggable = true;
     let name = " " + node.name;
-    let icon = mdIcon("draft", 16);
+    let icon = mdIcon(currentTheme.bitmapLayerIconName, 16);
     if (node instanceof GroupNode) {
         name += `/`;
-        icon = mdIcon("folder", 16);
+        icon = mdIcon(currentTheme.groupIconName, 16);
     }
     if (node instanceof ShapeLayerNode) {
-        icon = mdIcon("Deployed Code", 16);
+        icon = mdIcon(currentTheme.shapeLayerIconName, 16);
     }
     const textElement = text(name);
     if (isActive) {

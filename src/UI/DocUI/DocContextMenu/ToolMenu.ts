@@ -19,6 +19,10 @@ function getToolMenu(state: DocUIState) {
         const radioLabel = text(tool.name);
         radioInput.addEventListener("change", () => {
             state.tool.currentTool = tool;
+            tool.onSelect({
+                node: state.doc.doc.activeNode,
+                doc: state.doc.doc,
+            })
             statelessRefreshDocContextMenu();
         })
         radioLabel.htmlFor = tool.name;

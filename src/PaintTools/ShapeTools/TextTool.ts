@@ -8,6 +8,7 @@ import {Vec2} from "../../core/src/submodules/common-ts-utils/Math/Vector";
 import {PaintToolUIRenderEvent} from "../PaintTool";
 import {currentTheme} from "../../UI/Themes";
 import {closeDocContextMenu} from "../../UI/DocUI/DocContextMenu/MasterDocContextMenu";
+import {OVODocument} from "../../core/src/Documents/OVODocument";
 
 export class TextTool extends ShapePaintTool {
     pointerPos: Vec2 = [0, 0];
@@ -125,7 +126,7 @@ export class TextTool extends ShapePaintTool {
         return pos[0] >= minX && pos[0] <= maxX && pos[1] >= minY && pos[1] <= maxY;
     }
 
-    async onSelect(e: { node: ShapeLayerNode }): Promise<void> {
+    async onSelect(e: { node: ShapeLayerNode , doc:OVODocument}): Promise<void> {
         // return super.onSelect(e);
         this.node = e.node;
     }

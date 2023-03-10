@@ -156,15 +156,15 @@ export function colorPicker(
     }
 
     input.type = "color";
-    if (props.value){
+    if (props.value) {
         input.value = props.value;
     }
 
-        input.addEventListener("change", (e) => {
-            if (props.onchange) {
-                props.onchange(e);
-            }
-        })
+    input.addEventListener("change", (e) => {
+        if (props.onchange) {
+            props.onchange(e);
+        }
+    })
     return input;
 }
 
@@ -178,6 +178,45 @@ export function text(
     // textElement.onselectstart = () => false;
     textElement.innerText = text;
     return textElement;
+}
+
+export function iconBtn(
+    iconName: string,
+    btnText: string,
+    onclick: () => void
+) {
+    let btn = button({
+        text: "",
+        onclick: onclick
+    });
+    const size = "16px";
+    btn.classList.add("icon-btn");
+    const icon = mdIcon(iconName);
+    icon.style.fontSize = size;
+    icon.style.marginRight = "5px";
+    btn.appendChild(icon);
+    const textElement = text(btnText);
+    textElement.style.fontSize = size;
+    textElement.style.marginLeft = "5px";
+    btn.appendChild(textElement);
+    btn.onclick = onclick;
+
+    btn.style.color = currentTheme.text;
+    btn.style.backgroundColor = currentTheme.background;
+    btn.style.borderColor = currentTheme.border;
+    btn.style.borderStyle = "solid";
+    btn.style.borderWidth = "1px";
+    btn.style.outline = "none";
+
+    btn.onmouseover = (e) => {
+        btn.style.backgroundColor = currentTheme.hover;
+    }
+    btn.onmouseout = (e) => {
+        btn.style.backgroundColor = currentTheme.background;
+    }
+
+
+    return btn;
 }
 
 export function mdIcon(
