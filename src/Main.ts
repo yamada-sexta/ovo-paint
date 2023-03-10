@@ -1,12 +1,15 @@
 import {OVOUIManager} from "./UI/OVOUIManager";
-import {DraggableWindow} from "./UI/DraggableWindow";
+import {DraggableWindow} from "./UI/Tmp/DraggableWindow";
 import {baseClass, div, text} from "./UI/DOM/DOMFunctions";
 import {OVOPaint} from "./OVOPaint";
 import {showTempMessage} from "./UI/MessageBox/Message";
 import {PaintToolPreviewCanvas} from "./UI/PaintToolUI/PaintToolDemoCanvas";
 import {initializeUIDependencyOn} from "./UI/InitializeUIDependency";
 import {paintTools} from "./PaintTools/PaintTools";
-import CanvasKitInit from "canvaskit-wasm";
+import {OVODocument} from "./core/src/Documents/OVODocument";
+import {BitmapLayerNode} from "./core/src/Documents/DocNodes/Layers/BitmapLayerNode";
+import {GroupNode} from "./core/src/Documents/DocNodes/GroupNode";
+import {ShapeLayerNode} from "./core/src/Documents/DocNodes/Layers/ShapeLayer/ShapeLayerNode";
 
 function tmp() {
     const testJSON = `{
@@ -51,28 +54,29 @@ async function main() {
     let root = document.getElementById("ovo-root") as HTMLDivElement;
 
     initializeUIDependencyOn();
+    // root.style.overflow = "hidden";
 
+    let ovo = new OVOPaint(root, true);
 
-    root.style.overflow = "hidden";
+    // TEST
+    const width = 400;
+    const height = 400;
+    const doc = new OVODocument(
+        "Test Document",
+        width, height
+    )
+    const layer = new BitmapLayerNode(400, 400);
+    const folder1 = new GroupNode("folder1");
+    const folder2 = new GroupNode("folder2");
+    doc.rootNode.addNode(folder1);
+    doc.rootNode.addNode(folder2);
+    doc.rootNode.addNode(new GroupNode("folder3"));
+    doc.rootNode.addNode(new GroupNode("folder4"));
+    folder1.addNode(layer);
+    folder2.addNode(new ShapeLayerNode("Shape Layer 1"));
+    doc.activeNode = layer;
 
-    const CanvasKit =  await CanvasKitInit({
-        locateFile: (file) => 'https://unpkg.com/canvaskit-wasm@0.18.1/bin/'+file
-    })
-    const skCanvas = CanvasKit.MakeCanvas(100, 100);
-    const ctx = skCanvas.getContext('2d');
-    if (!ctx) {
-        throw new Error("Failed to get context");
-    }
-    ctx.fillStyle = "rgba(255,0,0,1)";
-    ctx.fillRect(0, 0, 100, 100);
-    const rootCanvas = document.createElement("canvas");
-    rootCanvas.width = 100;
-    rootCanvas.height = 100;
-    const rootImage = rootCanvas.getContext("2d")!.createImageData(100, 100);
-    console.log(rootImage);
-
-
-    // let ovo = new OVOPaint(root, true);
+    ovo.openDocument(doc);
     console.log(paintTools);
 }
 

@@ -19,7 +19,6 @@ export class DraggableWindow {
         windowFrame.style.backgroundColor = "black";
         windowFrame.style.border = "1px solid black";
 
-
         let titleBar = document.createElement("div");
         titleBar.innerText = title;
         titleBar.style.position = "absolute";

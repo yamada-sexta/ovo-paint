@@ -2,10 +2,9 @@ import {BitmapPaintTool} from "./BitmapPaintTool";
 import {PaintToolEvent} from "../../core/src/PaintToolEvent";
 import {BitmapLayerNode} from "../../core/src/Documents/DocNodes/Layers/BitmapLayerNode";
 import {drawHermitCurve} from "../../core/src/submodules/common-ts-utils/Canvas/PaintCanvas";
-import {br, div, input, text} from "../../UI/DOM/DOMFunctions";
+import {br, div, text} from "../../UI/DOM/DOMFunctions";
 import {PaintToolUIRenderEvent} from "../PaintTool";
 import {checkShortcut} from "../../Shortcuts/ShortcutsChecker";
-import {registerPaintTool} from "../PaintTools";
 import {Vec2} from "../../core/src/submodules/common-ts-utils/Math/Vector";
 import {draggableNum} from "../../UI/DOM/DraggableNum";
 

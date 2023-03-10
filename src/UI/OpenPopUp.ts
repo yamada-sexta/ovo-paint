@@ -6,8 +6,6 @@ export function openPopUp(title: string, width: number, height: number, content:
     if (!newWindow) {
         return null;
     }
-
-
     newWindow.document.title = title;
     newWindow.document.body.append(content);
     initializeUIDependencyOn(newWindow);

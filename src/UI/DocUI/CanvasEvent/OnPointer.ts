@@ -3,6 +3,7 @@ import {closeContextMenu, openToolContextMenu} from "./DocCanvasContextMenu";
 import {OVOState} from "../DocCanvasState";
 import {PaintToolEvent} from "../../../core/src/PaintToolEvent";
 import {DocNode} from "../../../core/src/Documents/DocNodes/DocNode";
+import {Vec2} from "../../../core/src/submodules/common-ts-utils/Math/Vector";
 
 // let isDown = false;
 let rightDown = false;
@@ -47,24 +48,15 @@ function canvasCordToDocCord(state: OVOState, pos: [number, number]): [number, n
 }
 
 function createPaintToolEvent(state: OVOState, e: PointerEvent): PaintToolEvent<DocNode> {
-    const doc = state.doc.doc;
     const docPos: Vec2 = canvasCordToDocCord(state, [e.offsetX, e.offsetY]);
     let pressure = e.pressure;
     if (e.pointerType === "mouse") {
-        // console.log("mouse")
         pressure = 1;
     }
-    // console.log(docPos)
     return {
         pos: docPos,
-        doc: doc,
         pressure: pressure,
         node: state.doc.doc.activeNode,
-        ui: {
-            canvas: state.viewer.canvas,
-            ctx: state.viewer.ctx,
-            scale: state.doc.scale
-        },
         key: {
             shift: e.shiftKey,
             ctrl: e.ctrlKey,

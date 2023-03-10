@@ -1,9 +1,6 @@
 import {br, div, input, label, text} from "../../DOM/DOMFunctions";
 import {OVODocument} from "../../../core/src/Documents/OVODocument";
-import {DocNode} from "../../../core/src/Documents/DocNodes/DocNode";
-import {GroupNode} from "../../../core/src/Documents/DocNodes/GroupNode";
-import {openFileContextMenu} from "./DocCanvasContextMenu";
-import {docNodesUI} from "../DocNodesUI";
+import {nodeTreeUI} from "../DocNodeUI/NodeTreeUI";
 
 function docBackgroundDropdown(doc: OVODocument) {
     const docBackgroundOptions = [
@@ -29,15 +26,18 @@ function docBackgroundDropdown(doc: OVODocument) {
     }
     out.onchange = (e) => {
         console.log("doc background dropdown", e.target)
-        // @ts-ignore
-        doc.background = e.target.value;
+        try {
+            // @ts-ignore
+            doc.background = e.target.value;
+        } catch (e) {
+            console.log("doc background dropdown error", e)
+        }
     }
     return out;
 }
 
 
 export function documentUI(doc: OVODocument) {
-
     return div(
         {
             children: [
@@ -55,7 +55,7 @@ export function documentUI(doc: OVODocument) {
                 label({text: "Background: "}),
                 docBackgroundDropdown(doc),
                 br(),
-                docNodesUI(doc)
+                nodeTreeUI(doc)
             ]
         }
     )
