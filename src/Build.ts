@@ -1,5 +1,8 @@
 import {build} from "esbuild";
 import {glsl} from "esbuild-plugin-glsl";
+// @ts-ignore
+import ignorePlugin from "esbuild-plugin-ignore";
+
 console.log("Loading build script...");
 
 
@@ -12,7 +15,19 @@ async function buildProject(watch: boolean) {
                 bundle: true,
                 sourcemap: true,
                 outfile: "main.js",
-                plugins: [glsl()],
+                plugins: [
+                    glsl(),
+                    ignorePlugin([
+                        {
+                            resourceRegExp: /fs/,
+                            contextRegExp: /node_modules\/canvaskit-wasm\/bin/
+                        },
+                        {
+                            resourceRegExp: /path/,
+                            contextRegExp: /node_modules\/canvaskit-wasm\/bin/
+                        }
+                    ])
+                ],
                 watch: watch,
                 minify: false,
                 minifySyntax: true,
@@ -23,8 +38,7 @@ async function buildProject(watch: boolean) {
                 }
             }
         );
-    }
-    catch (e) {
+    } catch (e) {
         console.error(e);
     }
 }
