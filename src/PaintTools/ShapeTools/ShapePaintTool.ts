@@ -47,11 +47,12 @@ export abstract class ShapePaintTool extends PaintTool<ShapeLayerNode> {
 
     async renderCanvasUI(e: PaintToolUIRenderEvent): Promise<void> {
         await super.renderCanvasUI(e);
-        if (this.selectedShape) {
-            this.drawSelectedShapeUI(e, this.selectedShape);
-        }
+
         if (this.hoveredShape) {
             this.drawHoveredShapeUI(e, this.hoveredShape);
+        }
+        if (this.selectedShape) {
+            this.drawSelectedShapeUI(e, this.selectedShape);
         }
         this.drawSelfUI(e);
     }

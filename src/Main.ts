@@ -1,5 +1,4 @@
 import {OVOUIManager} from "./UI/OVOUIManager";
-import {DraggableWindow} from "./UI/Tmp/DraggableWindow";
 import {baseClass, div, text} from "./UI/DOM/DOMFunctions";
 import {OVOPaint} from "./OVOPaint";
 import {showTempMessage} from "./UI/MessageBox/Message";
@@ -10,6 +9,7 @@ import {OVODocument} from "./core/src/Documents/OVODocument";
 import {BitmapLayerNode} from "./core/src/Documents/DocNodes/Layers/BitmapLayerNode";
 import {GroupNode} from "./core/src/Documents/DocNodes/GroupNode";
 import {ShapeLayerNode} from "./core/src/Documents/DocNodes/Layers/ShapeLayer/ShapeLayerNode";
+import {assets} from "./Assets/Assets";
 
 function tmp() {
     const testJSON = `{
@@ -39,7 +39,6 @@ function tmp() {
             newLines.push(currLine);
         }
     }
-
     console.log("newlines: " + newLines.join("\n"));
 
     console.log(testJSON)
@@ -52,6 +51,14 @@ function tmp() {
 async function main() {
     // tmp();
     let root = document.getElementById("ovo-root") as HTMLDivElement;
+
+    console.log(
+        (()=> {
+            console.log("test1");
+            return "test";
+        })()
+    );
+    console.log(assets.src_Assets_Help_MD)
 
     initializeUIDependencyOn();
     // root.style.overflow = "hidden";
@@ -75,7 +82,6 @@ async function main() {
     folder1.addNode(layer);
     folder2.addNode(new ShapeLayerNode("Shape Layer 1"));
     doc.activeNode = layer;
-
     ovo.openDocument(doc);
     console.log(paintTools);
 }

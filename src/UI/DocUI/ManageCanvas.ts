@@ -7,6 +7,7 @@ import {BasicPen} from "../../PaintTools/BitmapPaintTools/BasicPen";
 import {printDocNodeTree} from "../../core/src/Debug";
 import {onKeyDown, onKeyUp} from "./CanvasEvent/OnKey";
 import {onContextMenu} from "./CanvasEvent/OnContextMenu";
+import {assets} from "../../Assets/Assets";
 
 export function manageCanvas(canvas: HTMLCanvasElement, doc: OVODocument) {
     const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
@@ -24,13 +25,8 @@ function setupCanvasStyle(state: DocUIState, canvas: HTMLCanvasElement, ctx: Can
     canvas.style.overflow = "hidden";
     canvas.style.touchAction = "none";
 
-    state.doc.pos = [
-        canvas.width * state.viewer.scale / 2 - doc.width / 2,
-        canvas.height * state.viewer.scale / 2 - doc.height / 2
-    ];
 
-    let image = new Image();
-    image.src = "./assets/paper.png";
+    let image = assets.src_Assets_Images_paper_png;
     if (state.doc.doc.activeNode == state.doc.doc.rootNode) {
         throw new Error("No active node");
     }
@@ -49,7 +45,32 @@ function setupCanvasStyle(state: DocUIState, canvas: HTMLCanvasElement, ctx: Can
         tmpCtx.drawImage(image, 0, 0);
         state.doc.background = ctx.createPattern(tmpCanvas.transferToImageBitmap(), "repeat") as CanvasPattern;
     }
+
+    async function updateCanvasScale() {
+        let scale = Math.max(window.devicePixelRatio, 1);
+        canvas.width = canvas.clientWidth * scale;
+        canvas.height = canvas.clientHeight * scale;
+        state.viewer.scale = scale;
+        ctx.scale(scale, scale);
+        // console.log("Resized canvas to " + canvas.width + "x" + canvas.height);
+        // console.log("Scale factor: " + scale);
+    }
+
+    (async () => {
+        await updateCanvasScale();
+    })();
+
+    window.addEventListener("resize", async () => {
+        await updateCanvasScale();
+    });
+
+    state.doc.pos = [
+        canvas.width * state.viewer.scale / 2 - doc.width / 2,
+        canvas.height * state.viewer.scale / 2 - doc.height / 2
+    ];
 }
+
+
 
 function setupCanvasEvents(state: DocUIState, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
     canvas.addEventListener("pointermove", (e) => onMove(state, e))
@@ -64,23 +85,7 @@ function setupCanvasEvents(state: DocUIState, canvas: HTMLCanvasElement, ctx: Ca
         onKeyUp(state, e)
     })
 
-    async function updateCanvasScale() {
-        let scale = Math.max(window.devicePixelRatio, 1);
-        canvas.width = canvas.clientWidth * scale;
-        canvas.height = canvas.clientHeight * scale;
-        state.viewer.scale = scale;
-        ctx.scale(scale, scale);
-        console.log("Resized canvas to " + canvas.width + "x" + canvas.height);
-        console.log("Scale factor: " + scale);
-    }
 
-    (async () => {
-        await updateCanvasScale();
-    })();
-
-    window.addEventListener("resize", async () => {
-        await updateCanvasScale();
-    });
 
     async function callFrame() {
         await update(state, ctx, canvas, state.doc.doc);

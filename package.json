@@ -4,8 +4,8 @@
   "description": "ovo-paint",
   "main": "main.js",
   "scripts": {
-    "watch": "ts-node src/Build.ts --watch",
-    "build": "ts-node src/Build.ts"
+    "watch": "ts-node src/BuildScript/Build.ts --watch",
+    "build": "ts-node src/BuildScript/Build.ts"
   },
   "repository": {
     "type": "git",
@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@tensorflow-models/qna": "^1.0.1",
-    "esbuild": "^0.16.1",
+    "esbuild": "^0.17.11",
     "esbuild-plugin-ignore": "^1.1.1"
   }
 }
