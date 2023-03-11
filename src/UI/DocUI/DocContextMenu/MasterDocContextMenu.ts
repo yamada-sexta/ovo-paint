@@ -9,12 +9,12 @@ let openState: DocUIState | null = null;
 
 export function openDocContextMenu(state: DocUIState, pos: [number, number] | null = null) {
     if (pos === null) {
-        console.log(`pos is null, using pointerAbsPos: ${state.input.pointerAbsPos}`);
+        // console.log(`pos is null, using pointerAbsPos: ${state.input.pointerAbsPos}`);
         pos = state.input.pointerAbsPos;
     }
     openToolMenu(state, [pos[0] + 10, pos[1]]);
     openLayerMenu(state, [pos[0] - 10, pos[1]]);
-    console.log(pos)
+    // console.log(pos)
     openPos = pos;
     openState = state;
 }
