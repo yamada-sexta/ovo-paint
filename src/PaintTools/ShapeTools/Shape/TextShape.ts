@@ -15,13 +15,21 @@ export class TextShape extends Shape<TextState> {
     height: number;
     _state: TextState;
 
-    getState(): TextState {
-        return this._state
+    constructor(content: string, position: Vec2, font: string, size: number) {
+        super();
+        const state: TextState = {
+            type: "text",
+            content: content,
+            font: font,
+            fontSize: size,
+            position: position
+        };
+        this._state = state;
+        [this.width, this.height] = this.getSize();
     }
 
-    applyState(state: TextState): void {
-        this._state = state;
-        this.updateSize();
+    get content(): string {
+        return this._state.content;
     }
 
     set content(value: string) {
@@ -29,8 +37,39 @@ export class TextShape extends Shape<TextState> {
         this.updateSize();
     }
 
-    get content(): string {
-        return this._state.content;
+    get fontSize(): number {
+        return this._state.fontSize;
+    }
+
+    set fontSize(value: number) {
+        this._state.fontSize = value;
+        this.updateSize();
+    }
+
+    get font(): string {
+        return this._state.font;
+    }
+
+    set font(value: string) {
+        this._state.font = value;
+        this.getFont(value);
+    }
+
+    get position(): Vec2 {
+        return this._state.position;
+    }
+
+    set position(value: Vec2) {
+        this._state.position = value;
+    }
+
+    getState(): TextState {
+        return this._state
+    }
+
+    applyState(state: TextState): void {
+        this._state = state;
+        this.updateSize();
     }
 
     updateSize() {
@@ -45,15 +84,6 @@ export class TextShape extends Shape<TextState> {
         let height = metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent;
         let width = metrics.width;
         return [width, height];
-    }
-
-    get fontSize(): number {
-        return this._state.fontSize;
-    }
-
-    set fontSize(value: number) {
-        this._state.fontSize = value;
-        this.updateSize();
     }
 
     getFont(font: string) {
@@ -81,28 +111,6 @@ export class TextShape extends Shape<TextState> {
         this.updateSize();
     }
 
-    get font(): string {
-        return this._state.font;
-    }
-
-    set font(value: string) {
-        this._state.font = value;
-        this.getFont(value);
-    }
-
-    constructor(content: string, position: Vec2, font: string, size: number) {
-        super();
-        const state: TextState = {
-            type: "text",
-            content: content,
-            font: font,
-            fontSize: size,
-            position: position
-        };
-        this._state = state;
-        [this.width, this.height] = this.getSize();
-    }
-
     renderTo(e: OffscreenCanvasRenderingContext2D): void {
         e.fillStyle = "black";
         e.font = `${this.fontSize}px ${this.font}`;
@@ -116,13 +124,5 @@ export class TextShape extends Shape<TextState> {
         for (let i = 0; i < lines.length; i++) {
             e.fillText(lines[i], this.position[0], this.position[1] + i * this.fontSize);
         }
-    }
-
-    get position(): Vec2 {
-        return this._state.position;
-    }
-
-    set position(value: Vec2) {
-        this._state.position = value;
     }
 }

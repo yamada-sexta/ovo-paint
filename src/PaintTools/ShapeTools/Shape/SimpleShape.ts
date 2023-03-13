@@ -39,16 +39,16 @@ export class SimpleShape extends Shape<SimpleShapeState> {
         }
     }
 
-    set size(size: Vec2) {
-        this._state.size = size;
-    }
-
     get pos(): Vec2 {
         return this._state.pos;
     }
 
     get size(): Vec2 {
         return this._state.size;
+    }
+
+    set size(size: Vec2) {
+        this._state.size = size;
     }
 
     applyState(state: SimpleShapeState): void {

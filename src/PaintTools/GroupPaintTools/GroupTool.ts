@@ -1,25 +1,21 @@
 import {GroupNode} from "../../core/src/Documents/DocNodes/GroupNode";
 import {PaintTool, PaintToolUIRenderEvent} from "../PaintTool";
 import {DocNode} from "../../core/src/Documents/DocNodes/DocNode";
-import {br, button, div, iconBtn} from "../../UI/DOM/DOMFunctions";
+import {br, div, iconBtn} from "../../UI/DOM/DOMFunctions";
 import {BitmapLayerNode} from "../../core/src/Documents/DocNodes/Layers/BitmapLayerNode";
 import {OVODocument} from "../../core/src/Documents/OVODocument";
-import {
-    refreshDocContextMenu,
-    statelessRefreshDocContextMenu
-} from "../../UI/DocUI/DocContextMenu/MasterDocContextMenu";
+import {statelessRefreshDocContextMenu} from "../../UI/DocUI/DocContextMenu/MasterDocContextMenu";
 import {ShapeLayerNode} from "../../core/src/Documents/DocNodes/Layers/ShapeLayer/ShapeLayerNode";
 import {currentTheme} from "../../UI/Themes";
-import {findParentNode} from "../../UI/DocUI/DocContextMenu/DocNodeUI/PathFinding";
 
 export class GroupTool extends PaintTool<GroupNode> {
+
+    groupNode: GroupNode | null = null;
+    document: OVODocument | null = null;
 
     isCompatibleWithNode(node: DocNode): boolean {
         return node instanceof GroupNode;
     }
-
-    groupNode: GroupNode | null = null;
-    document: OVODocument | null = null;
 
     onSelect(e: { node: GroupNode, doc: OVODocument }) {
         this.groupNode = e.node;

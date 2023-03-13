@@ -1,4 +1,4 @@
-import {br, div, input, label, text} from "../../DOM/DOMFunctions";
+import {br, div, input, label} from "../../DOM/DOMFunctions";
 import {OVODocument} from "../../../core/src/Documents/OVODocument";
 import {nodeTreeUI} from "./DocNodeUI/NodeTreeUI";
 import {DocUIState} from "../DocUIState";
@@ -38,7 +38,7 @@ function docBackgroundDropdown(doc: OVODocument) {
 }
 
 
-export function documentUI(state:DocUIState) {
+export function documentUI(state: DocUIState) {
     const doc = state.doc.doc;
     return div(
         {

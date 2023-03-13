@@ -4,6 +4,7 @@ import {manageCanvas} from "../DocUI/ManageCanvas";
 
 export class OVODocUIFrame implements IOVORootUI {
     canvas: HTMLCanvasElement;
+
     constructor() {
         let canvas = document.createElement("canvas");
         canvas.style.width = "100%";
@@ -11,6 +12,7 @@ export class OVODocUIFrame implements IOVORootUI {
         canvas.style.visibility = "visible";
         this.canvas = canvas;
     }
+
     getUI(manager: OVOUIManager): HTMLElement {
         if (manager.currentDocument === null) {
             throw new Error("Cannot show document UI with no current document");

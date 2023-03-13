@@ -17,6 +17,10 @@ export interface PaintToolUIKey extends IShortcut {
 }
 
 export abstract class PaintTool<NodeType extends DocNode = DocNode> {
+    get name(): string {
+        return this.constructor.name;
+    }
+
     /**
      * Gets the menu for the tool
      * @returns {HTMLElement} The menu
@@ -25,10 +29,6 @@ export abstract class PaintTool<NodeType extends DocNode = DocNode> {
         let item = document.createElement("div");
         item.innerText = "NO CONTENT";
         return item;
-    }
-
-    get name(): string {
-        return this.constructor.name;
     }
 
     /**
@@ -98,7 +98,7 @@ export abstract class PaintTool<NodeType extends DocNode = DocNode> {
     /**
      * When the tool is selected
      */
-    onSelect(e: { node: NodeType, doc:OVODocument }): void {
+    onSelect(e: { node: NodeType, doc: OVODocument }): void {
 
     }
 }

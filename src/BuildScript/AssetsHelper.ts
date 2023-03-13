@@ -105,7 +105,6 @@ export function assetsHelper(debug: boolean = false) {
         name: "assets-helper",
 
 
-
         async setup(build) {
 
             build.onStart(async () => {

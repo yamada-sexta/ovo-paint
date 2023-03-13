@@ -1,6 +1,5 @@
 import {OVOUIManager} from "./UI/OVOUIManager";
 import {OVODocument} from "./core/src/Documents/OVODocument";
-import {DocSerializer} from "./core/src/Documents/Serializers/DocSerializer";
 import {OvoJsonSerializer} from "./core/src/Documents/Serializers/OvoJsonSerializer";
 
 export class OVOPaint {

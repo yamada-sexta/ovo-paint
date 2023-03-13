@@ -54,7 +54,7 @@ export class TextTool extends ShapePaintTool {
                 textShape.updateSize();
                 closeDocContextMenu();
             }
-        }else if(this.node !== null){
+        } else if (this.node !== null) {
             button.innerText = "Create";
             button.onclick = () => {
                 if (input.value === "") return;
@@ -126,7 +126,7 @@ export class TextTool extends ShapePaintTool {
         return pos[0] >= minX && pos[0] <= maxX && pos[1] >= minY && pos[1] <= maxY;
     }
 
-    async onSelect(e: { node: ShapeLayerNode , doc:OVODocument}): Promise<void> {
+    async onSelect(e: { node: ShapeLayerNode, doc: OVODocument }): Promise<void> {
         // return super.onSelect(e);
         this.node = e.node;
     }

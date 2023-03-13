@@ -6,12 +6,12 @@ import {currentTheme} from "../../UI/Themes";
 import {statelessRefreshDocContextMenu} from "../../UI/DocUI/DocContextMenu/MasterDocContextMenu";
 
 export class NodeTool extends PaintTool {
+    node: DocNode | null = null;
+    document: OVODocument | null = null;
+
     isCompatibleWithNode(node: DocNode): boolean {
         return true;
     }
-
-    node: DocNode | null = null;
-    document: OVODocument | null = null;
 
     onSelect(e: { node: DocNode, doc: OVODocument }) {
         this.node = e.node;

@@ -1,4 +1,3 @@
-import {OVODocument} from "../../../../core/src/Documents/OVODocument";
 import {div} from "../../../DOM/DOMFunctions";
 import {currentTheme} from "../../../Themes";
 import {nodeUI} from "./NodeUI";

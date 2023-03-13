@@ -1,7 +1,7 @@
 import {ContextMenu} from "./ContextMenu";
 import {DocUIState} from "../DocUIState";
-import {br, button, div, input, label, text} from "../../DOM/DOMFunctions";
-import {refreshDocContextMenu, statelessRefreshDocContextMenu} from "./MasterDocContextMenu";
+import {br, div, input, text} from "../../DOM/DOMFunctions";
+import {statelessRefreshDocContextMenu} from "./MasterDocContextMenu";
 
 let toolMenu: ContextMenu | null = null;
 

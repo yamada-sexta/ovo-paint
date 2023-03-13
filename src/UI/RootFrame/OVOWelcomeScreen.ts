@@ -28,7 +28,7 @@ export class OVOWelcomeScreen implements IOVORootUI {
             }
         })
 
-        const out= div({
+        const out = div({
             children: [
                 title,
                 br(),

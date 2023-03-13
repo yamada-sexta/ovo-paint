@@ -1,4 +1,4 @@
-import {div, input, option, text} from "./DOMFunctions";
+import {input, text} from "./DOMFunctions";
 
 interface DraggableNumOptions {
     min?: number;
@@ -108,7 +108,7 @@ export function draggableNum(prop?: DraggableNumOptions) {
 
         let diff = e.clientX - lastX;
 
-        if (diff < -400){
+        if (diff < -400) {
             return;
         }
         console.log(diff)

@@ -1,8 +1,4 @@
-import {OVOUIManager} from "./UI/OVOUIManager";
-import {baseClass, div, text} from "./UI/DOM/DOMFunctions";
 import {OVOPaint} from "./OVOPaint";
-import {showTempMessage} from "./UI/MessageBox/Message";
-import {PaintToolPreviewCanvas} from "./UI/PaintToolUI/PaintToolDemoCanvas";
 import {initializeUIDependencyOn} from "./UI/InitializeUIDependency";
 import {paintTools} from "./PaintTools/PaintTools";
 import {OVODocument} from "./core/src/Documents/OVODocument";
@@ -10,14 +6,13 @@ import {BitmapLayerNode} from "./core/src/Documents/DocNodes/Layers/BitmapLayerN
 import {GroupNode} from "./core/src/Documents/DocNodes/GroupNode";
 import {ShapeLayerNode} from "./core/src/Documents/DocNodes/Layers/ShapeLayer/ShapeLayerNode";
 import {assets} from "./Assets/Assets";
-import {typeCheck} from "./core/src/Documents/Serializers/OvoJsonV1/DictToDocV1";
 
 async function main() {
     // tmp();
     let root = document.getElementById("ovo-root") as HTMLDivElement;
 
     console.log(
-        (()=> {
+        (() => {
             console.log("test1");
             return "test";
         })()

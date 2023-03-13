@@ -71,7 +71,6 @@ function setupCanvasStyle(state: DocUIState, canvas: HTMLCanvasElement, ctx: Can
 }
 
 
-
 function setupCanvasEvents(state: DocUIState, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
     canvas.addEventListener("pointermove", (e) => onMove(state, e))
     canvas.addEventListener("pointerdown", (e) => onDown(state, e));
@@ -84,7 +83,6 @@ function setupCanvasEvents(state: DocUIState, canvas: HTMLCanvasElement, ctx: Ca
     document.body.addEventListener("keyup", (e) => {
         onKeyUp(state, e)
     })
-
 
 
     async function callFrame() {

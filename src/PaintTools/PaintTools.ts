@@ -8,11 +8,11 @@ import {NodeTool} from "./NodePaintTool/NodeTool";
 
 export function registerPaintTool(constructor: Function) {
     if (constructor.prototype instanceof PaintTool) {
-        try{
+        try {
             // @ts-ignore
             paintTools.push(new constructor());
             console.log("Registered PaintTool: " + constructor.name);
-        }catch (e) {
+        } catch (e) {
             console.group("registerPaintTool")
             console.error("Error while registering PaintTool: " + constructor.name);
             console.error(e);
@@ -20,6 +20,7 @@ export function registerPaintTool(constructor: Function) {
         }
     }
 }
+
 export const paintTools: PaintTool[] = [
     new BasicPen(),
     new TextTool(),

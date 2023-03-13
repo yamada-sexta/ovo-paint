@@ -1,4 +1,4 @@
-export function showMessageBox(message: string, root: HTMLElement = document.body){
+export function showMessageBox(message: string, root: HTMLElement = document.body) {
     let messageBox = document.createElement("div");
     messageBox.style.position = "absolute";
     messageBox.style.top = "0";

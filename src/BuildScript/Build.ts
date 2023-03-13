@@ -1,7 +1,7 @@
 import * as esbuild from 'esbuild'
+import {LogLevel} from 'esbuild'
 import {glsl} from "esbuild-plugin-glsl";
 import {assetsHelper} from "./AssetsHelper";
-import {LogLevel} from "esbuild";
 
 async function buildProject(watch: boolean, logLevel: LogLevel) {
     let esbuildCtx = await esbuild.context({

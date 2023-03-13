@@ -1,8 +1,3 @@
-import {PaintTool} from "../../PaintTools/PaintTool";
-import {BitmapPaintTool} from "../../PaintTools/BitmapPaintTools/BitmapPaintTool";
-import {createDocUIState} from "../DocUI/DocUIState";
-import {OVODocument} from "../../core/src/Documents/OVODocument";
-
 export class PaintToolPreviewCanvas {
     // canvas: HTMLCanvasElement;
     // private ctx: CanvasRenderingContext2D;
