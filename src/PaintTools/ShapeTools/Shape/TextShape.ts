@@ -1,7 +1,8 @@
-import {Shape} from "../../../core/src/Documents/DocNodes/Layers/ShapeLayer/Shape";
+import {Shape, ShapeState} from "../../../core/src/Documents/DocNodes/Layers/ShapeLayer/Shape";
 import {Vec2} from "../../../core/src/submodules/common-ts-utils/Math/Vector";
 
-type TextState = {
+interface TextState extends ShapeState {
+    type: "text";
     content: string;
     font: string;
     fontSize: number;
@@ -17,6 +18,7 @@ export class TextShape extends Shape<TextState> {
     getState(): TextState {
         return this._state
     }
+
     applyState(state: TextState): void {
         this._state = state;
         this.updateSize();
@@ -48,6 +50,7 @@ export class TextShape extends Shape<TextState> {
     get fontSize(): number {
         return this._state.fontSize;
     }
+
     set fontSize(value: number) {
         this._state.fontSize = value;
         this.updateSize();
@@ -90,6 +93,7 @@ export class TextShape extends Shape<TextState> {
     constructor(content: string, position: Vec2, font: string, size: number) {
         super();
         const state: TextState = {
+            type: "text",
             content: content,
             font: font,
             fontSize: size,
@@ -117,6 +121,7 @@ export class TextShape extends Shape<TextState> {
     get position(): Vec2 {
         return this._state.position;
     }
+
     set position(value: Vec2) {
         this._state.position = value;
     }

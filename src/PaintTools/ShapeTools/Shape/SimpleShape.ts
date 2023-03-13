@@ -1,10 +1,11 @@
-import {CanvasCtx, Shape} from "../../../core/src/Documents/DocNodes/Layers/ShapeLayer/Shape";
+import {CanvasCtx, Shape, ShapeState} from "../../../core/src/Documents/DocNodes/Layers/ShapeLayer/Shape";
 import {Vec2} from "../../../core/src/submodules/common-ts-utils/Math/Vector";
 
 export type SimpleShapeType = "circle" | "rectangle" | "triangle" | "line" | "star" | "ellipse";
 
-type SimpleShapeState = {
-    type: SimpleShapeType;
+interface SimpleShapeState extends ShapeState {
+    type: "simple"
+    shapeType: SimpleShapeType;
     pos: Vec2;
     size: Vec2;
     fillStyle: string;
@@ -13,7 +14,8 @@ type SimpleShapeState = {
 }
 
 const defaultState: SimpleShapeState = {
-    type: "rectangle",
+    type: "simple",
+    shapeType: "rectangle",
     pos: [0, 0],
     size: [0, 0],
     fillStyle: "transparent",
@@ -24,10 +26,11 @@ const defaultState: SimpleShapeState = {
 export class SimpleShape extends Shape<SimpleShapeState> {
     _state: SimpleShapeState;
 
-    constructor(pos: Vec2, size: Vec2, type: SimpleShapeType = "rectangle", fillStyle: string = "transparent", strokeStyle: string = "black", lineWidth: number = 1) {
+    constructor(pos: Vec2, size: Vec2, shapeType: SimpleShapeType = "rectangle", fillStyle: string = "transparent", strokeStyle: string = "black", lineWidth: number = 1) {
         super();
         this._state = {
-            type,
+            type: "simple",
+            shapeType,
             pos,
             size,
             fillStyle,
@@ -62,7 +65,7 @@ export class SimpleShape extends Shape<SimpleShapeState> {
         e.strokeStyle = this._state.strokeStyle;
         e.lineWidth = this._state.lineWidth;
 
-        switch (this._state.type) {
+        switch (this._state.shapeType) {
             case "rectangle":
                 drawRect(e, this._state.pos, this._state.size);
                 break;

@@ -5,6 +5,7 @@ import {OvoJsonSerializer} from "./core/src/Documents/Serializers/OvoJsonSeriali
 
 export class OVOPaint {
     manager: OVOUIManager;
+
     /**
      * Creates a new instance of OVOPaint.
      * @param root The root element of the OVO Paint UI.
@@ -23,8 +24,20 @@ export class OVOPaint {
     setPublic() {
         (window as any).OVO = {
             manager: this.manager,
-            save: () => this.saveDocument(),
+            save: () => {
+                return this.saveDocument()
+            },
+            open(s: string) {
+                const serializer = new OvoJsonSerializer();
+                const blob = new Blob([s], {type: "application/json"});
+                const doc = serializer.fromBlob(blob, "test");
+                doc.then((doc) => {
+                    console.log(doc)
+                    this.manager.currentDocument = doc;
+                });
+            }
         }
+
     }
 
     /**

@@ -1,7 +1,5 @@
 import {OVODocument} from "../core/src/Documents/OVODocument";
-import {openCreateWindow} from "./DocumentCreateUI";
-import {manageCanvas} from "./DocUI/ManageCanvas";
-import {button, div, text} from "./DOM/DOMFunctions";
+import { div, text} from "./DOM/DOMFunctions";
 import {IOVORootUI} from "./RootFrame/IOVORootUI";
 import {OVOWelcomeScreen} from "./RootFrame/OVOWelcomeScreen";
 import {OVODocUIFrame} from "./RootFrame/OVODocUIFrame";
@@ -54,9 +52,6 @@ export class OVOUIManager {
         this.frame.style.height = "100%";
         this.frame.style.visibility = "visible";
         this.root.appendChild(this.frame);
-        // this.root.addEventListener("keydown", (e) => {
-        //     console.log(e)
-        // });
         this._currUI = {
             getUI: (manager: OVOUIManager) => {
                 return div({
@@ -76,4 +71,3 @@ export class OVOUIManager {
         }
     }
 }
-
