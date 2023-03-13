@@ -65,7 +65,7 @@ function createPaintToolEvent(state: DocUIState, e: PointerEvent): PaintToolEven
             ctrl: e.ctrlKey,
             alt: e.altKey,
         },
-        history: state.doc.doc._history,
+        tracker: state.doc.doc
     }
 }
 

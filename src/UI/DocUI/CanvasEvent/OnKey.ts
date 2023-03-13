@@ -1,5 +1,5 @@
 import {DocUIState} from "../DocUIState";
-import {BitmapLayerNode} from "../../../core/src/Documents/DocNodes/Layers/BitmapLayerNode";
+import {checkShortcut} from "../../../Shortcuts/ShortcutsChecker";
 
 export function onKeyDown(state: DocUIState, e: KeyboardEvent) {
     if (e.key === "Control") {
@@ -11,11 +11,13 @@ export function onKeyDown(state: DocUIState, e: KeyboardEvent) {
     if (e.key === "Alt") {
         state.input.altDown = true;
     }
-
-    if (e.key === "z" && state.input.ctrlDown) {
-        if (state.doc.doc.activeNode instanceof BitmapLayerNode) {
-            state.doc.doc.activeNode.undo();
-        }
+    if (checkShortcut("redo", e)) {
+        state.doc.doc.redo();
+    }
+    if (checkShortcut("undo", e)) {
+        state.doc.doc.undo();
+    }
+    else{
     }
 }
 

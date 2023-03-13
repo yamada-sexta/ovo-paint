@@ -29,7 +29,7 @@ export class OVOPaint {
             save: () => {
                 return this.saveDocument()
             },
-            open(s: string) {
+            open: (s: string) => {
                 const serializer = new OvoJsonSerializer();
                 const blob = new Blob([s], {type: "application/json"});
                 const doc = serializer.fromBlob(blob, "test");

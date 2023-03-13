@@ -69,9 +69,6 @@ export class BasicPen extends BitmapPaintTool {
     getMenu(): HTMLElement {
         let frame = div();
         frame.append(text("size: "))
-        // const txt = text(this.maxSize + "");
-        // txt.draggable = true;
-        let dragStartPos = [0, 0];
         const draggable = draggableNum(
             {
                 value: this.maxSize,
@@ -103,13 +100,10 @@ export class BasicPen extends BitmapPaintTool {
             key: ""
         })) {
             this.currEvent = "resize";
-            // console.log("resize")
         } else {
-            e.node.createSnapshot();
+            e.tracker.createSnapshot();
             this.currEvent = "draw";
-            // console.log("draw")
         }
-        // console.log(e);
         e.node.ctx.lineCap = "round";
     }
 
@@ -137,19 +131,15 @@ export class BasicPen extends BitmapPaintTool {
         function distance(a: Vec2, b: Vec2) {
             return Math.sqrt((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2);
         }
-
-
         this.maxSize = distance(e.pos, this._downPos);
     }
 
     drawLine(e: PaintToolEvent<BitmapLayerNode>) {
-
         if (e.pressure < 0.06) {
             return;
         }
         const ctx = e.node.ctx;
         ctx.strokeStyle = this.color;
-
         if (this.lastPoints.length >= 4) {
             let p1 = this.lastPoints[0];
             let p2 = this.lastPoints[1];
@@ -161,11 +151,11 @@ export class BasicPen extends BitmapPaintTool {
         }
         this.lastPoints.push(e.pos);
     }
-
     async onUp(e: PaintToolEvent<BitmapLayerNode>) {
         await super.onUp(e);
         this._downPos = null;
         this.currEvent = "none";
         this.lastPoints = [];
+        e.tracker.stageChange(e.node);
     }
 }

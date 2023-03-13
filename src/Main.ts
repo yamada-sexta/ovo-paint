@@ -28,9 +28,11 @@ async function main() {
     doc.rootNode.addNode(new GroupNode("folder4"));
     folder1.addNode(layer);
     folder2.addNode(new ShapeLayerNode("Shape Layer 1"));
+
+    layer.createSnapshot();
+    doc.stageChange(layer);
     doc.activeNode = layer;
     ovo.openDocument(doc);
-    ovo.openDocument(new OVODocument("Test Document 2", width, height));
     console.log(paintTools);
 }
 

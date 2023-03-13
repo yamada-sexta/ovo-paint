@@ -6,6 +6,13 @@ export class OVODocUIFrame implements IOVORootUI {
     canvas: HTMLCanvasElement;
 
     constructor() {
+        this.canvas = document.createElement("canvas");
+        this.updateCanvas();
+    }
+
+
+    updateCanvas(){
+        this.canvas.remove();
         let canvas = document.createElement("canvas");
         canvas.style.width = "100%";
         canvas.style.height = "100%";
@@ -17,6 +24,7 @@ export class OVODocUIFrame implements IOVORootUI {
         if (manager.currentDocument === null) {
             throw new Error("Cannot show document UI with no current document");
         }
+        this.updateCanvas();
         return (this.canvas);
     }
 

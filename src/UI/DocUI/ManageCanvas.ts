@@ -24,11 +24,12 @@ function setupCanvasStyle(state: DocUIState, canvas: HTMLCanvasElement, ctx: Can
     canvas.style.overflow = "hidden";
     canvas.style.touchAction = "none";
 
-    let image = assets.src_Assets_Images_paper_png;
+    let image = new Image();
+    image.src = assets.src_Assets_Images_paper_png.src;
     if (state.doc.doc.activeNode == state.doc.doc.rootNode) {
         console.log(doc.name + " is empty");
     }
-    printDocNodeTree(doc.rootNode);
+    // printDocNodeTree(doc.rootNode);
 
     image.onload = () => {
         const tmpCanvas = new OffscreenCanvas(image.width, image.height);
@@ -81,8 +82,6 @@ function setupCanvasEvents(state: DocUIState, canvas: HTMLCanvasElement, ctx: Ca
     document.body.addEventListener("keyup", (e) => {
         onKeyUp(state, e)
     })
-
-
     async function callFrame() {
         await update(state, ctx, canvas, state.doc.doc);
         requestAnimationFrame(callFrame);
