@@ -1,6 +1,5 @@
 import {div} from "../../DOM/DOMFunctions";
 import {currentTheme} from "../../Themes";
-import {DocUIState} from "../DocUIState";
 
 type VerticalAlignment = "top" | "bottom" | "center";
 type HorizontalAlignment = "left" | "right" | "center";
@@ -16,6 +15,10 @@ export class ContextMenu {
         this.frame = div();
         this.createMenu(content, root);
         this.setPos(pos, horizontalAlignment, verticalAlignment)
+    }
+
+    close() {
+        this.frame.remove();
     }
 
     private createMenu(content: HTMLElement, root: HTMLElement = document.body) {
@@ -62,8 +65,5 @@ export class ContextMenu {
         }
         this.frame.style.left = thisPos[0] + scrollPos[0] + "px";
         this.frame.style.top = thisPos[1] + scrollPos[1] + "px";
-    }
-    close() {
-        this.frame.remove();
     }
 }

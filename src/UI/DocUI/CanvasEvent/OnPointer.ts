@@ -1,4 +1,3 @@
-import {input} from "../../DOM/DOMFunctions";
 import {DocUIState} from "../DocUIState";
 import {PaintToolEvent} from "../../../core/src/PaintToolEvent";
 import {DocNode} from "../../../core/src/Documents/DocNodes/DocNode";

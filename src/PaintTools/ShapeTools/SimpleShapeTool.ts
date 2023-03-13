@@ -10,6 +10,13 @@ import {currentTheme} from "../../UI/Themes";
 import {draggableNum} from "../../UI/DOM/DraggableNum";
 
 export class SimpleShapeTool extends ShapePaintTool {
+    newShape: SimpleShape | null = null;
+    startPos: Vec2 | null = null;
+    shapeType: SimpleShapeType = "rectangle";
+    lineWidth: number = 1;
+    fillStyle: string = "#fff";
+    strokeStyle: string = "#000";
+
     shapeInRange(shape: Shape, pos: Vec2): boolean {
         if (!(shape instanceof SimpleShape)) return false;
         const {pos: shapePos, size: shapeSize} = shape;
@@ -30,14 +37,6 @@ export class SimpleShapeTool extends ShapePaintTool {
             }
         }
     }
-
-    newShape: SimpleShape | null = null;
-    startPos: Vec2 | null = null;
-
-    shapeType: SimpleShapeType = "rectangle";
-    lineWidth: number = 1;
-    fillStyle: string = "#fff";
-    strokeStyle: string = "#000";
 
     async onDown(e: PaintToolEvent<ShapeLayerNode>): Promise<void> {
         await super.onDown(e);
