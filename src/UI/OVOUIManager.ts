@@ -12,6 +12,19 @@ export class OVOUIManager {
     _documentList: OVODocument[] = [];
     root: HTMLDivElement;
     frame: HTMLDivElement;
+    _currUI: IOVORootUI;
+
+    get currUI(): IOVORootUI {
+        return this._currUI;
+    }
+
+    set currUI(ui: IOVORootUI) {
+        this._currUI = ui;
+        this.frame.innerHTML = "";
+        this.frame.appendChild(ui.getUI(this));
+        ui.onAppended(this);
+    }
+
 
     constructor(root: HTMLDivElement, doc: OVODocument | null = null) {
         this.root = root;
@@ -57,16 +70,5 @@ export class OVOUIManager {
         this.currUI = new OVODocUIFrame();
     }
 
-    _currUI: IOVORootUI;
 
-    get currUI(): IOVORootUI {
-        return this._currUI;
-    }
-
-    set currUI(ui: IOVORootUI) {
-        this._currUI = ui;
-        this.frame.innerHTML = "";
-        this.frame.appendChild(ui.getUI(this));
-        ui.onAppended(this);
-    }
 }

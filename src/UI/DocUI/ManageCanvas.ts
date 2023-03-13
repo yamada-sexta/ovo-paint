@@ -21,14 +21,12 @@ export function manageCanvas(canvas: HTMLCanvasElement, doc: OVODocument) {
 
 function setupCanvasStyle(state: DocUIState, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
     const doc = state.doc.doc;
-
     canvas.style.overflow = "hidden";
     canvas.style.touchAction = "none";
 
-
     let image = assets.src_Assets_Images_paper_png;
     if (state.doc.doc.activeNode == state.doc.doc.rootNode) {
-        throw new Error("No active node");
+        console.log(doc.name + " is empty");
     }
     printDocNodeTree(doc.rootNode);
 

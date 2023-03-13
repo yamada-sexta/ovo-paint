@@ -8,32 +8,7 @@ import {ShapeLayerNode} from "./core/src/Documents/DocNodes/Layers/ShapeLayer/Sh
 import {assets} from "./Assets/Assets";
 
 async function main() {
-    // tmp();
     let root = document.getElementById("ovo-root") as HTMLDivElement;
-
-    console.log(
-        (() => {
-            console.log("test1");
-            return "test";
-        })()
-    );
-    console.log(assets.src_Assets_Help_MD)
-
-    initializeUIDependencyOn();
-    // root.style.overflow = "hidden";
-
-    // typeCheck({
-    //     "name": "Test Document",
-    //     "width": 400,
-    //
-    // }
-    // , {
-    //     "name": "Test Document",
-    //     "width": 400,
-    //     "height": 400,
-    //
-    //     }
-    // )
 
     let ovo = new OVOPaint(root, true);
 
@@ -55,6 +30,7 @@ async function main() {
     folder2.addNode(new ShapeLayerNode("Shape Layer 1"));
     doc.activeNode = layer;
     ovo.openDocument(doc);
+    ovo.openDocument(new OVODocument("Test Document 2", width, height));
     console.log(paintTools);
 }
 

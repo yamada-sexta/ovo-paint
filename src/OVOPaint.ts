@@ -1,6 +1,7 @@
 import {OVOUIManager} from "./UI/OVOUIManager";
 import {OVODocument} from "./core/src/Documents/OVODocument";
 import {OvoJsonSerializer} from "./core/src/Documents/Serializers/OvoJsonSerializer";
+import {initializeUIDependencyOn} from "./UI/InitializeUIDependency";
 
 export class OVOPaint {
     manager: OVOUIManager;
@@ -15,6 +16,8 @@ export class OVOPaint {
         if (isPublic) {
             this.setPublic();
         }
+
+        initializeUIDependencyOn();
     }
 
     /**
@@ -58,6 +61,5 @@ export class OVOPaint {
         const serializer = new OvoJsonSerializer();
         const blob = serializer.toBlob(doc);
         console.log(blob);
-
     }
 }
