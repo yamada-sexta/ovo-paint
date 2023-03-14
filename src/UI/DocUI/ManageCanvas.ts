@@ -4,22 +4,26 @@ import {onDown, onMove, onUp} from "./CanvasEvent/OnPointer";
 import {update} from "./CanvasEvent/ViewerRender";
 import {createDocUIState, DocUIState} from "./DocUIState";
 import {BasicPen} from "../../PaintTools/BitmapPaintTools/BasicPen";
-import {printDocNodeTree} from "../../core/src/Debug";
 import {onKeyDown, onKeyUp} from "./CanvasEvent/OnKey";
 import {onContextMenu} from "./CanvasEvent/OnContextMenu";
 import {assets} from "../../Assets/Assets";
 
-export function manageCanvas(canvas: HTMLCanvasElement, doc: OVODocument) {
+/**
+ * Setup the canvas.
+ * @param canvas
+ * @param doc
+ */
+export async function manageCanvas(canvas: HTMLCanvasElement, doc: OVODocument) {
     const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
     if (!ctx) {
         throw new Error("Could not get 2D context from canvas");
     }
     const state = createDocUIState(canvas, ctx, doc, new BasicPen())
-    setupCanvasStyle(state, canvas, ctx);
-    setupCanvasEvents(state, canvas, ctx);
+    await setupCanvasStyle(state, canvas, ctx);
+    await setupCanvasEvents(state, canvas, ctx);
 }
 
-function setupCanvasStyle(state: DocUIState, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
+async function setupCanvasStyle(state: DocUIState, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
     const doc = state.doc.doc;
     canvas.style.overflow = "hidden";
     canvas.style.touchAction = "none";
@@ -51,26 +55,27 @@ function setupCanvasStyle(state: DocUIState, canvas: HTMLCanvasElement, ctx: Can
         canvas.height = canvas.clientHeight * scale;
         state.viewer.scale = scale;
         ctx.scale(scale, scale);
-        // console.log("Resized canvas to " + canvas.width + "x" + canvas.height);
-        // console.log("Scale factor: " + scale);
     }
 
-    (async () => {
-        await updateCanvasScale();
-    })();
+    await updateCanvasScale();
 
     window.addEventListener("resize", async () => {
         await updateCanvasScale();
     });
 
+    console.log(state.viewer.scale)
+
     state.doc.pos = [
-        canvas.width * state.viewer.scale / 2 - doc.width / 2,
-        canvas.height * state.viewer.scale / 2 - doc.height / 2
+        canvas.width * (state.viewer.scale / 2) / 2
+        - doc.width / 2 * state.doc.scale,
+        canvas.height * (state.viewer.scale / 2) / 2
+        - doc.height / 2 * state.doc.scale
     ];
+    console.log(state.doc.pos)
 }
 
 
-function setupCanvasEvents(state: DocUIState, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
+async function setupCanvasEvents(state: DocUIState, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
     canvas.addEventListener("pointermove", (e) => onMove(state, e))
     canvas.addEventListener("pointerdown", (e) => onDown(state, e));
     canvas.addEventListener("pointerup", (e) => onUp(state, e));
@@ -82,14 +87,12 @@ function setupCanvasEvents(state: DocUIState, canvas: HTMLCanvasElement, ctx: Ca
     document.body.addEventListener("keyup", (e) => {
         onKeyUp(state, e)
     })
+
     async function callFrame() {
         await update(state, ctx, canvas, state.doc.doc);
         requestAnimationFrame(callFrame);
     }
 
-    (
-        async () => {
-            await callFrame();
-        }
-    )()
+    await callFrame();
+
 }

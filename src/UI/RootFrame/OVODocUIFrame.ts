@@ -10,7 +10,6 @@ export class OVODocUIFrame implements IOVORootUI {
         this.updateCanvas();
     }
 
-
     updateCanvas(){
         this.canvas.remove();
         let canvas = document.createElement("canvas");

@@ -2,6 +2,9 @@ import {PaintTool} from "../../PaintTools/PaintTool";
 import {OVODocument} from "../../core/src/Documents/OVODocument";
 import {updateState} from "./UpdateState";
 
+/**
+ * State of the document display.
+ */
 interface IDocDisplayState {
     scaleMax: number;
     scaleMin: number;
@@ -11,6 +14,9 @@ interface IDocDisplayState {
     doc: OVODocument;
 }
 
+/**
+ * State of the viewer canvas.
+ */
 interface IViewerCanvasState {
     background: string | CanvasGradient | CanvasPattern;
     scale: number;
@@ -18,6 +24,9 @@ interface IViewerCanvasState {
     ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D;
 }
 
+/**
+ * State of the input.
+ */
 interface IInputState {
     canvasRawPos: [number, number]; // Absolute position on canvas
     pointerAbsPos: [number, number]; // Absolute position on window
@@ -28,6 +37,9 @@ interface IInputState {
     altDown: boolean;
 }
 
+/**
+ * State of the tool.
+ */
 interface IToolState {
     currentTool: PaintTool;
     availableTools: PaintTool[];
