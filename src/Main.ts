@@ -1,11 +1,11 @@
 import {OVOPaint} from "./OVOPaint";
-import {initializeUIDependencyOn} from "./UI/InitializeUIDependency";
 import {paintTools} from "./PaintTools/PaintTools";
 import {OVODocument} from "./core/src/Documents/OVODocument";
 import {BitmapLayerNode} from "./core/src/Documents/DocNodes/Layers/BitmapLayerNode";
 import {GroupNode} from "./core/src/Documents/DocNodes/GroupNode";
 import {ShapeLayerNode} from "./core/src/Documents/DocNodes/Layers/ShapeLayer/ShapeLayerNode";
-import {assets} from "./Assets/Assets";
+
+
 
 async function main() {
     let root = document.getElementById("ovo-root") as HTMLDivElement;
@@ -34,6 +34,12 @@ async function main() {
     doc.activeNode = layer;
     ovo.openDocument(doc);
     console.log(paintTools);
+    // <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-core"></script>
+    // <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-converter"></script>
+    // <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-webgl"></script>
+    // <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/handpose"></script>
+
+
 }
 
 main().then(

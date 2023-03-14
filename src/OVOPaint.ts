@@ -2,6 +2,7 @@ import {OVOUIManager} from "./UI/OVOUIManager";
 import {OVODocument} from "./core/src/Documents/OVODocument";
 import {OvoJsonSerializer} from "./core/src/Documents/Serializers/OvoJsonSerializer";
 import {initializeUIDependencyOn} from "./UI/InitializeUIDependency";
+import {assets} from "./Assets/Assets";
 
 export class OVOPaint {
     manager: OVOUIManager;
@@ -14,7 +15,8 @@ export class OVOPaint {
     constructor(root: HTMLDivElement, isPublic: boolean) {
         this.manager = new OVOUIManager(root);
         if (isPublic) {
-            this.setPublic();
+            this.setPublic().then(r => {
+            });
         }
 
         initializeUIDependencyOn();
@@ -23,7 +25,17 @@ export class OVOPaint {
     /**
      * Exposes the OVO Paint API to the window.
      */
-    setPublic() {
+    async setPublic() {
+        const qna = require('@tensorflow-models/qna');
+
+        document.head.appendChild(document.createElement("script")).src = "https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-core";
+        document.head.appendChild(document.createElement("script")).src = "https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-converter";
+
+        document.head.appendChild(document.createElement("script")).src = "https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-webgl";
+
+        const model = await (qna).load();
+        const passage = assets.src_Assets_Help_MD;
+
         (window as any).OVO = {
             manager: this.manager,
             save: () => {
@@ -37,7 +49,20 @@ export class OVOPaint {
                     console.log(doc)
                     this.manager.currentDocument = doc;
                 });
+            },
+            help: async (question: string) => {
+                const answers = await model.findAnswers(question, passage);
+                // console.log(answers);
+                let answer = "";
+                if (answers.length > 0) {
+                    answer =answers[0].text;
+                } else {
+                    answer = "No answer found";
+                }
+                console.log(answer)
+                return answer;
             }
+
         }
 
     }
