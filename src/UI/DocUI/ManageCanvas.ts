@@ -57,19 +57,26 @@ async function setupCanvasStyle(state: DocUIState, canvas: HTMLCanvasElement, ct
         ctx.scale(scale, scale);
     }
 
-    await updateCanvasScale();
-
     window.addEventListener("resize", async () => {
         await updateCanvasScale();
     });
 
-    console.log(state.viewer.scale)
+    await updateCanvasScale();
+
+
+    console.log(state.viewer.scale, state.doc.scale)
+
+    console.log(canvas.width, canvas.height)
+
+    console.log(doc.width, doc.height)
+
+    const scale = state.viewer.scale;
+    const canvasWidth = canvas.clientWidth / scale;
+    const canvasHeight = canvas.clientHeight / scale;
 
     state.doc.pos = [
-        canvas.width * (state.viewer.scale / 2) / 2
-        - doc.width / 2 * state.doc.scale,
-        canvas.height * (state.viewer.scale / 2) / 2
-        - doc.height / 2 * state.doc.scale
+        (canvasWidth / 2 - doc.width * state.doc.scale / 2),
+        (canvasHeight / 2 - doc.height * state.doc.scale / 2)
     ];
     console.log(state.doc.pos)
 }

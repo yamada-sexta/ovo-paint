@@ -12,7 +12,7 @@ async function main() {
     let ovo = new OVOPaint(root, true);
 
     // TEST
-    const width = 400;
+    const width = 212;
     const height = 400;
     const doc = new OVODocument(
         "Test Document",
