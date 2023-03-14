@@ -33,8 +33,6 @@ async function setupCanvasStyle(state: DocUIState, canvas: HTMLCanvasElement, ct
     if (state.doc.doc.activeNode == state.doc.doc.rootNode) {
         console.log(doc.name + " is empty");
     }
-    // printDocNodeTree(doc.rootNode);
-
     image.onload = () => {
         const tmpCanvas = new OffscreenCanvas(image.width, image.height);
         const tmpCtx = tmpCanvas.getContext("2d") as OffscreenCanvasRenderingContext2D;
