@@ -12,10 +12,10 @@ export function onKeyDown(state: DocUIState, e: KeyboardEvent) {
         state.input.altDown = true;
     }
     if (checkShortcut("redo", e)) {
-        state.doc.doc.redo();
+        state.doc.doc.activeNode.redo();
     }
     if (checkShortcut("undo", e)) {
-        state.doc.doc.undo();
+        state.doc.doc.activeNode.undo();
     }
     else{
     }

@@ -1,14 +1,14 @@
 import {BitmapPaintTool} from "./BitmapPaintTool";
 import {PaintToolEvent} from "../../core/src/PaintToolEvent";
 import {BitmapLayerNode} from "../../core/src/Documents/DocNodes/Layers/BitmapLayerNode";
-import {drawHermitCurve} from "../../core/src/submodules/common-ts-utils/Canvas/PaintCanvas";
+import {clearCanvas, drawHermitCurve} from "../../core/src/submodules/common-ts-utils/Canvas/PaintCanvas";
 import {br, div, text} from "../../UI/DOM/DOMFunctions";
 import {PaintToolUIRenderEvent} from "../PaintTool";
 import {checkShortcut} from "../../Shortcuts/ShortcutsChecker";
 import {Vec2} from "../../core/src/submodules/common-ts-utils/Math/Vector";
 import {draggableNum} from "../../UI/DOM/DraggableNum";
+import {IOperation} from "../../core/src/Interface/IOperation";
 
-// @registerPaintTool
 export class BasicPen extends BitmapPaintTool {
     // isDrawing: boolean = false;
 
@@ -101,7 +101,7 @@ export class BasicPen extends BitmapPaintTool {
         })) {
             this.currEvent = "resize";
         } else {
-            e.tracker.createSnapshot();
+            e.node.createSnapshot();
             this.currEvent = "draw";
         }
         e.node.ctx.lineCap = "round";
@@ -131,6 +131,7 @@ export class BasicPen extends BitmapPaintTool {
         function distance(a: Vec2, b: Vec2) {
             return Math.sqrt((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2);
         }
+
         this.maxSize = distance(e.pos, this._downPos);
     }
 
@@ -151,11 +152,24 @@ export class BasicPen extends BitmapPaintTool {
         }
         this.lastPoints.push(e.pos);
     }
+
     async onUp(e: PaintToolEvent<BitmapLayerNode>) {
         await super.onUp(e);
         this._downPos = null;
         this.currEvent = "none";
         this.lastPoints = [];
-        e.tracker.stageChange(e.node);
+        // e.tracker.pushChange(bitmapToOp(e.node));
+    }
+}
+
+function bitmapToOp(node: BitmapLayerNode): IOperation {
+    const image = node.canvas.transferToImageBitmap();
+    node.ctx.drawImage(image, 0, 0);
+
+    return {
+        do: () => {
+            clearCanvas(node.canvas);
+            node.ctx.drawImage(image, 0, 0);
+        }
     }
 }

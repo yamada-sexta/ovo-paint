@@ -33,7 +33,7 @@ export class OVOPaint {
 
         document.head.appendChild(document.createElement("script")).src = "https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-webgl";
 
-        const model = await (qna).load();
+        // const model = await (qna).load();
         const passage = assets.src_Assets_Help_MD;
 
         (window as any).OVO = {
@@ -51,15 +51,14 @@ export class OVOPaint {
                 });
             },
             help: async (question: string) => {
-                const answers = await model.findAnswers(question, passage);
-                // console.log(answers);
+                // const answers = await model.findAnswers(question, passage);
                 let answer = "";
-                if (answers.length > 0) {
-                    answer =answers[0].text;
-                } else {
-                    answer = "No answer found";
-                }
-                console.log(answer)
+                // if (answers.length > 0) {
+                //     answer =answers[0].text;
+                // } else {
+                //     answer = "No answer found";
+                // }
+                // console.log(answer)
                 return answer;
             }
 

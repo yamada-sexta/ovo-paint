@@ -10,6 +10,11 @@ It is designed to be easy to use and to be a good starting point for learning ho
 ## How to use
 * Click on the canvas to start drawing
 * Right click to open the context menu
+
+ovoPaint
+ovoPaint stands for "Open Visual Object Paint" and is a simple and easy to use paint tool/library written in Typescript.
+
+It is currently under active development and is not yet ready for use.
 `,
 src_Assets_Images_paper_png: 
         ((() => {

@@ -9,7 +9,6 @@ import {ShapeLayerNode} from "./core/src/Documents/DocNodes/Layers/ShapeLayer/Sh
 
 async function main() {
     let root = document.getElementById("ovo-root") as HTMLDivElement;
-
     let ovo = new OVOPaint(root, true);
 
     // TEST
@@ -29,17 +28,15 @@ async function main() {
     folder1.addNode(layer);
     folder2.addNode(new ShapeLayerNode("Shape Layer 1"));
 
-    layer.createSnapshot();
-    doc.stageChange(layer);
+    // layer.createSnapshot();
+    // doc.stageChange(layer);
     doc.activeNode = layer;
     ovo.openDocument(doc);
     console.log(paintTools);
-    // <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-core"></script>
-    // <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-converter"></script>
-    // <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-webgl"></script>
-    // <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/handpose"></script>
 
+    function bitmapToOp(bitmap:BitmapLayerNode){
 
+    }
 }
 
 main().then(
