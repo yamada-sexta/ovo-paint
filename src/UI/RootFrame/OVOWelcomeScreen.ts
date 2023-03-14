@@ -8,11 +8,21 @@ import {
 } from "../../core/src/submodules/common-ts-utils/Files/SystemFileAccess/SystemFileAccessFileGetter";
 import {OvoJsonSerializer} from "../../core/src/Documents/Serializers/OvoJsonSerializer";
 
+const welcomeMessages = [
+    "Welcome to OVO Paint",
+    "Welcome back to OVO Paint!",
+    "Hello there :)",
+]
+
+function getRandomWelcomeMessage() {
+    return welcomeMessages[Math.floor(Math.random() * welcomeMessages.length)];
+}
+
 export class OVOWelcomeScreen implements IOVORootUI {
     getUI(manager: OVOUIManager): HTMLElement {
         let title = (div({
             children: [
-                text("Welcome to OVO Paint!")
+                text(getRandomWelcomeMessage()),
             ]
         }))
         // Create two buttons
