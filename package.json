@@ -28,6 +28,7 @@
   "dependencies": {
     "@tensorflow-models/qna": "^1.0.1",
     "@tensorflow/tfjs": "^4.2.0",
+    "ag-psd": "^15.0.5",
     "esbuild": "^0.17.11",
     "esbuild-plugin-ignore": "^1.1.1"
   }
