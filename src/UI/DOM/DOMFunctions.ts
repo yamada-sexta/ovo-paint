@@ -60,7 +60,7 @@ export function label(
     return label;
 }
 
-export function input(props: {
+export function input(props?: {
     description?: string,
     type: string,
     value: string,
@@ -81,6 +81,9 @@ export function input(props: {
         input.style.borderColor = currentTheme.border;
     }
 
+    if (!props) {
+        return input;
+    }
     input.type = props.type;
     input.value = props.value;
     if (props.description) {

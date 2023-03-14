@@ -1,6 +1,7 @@
 import {OVODocument} from "../core/src/Documents/OVODocument";
 import {br, button, div, input, label, text} from "./DOM/DOMFunctions";
 import {openPopUp} from "./OpenPopUp";
+import {currentTheme} from "./Themes";
 
 const templateOptions = [
     {
@@ -88,9 +89,10 @@ export async function openCreateWindow(
         }
 
 
-        let createDiv = getCreateDiv({createCallback: finish, errorCallback: errorCallback});
+        const createDiv = getCreateDiv({createCallback: finish, errorCallback: errorCallback});
 
-        let createWindow = openPopUp("Create New Document", windowWidth, windowHeight, createDiv);
+        const createWindow = openPopUp("Create New Document", windowWidth, windowHeight, createDiv);
+
 
         function errorCallback(error: string) {
             createWindow?.alert(error)
@@ -101,6 +103,7 @@ export async function openCreateWindow(
             reject("Could not open window");
             return;
         }
+        createWindow.document.body.style.backgroundColor = currentTheme.background;
     });
 }
 
@@ -231,7 +234,7 @@ function getCreateDiv(props: {
     templateDropdown.onchange = templateDropdownChange;
 
     templateDropdownChange();
-    return div(
+    const out = div(
         {
             children: [
                 title,
@@ -250,4 +253,12 @@ function getCreateDiv(props: {
             ]
         }
     );
+    out.style.textAlign = "center";
+    out.style.backgroundColor = currentTheme.background;
+    out.style.color = currentTheme.text;
+    // out.style.padding = "10px";
+    out.style.width = "100%";
+    out.style.height = "100%";
+
+    return out
 }

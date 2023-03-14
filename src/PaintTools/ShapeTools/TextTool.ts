@@ -2,13 +2,14 @@ import {ShapePaintTool} from "./ShapePaintTool";
 import {PaintToolEvent} from "../../core/src/PaintToolEvent";
 import {ShapeLayerNode} from "../../core/src/Documents/DocNodes/Layers/ShapeLayer/ShapeLayerNode";
 import {TextShape} from "./Shape/TextShape";
-import {br, div} from "../../UI/DOM/DOMFunctions";
+import {br, div, input, label} from "../../UI/DOM/DOMFunctions";
 import {Shape} from "../../core/src/Documents/DocNodes/Layers/ShapeLayer/Shape";
 import {Vec2} from "../../core/src/submodules/common-ts-utils/Math/Vector";
 import {PaintToolUIRenderEvent} from "../PaintTool";
 import {currentTheme} from "../../UI/Themes";
 import {closeDocContextMenu} from "../../UI/DocUI/DocContextMenu/MasterDocContextMenu";
 import {OVODocument} from "../../core/src/Documents/OVODocument";
+import {draggableNum} from "../../UI/DOM/DraggableNum";
 
 export class TextTool extends ShapePaintTool {
     pointerPos: Vec2 = [0, 0];
@@ -17,51 +18,73 @@ export class TextTool extends ShapePaintTool {
 
     getMenu(): HTMLElement {
         // if (!this.selectedShape) return div();
-        let textShape = this.selectedShape as TextShape;
+        let textShape = this.selectedShape;
         if (!textShape) {
             textShape = new TextShape("", this.pointerPos, "Arial", 20);
         }
         let frame = div();
-        let input = document.createElement("input");
-        input.type = "text";
-        input.placeholder = "Text";
-        input.value = textShape.content;
-        frame.appendChild(input);
+        let textInput = input();
+        textInput.type = "text";
+        textInput.placeholder = "Text";
+
+        frame.appendChild(label({
+            text: "Text",
+            children: [textInput],
+        }));
         frame.append(br());
-        let font = document.createElement("input");
+        let font = input();
         font.type = "text";
         font.placeholder = "Font";
-        font.value = textShape.font;
-        frame.appendChild(font);
+        frame.appendChild(label({
+            text: "Font",
+            children: [font],
+        }));
         frame.append(br());
-        let size = document.createElement("input");
-        size.type = "number";
-        size.placeholder = "Size";
-        size.value = textShape.fontSize.toString();
-        frame.appendChild(size);
+        let sizeVal = 20;
+        if (textShape instanceof TextShape) {
+            textInput.value = textShape.content;
+
+            font.value = textShape.font;
+            sizeVal = textShape.fontSize;
+        }
+        let size = draggableNum({
+            onchange: (val) => {
+                if (textShape instanceof TextShape) {
+                    textShape.fontSize = val;
+                    textShape.updateSize();
+                    sizeVal = val;
+                }
+            },
+            value: sizeVal,
+        });
+        frame.appendChild(label({
+            text: "Font Size: ",
+            children: [size],
+        }));
         frame.append(br());
         let button = document.createElement("button");
 
         if (this.selectedShape) {
             button.innerText = "Save";
             button.onclick = () => {
-                if (input.value === "") return;
+                if (textInput.value === "") return;
                 if (font.value === "") return;
-                if (size.value === "") return;
-                textShape.content = input.value;
+                if (!(textShape instanceof TextShape)) {
+                    throw new Error("TextShape is not a TextShape");
+                }
+                textShape.content = textInput.value;
                 textShape.font = font.value;
-                textShape.fontSize = parseInt(size.value);
+                textShape.fontSize = sizeVal;
                 textShape.updateSize();
                 closeDocContextMenu();
             }
         } else if (this.node !== null) {
             button.innerText = "Create";
             button.onclick = () => {
-                if (input.value === "") return;
+                if (textInput.value === "") return;
                 if (font.value === "") return;
-                if (size.value === "") return;
-                let shape = new TextShape("Text", this.pointerPos, font.value, parseInt(size.value));
-                shape.content = input.value;
+                let shape = new TextShape("Text", this.pointerPos, font.value, sizeVal);
+                shape.content = textInput.value;
                 if (this.node === null) throw new Error("Node is null");
                 this.node.addShape(shape);
                 closeDocContextMenu();
