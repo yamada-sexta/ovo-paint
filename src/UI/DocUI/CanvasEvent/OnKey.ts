@@ -17,12 +17,20 @@ export function onKeyDown(state: DocUIState, e: KeyboardEvent) {
     if (checkShortcut("undo", e)) {
         state.doc.doc.activeNode.undo();
     }
-    else{
+    if (checkShortcut("export", e)) {
+        e.preventDefault();
+        console.log("exports")
     }
+    if (checkShortcut("saveFile", e)) {
+        e.preventDefault();
+        console.log("saveFile")
+        state.doc.doc.save().then(r => console.log(r));
+    }
+    // console.log(e.key)
+    e.stopPropagation();
 }
 
 export function onKeyUp(state: DocUIState, e: KeyboardEvent) {
-
     if (e.key === "Control") {
         state.input.ctrlDown = false;
     }

@@ -5,7 +5,7 @@ export interface IShortcut {
     altKey: boolean;
 }
 
-type shortcutName = "resizePen" | "saveFile" | "redo" | "undo";
+type shortcutName = "resizePen" | "saveFile" | "redo" | "undo" | "export";
 
 
 export function checkShortcut(eventName: shortcutName,
@@ -20,6 +20,10 @@ export function checkShortcut(eventName: shortcutName,
             return e.ctrlKey && e.shiftKey && key === "z";
         case "undo":
             return e.ctrlKey && key === "z" && !e.shiftKey;
+        case "export":
+            console.log(e)
+            return e.ctrlKey && key === "e";
+
     }
     return false;
 }

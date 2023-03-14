@@ -15,6 +15,7 @@ type ThemeProp = {
     accent?: string,
     accentText?: string,
     hint?: string,
+
 }
 
 class OVOTheme {

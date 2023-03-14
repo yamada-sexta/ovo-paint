@@ -102,6 +102,25 @@ export function button(
     button.classList.add(baseClass);
     button.innerText = props.text;
     button.onclick = props.onclick;
+    button.style.color = currentTheme.text;
+    button.style.backgroundColor = currentTheme.background;
+    button.style.borderColor = currentTheme.border;
+    button.style.borderStyle = "solid";
+    button.style.borderWidth = "1px";
+    button.style.outline = "none";
+
+    button.onmouseover = (e) => {
+        button.style.backgroundColor = currentTheme.hover;
+    }
+    button.onmouseout = (e) => {
+        button.style.backgroundColor = currentTheme.background;
+    }
+    button.onmousedown = (e) => {
+        button.style.backgroundColor = currentTheme.selected;
+    }
+    button.onmouseup = (e) => {
+        button.style.backgroundColor = currentTheme.hover;
+    }
     return button;
 }
 
@@ -200,21 +219,6 @@ export function iconBtn(
     textElement.style.marginLeft = "5px";
     btn.appendChild(textElement);
     btn.onclick = onclick;
-
-    btn.style.color = currentTheme.text;
-    btn.style.backgroundColor = currentTheme.background;
-    btn.style.borderColor = currentTheme.border;
-    btn.style.borderStyle = "solid";
-    btn.style.borderWidth = "1px";
-    btn.style.outline = "none";
-
-    btn.onmouseover = (e) => {
-        btn.style.backgroundColor = currentTheme.hover;
-    }
-    btn.onmouseout = (e) => {
-        btn.style.backgroundColor = currentTheme.background;
-    }
-
 
     return btn;
 }

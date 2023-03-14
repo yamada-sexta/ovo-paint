@@ -31,12 +31,8 @@ async function main() {
     // layer.createSnapshot();
     // doc.stageChange(layer);
     doc.activeNode = layer;
-    ovo.openDocument(doc);
+    // ovo.openDocument(doc);
     console.log(paintTools);
-
-    function bitmapToOp(bitmap:BitmapLayerNode){
-
-    }
 }
 
 main().then(
