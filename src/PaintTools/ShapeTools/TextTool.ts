@@ -2,7 +2,7 @@ import {ShapePaintTool} from "./ShapePaintTool";
 import {PaintToolEvent} from "../../core/src/PaintToolEvent";
 import {ShapeLayerNode} from "../../core/src/Documents/DocNodes/Layers/ShapeLayer/ShapeLayerNode";
 import {TextShape} from "./Shape/TextShape";
-import {br, div, input, label} from "../../UI/DOM/DOMFunctions";
+import {br, div, iconBtn, input, label} from "../../UI/DOM/DOMFunctions";
 import {Shape} from "../../core/src/Documents/DocNodes/Layers/ShapeLayer/Shape";
 import {Vec2} from "../../core/src/submodules/common-ts-utils/Math/Vector";
 import {PaintToolUIRenderEvent} from "../PaintTool";
@@ -16,16 +16,41 @@ export class TextTool extends ShapePaintTool {
 
     node: ShapeLayerNode | null = null;
 
+    default = {
+        content: "Edit Text in Context Menu",
+        font: "Roboto",
+        fontSize: 20,
+    }
     getMenu(): HTMLElement {
         // if (!this.selectedShape) return div();
+        if (!this.selectedShape && this.hoveredShape) {
+            this.selectedShape = this.hoveredShape;
+        }
         let textShape = this.selectedShape;
-        if (!textShape) {
-            textShape = new TextShape("", this.pointerPos, "Arial", 20);
+        const createNewShape = () => {
+            const newShape = new TextShape(this.default.content, this.pointerPos, font.value, sizeVal);
+            newShape.content = textInput.value;
+            newShape.font = font.value;
+            newShape.fontSize = sizeVal;
+            newShape.updateSize();
+            if (this.node) {
+                this.node.addShape(newShape);
+            }
+            this.selectedShape = newShape;
+        }
+
+        const updateShape = () => {
+            if (textShape instanceof TextShape) {
+                textShape.content = textInput.value;
+                textShape.font = font.value;
+                textShape.fontSize = sizeVal;
+                textShape.updateSize();
+            }
         }
         let frame = div();
         let textInput = input();
         textInput.type = "text";
-        textInput.placeholder = "Text";
+        textInput.placeholder = "Your Text";
 
         frame.appendChild(label({
             text: "Text",
@@ -35,24 +60,28 @@ export class TextTool extends ShapePaintTool {
         let font = input();
         font.type = "text";
         font.placeholder = "Font";
+        font.onchange = () => {
+            updateShape();
+        }
         frame.appendChild(label({
             text: "Font",
             children: [font],
         }));
         frame.append(br());
-        let sizeVal = 20;
+        let sizeVal = this.default.fontSize;
         if (textShape instanceof TextShape) {
             textInput.value = textShape.content;
-
             font.value = textShape.font;
             sizeVal = textShape.fontSize;
+        } else {
+            textInput.value = "";
+            font.value = this.default.font;
         }
         let size = draggableNum({
             onchange: (val) => {
                 if (textShape instanceof TextShape) {
-                    textShape.fontSize = val;
-                    textShape.updateSize();
                     sizeVal = val;
+                    updateShape();
                 }
             },
             value: sizeVal,
@@ -62,36 +91,51 @@ export class TextTool extends ShapePaintTool {
             children: [size],
         }));
         frame.append(br());
-        let button = document.createElement("button");
+        if (textShape instanceof TextShape) {
+            const saveBtn = iconBtn(
+                "check",
+                "Save",
+                () => {
+                    if (textInput.value === "") return;
+                    if (font.value === "") return;
+                    if (!(textShape instanceof TextShape)) {
 
-        if (this.selectedShape) {
-            button.innerText = "Save";
-            button.onclick = () => {
-                if (textInput.value === "") return;
-                if (font.value === "") return;
-                if (!(textShape instanceof TextShape)) {
-                    throw new Error("TextShape is not a TextShape");
+                    } else {
+                        textShape.content = textInput.value;
+                        textShape.font = font.value;
+                        textShape.fontSize = sizeVal;
+                        textShape.updateSize();
+                    }
+                    closeDocContextMenu();
                 }
-                textShape.content = textInput.value;
-                textShape.font = font.value;
-                textShape.fontSize = sizeVal;
-                textShape.updateSize();
-                closeDocContextMenu();
-            }
-        } else if (this.node !== null) {
-            button.innerText = "Create";
-            button.onclick = () => {
-                if (textInput.value === "") return;
-                if (font.value === "") return;
-                let shape = new TextShape("Text", this.pointerPos, font.value, sizeVal);
-                shape.content = textInput.value;
-                if (this.node === null) throw new Error("Node is null");
-                this.node.addShape(shape);
-                closeDocContextMenu();
-            }
+            )
+            frame.appendChild(saveBtn);
+            const deleteBtn = iconBtn(
+                "Delete",
+                "Delete",
+                () => {
+                    if (this.node && this.selectedShape) {
+                        this.node.removeShape(this.selectedShape);
+                    }
+                    closeDocContextMenu();
+                }
+            )
+            frame.appendChild(deleteBtn);
+
+        } else {
+            const createBtn = iconBtn(
+                "check",
+                "Create",
+                () => {
+                    if (textInput.value === "") return;
+                    if (font.value === "") return;
+                    createNewShape();
+                    closeDocContextMenu();
+                }
+            )
+            frame.appendChild(createBtn);
         }
 
-        frame.appendChild(button);
         return frame;
     }
 
@@ -100,9 +144,10 @@ export class TextTool extends ShapePaintTool {
         if (!(this.selectedShape)) {
             this.node = e.node;
             this.pointerPos = e.pos;
+            let shape = new TextShape(this.default.content, this.pointerPos, this.default.font, this.default.fontSize);
+            this.node.addShape(shape);
             return;
         }
-        if (!(this.selectedShape instanceof TextShape)) return;
     }
 
     drawSelfUI(e: PaintToolUIRenderEvent) {

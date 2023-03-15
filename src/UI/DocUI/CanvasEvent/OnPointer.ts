@@ -24,11 +24,6 @@ export async function onDown(state: DocUIState, e: PointerEvent) {
 
 async function onRightClick(state: DocUIState, e: PointerEvent) {
     e.preventDefault();
-    console.log("right click")
-    // openToolContextMenu(state, [e.clientX + 100,
-    //     e.clientY + 100]);
-
-    // state.contextMenu.open();
 }
 
 async function onMiddleClick(state: DocUIState, e: PointerEvent) {
@@ -37,9 +32,12 @@ async function onMiddleClick(state: DocUIState, e: PointerEvent) {
 
 async function onLeftClick(state: DocUIState, e: PointerEvent) {
     e.preventDefault();
-    // closeContextMenu();
+    if (state.contextMenu.open){
+        closeDocContextMenu();
+        state.contextMenu.open = false;
+        return;
+    }
 
-    closeDocContextMenu();
     await state.tool.currentTool.onDown(createPaintToolEvent(state, e));
 }
 
@@ -65,7 +63,7 @@ function createPaintToolEvent(state: DocUIState, e: PointerEvent): PaintToolEven
             ctrl: e.ctrlKey,
             alt: e.altKey,
         },
-        tracker: state.doc.doc
+        // tracker: state.doc.doc
     }
 }
 
@@ -83,6 +81,5 @@ export async function onMove(state: DocUIState, e: PointerEvent) {
 
 export async function onUp(state: DocUIState, e: PointerEvent) {
     state.input.downPos = null;
-    console.log("up")
     await state.tool.currentTool.onUp(createPaintToolEvent(state, e));
 }

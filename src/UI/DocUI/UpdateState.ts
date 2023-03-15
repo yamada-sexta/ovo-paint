@@ -16,7 +16,6 @@ function getAvailableTools(node: DocNode): PaintTool[] {
 
 export function updateState(state: DocUIState) {
     const newAvailableTools = getAvailableTools(state.doc.doc.activeNode);
-    // console.log(newAvailableTools)
     state.tool.availableTools = newAvailableTools;
     if (!newAvailableTools.includes(state.tool.currentTool)) {
         state.tool.currentTool = newAvailableTools[0];

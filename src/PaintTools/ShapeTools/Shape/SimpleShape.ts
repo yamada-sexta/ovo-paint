@@ -43,6 +43,10 @@ export class SimpleShape extends Shape<SimpleShapeState> {
         return this._state.pos;
     }
 
+    set pos(pos: Vec2) {
+        this._state.pos = pos;
+    }
+
     get size(): Vec2 {
         return this._state.size;
     }

@@ -55,6 +55,9 @@ export interface DocUIState {
     input: IInputState;
     viewer: IViewerCanvasState;
     tool: IToolState;
+    contextMenu: {
+        open: boolean;
+    }
 }
 
 /**
@@ -98,6 +101,9 @@ export function createDocUIState(
             tool: {
                 currentTool: tool,
                 availableTools: []
+            },
+            contextMenu: {
+                open: false
             }
         }
 

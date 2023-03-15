@@ -11,6 +11,11 @@ import {draggableNum} from "../../UI/DOM/DraggableNum";
 
 export class SimpleShapeTool extends ShapePaintTool {
     newShape: SimpleShape | null = null;
+    oldShape: {
+        shape: SimpleShape,
+        pos: Vec2,
+        size: Vec2,
+    } | null = null;
     startPos: Vec2 | null = null;
     shapeType: SimpleShapeType = "rectangle";
     lineWidth: number = 1;
@@ -41,8 +46,23 @@ export class SimpleShapeTool extends ShapePaintTool {
     async onDown(e: PaintToolEvent<ShapeLayerNode>): Promise<void> {
         await super.onDown(e);
         if (this.selectedShape) {
-            return;
+            this.startEditOldShape(e);
+        } else {
+            this.startCreateNewShape(e);
         }
+    }
+
+    startEditOldShape(e: PaintToolEvent<ShapeLayerNode>): void {
+        this.startPos = e.pos;
+        const shape = this.selectedShape as SimpleShape;
+        this.oldShape = {
+            shape: shape,
+            pos: shape.pos,
+            size: shape.size,
+        }
+    }
+
+    startCreateNewShape(e: PaintToolEvent<ShapeLayerNode>): void {
         this.startPos = e.pos;
         this.newShape = new SimpleShape(e.pos, [0, 0], this.shapeType, this.fillStyle, this.strokeStyle, this.lineWidth);
         e.node.shapes.push(this.newShape);
@@ -52,7 +72,27 @@ export class SimpleShapeTool extends ShapePaintTool {
         await super.onMove(e);
         if (!this.startPos) return;
         if (this.newShape && this.startPos) {
+            this.editNewShape(e)
+        }else if (this.oldShape && this.startPos) {
+            this.editOldShape(e);
+        }
+    }
+
+    editNewShape(e: PaintToolEvent<ShapeLayerNode>): void {
+        if (!this.startPos) return;
+        if (this.newShape && this.startPos) {
             this.newShape.size = [e.pos[0] - this.startPos[0], e.pos[1] - this.startPos[1]];
+        }
+    }
+
+    editOldShape(e: PaintToolEvent<ShapeLayerNode>): void {
+        if (!this.startPos) return;
+        if (this.oldShape && this.startPos) {
+            const {shape, pos, size} = this.oldShape;
+            const {pos: oldPos, size: oldSize} = shape;
+            const diff = [e.pos[0] - this.startPos[0], e.pos[1] - this.startPos[1]];
+            shape.pos = [pos[0] + diff[0], pos[1] + diff[1]];
+            // shape.size = [size[0] + diff[0], size[1] + diff[1]];
         }
     }
 
