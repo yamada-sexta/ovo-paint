@@ -37,6 +37,7 @@ async function main() {
 
 main().then(
     () => {
-        console.log("Main finished");
+    console.console.log("Main finished");
+    
     }
 )
