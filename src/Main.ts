@@ -6,7 +6,6 @@ import {GroupNode} from "./core/src/Documents/DocNodes/GroupNode";
 import {ShapeLayerNode} from "./core/src/Documents/DocNodes/Layers/ShapeLayer/ShapeLayerNode";
 
 
-
 async function main() {
     let root = document.getElementById("ovo-root") as HTMLDivElement;
     let ovo = new OVOPaint(root, true);
@@ -37,7 +36,6 @@ async function main() {
 
 main().then(
     () => {
-    console.console.log("Main finished");
-    
+        console.log("Main finished");
     }
 )
