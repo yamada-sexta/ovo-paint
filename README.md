@@ -12,7 +12,7 @@ It is currently under active development and is not yet ready for use.
 - [x] Basic file saving
 - [x] Basic file loading
 - [x] Basic script support
-- [ ] Full redo and undo
+- [ ] Redo and undo (partially implemented)
 - [ ] Basic image
 - [ ] ~~Basic export~~ (Not ideal given the current JavaScript API)
 - [ ] ~~Basic import~~ (Not ideal given the current JavaScript API)
