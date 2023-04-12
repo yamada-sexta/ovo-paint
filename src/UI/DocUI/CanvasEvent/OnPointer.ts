@@ -1,7 +1,7 @@
 import {DocUIState} from "../DocUIState";
-import {PaintToolEvent} from "../../../core/src/PaintToolEvent";
-import {DocNode} from "../../../core/src/Documents/DocNodes/DocNode";
-import {Vec2} from "../../../core/src/submodules/common-ts-utils/Math/Vector";
+import {PaintToolEvent} from "../../../Core/PaintToolEvent";
+import {DocNode} from "../../../Core/Documents/DocNodes/DocNode";
+import {Vec2} from "../../../Core/submodules/common-ts-utils/Math/Vector";
 import {closeDocContextMenu} from "../DocContextMenu/MasterDocContextMenu";
 
 // let isDown = false;

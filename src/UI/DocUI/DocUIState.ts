@@ -1,5 +1,5 @@
 import {PaintTool} from "../../PaintTools/PaintTool";
-import {OVODocument} from "../../core/src/Documents/OVODocument";
+import {OVODocument} from "../../Core/Documents/OVODocument";
 import {updateState} from "./UpdateState";
 
 /**

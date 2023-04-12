@@ -1,5 +1,5 @@
 import {DocUIState} from "./DocUIState";
-import {DocNode} from "../../core/src/Documents/DocNodes/DocNode";
+import {DocNode} from "../../Core/Documents/DocNodes/DocNode";
 import {PaintTool} from "../../PaintTools/PaintTool";
 import {paintTools} from "../../PaintTools/PaintTools";
 

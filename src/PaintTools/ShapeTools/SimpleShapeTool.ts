@@ -1,9 +1,9 @@
 import {ShapePaintTool} from "./ShapePaintTool";
-import {Vec2} from "../../core/src/submodules/common-ts-utils/Math/Vector";
-import {Shape} from "../../core/src/Documents/DocNodes/Layers/ShapeLayer/Shape";
+import {Vec2} from "../../Core/submodules/common-ts-utils/Math/Vector";
+import {Shape} from "../../Core/Documents/DocNodes/Layers/ShapeLayer/Shape";
 import {SimpleShape, SimpleShapeType} from "./Shape/SimpleShape";
-import {PaintToolEvent} from "../../core/src/PaintToolEvent";
-import {ShapeLayerNode} from "../../core/src/Documents/DocNodes/Layers/ShapeLayer/ShapeLayerNode";
+import {PaintToolEvent} from "../../Core/PaintToolEvent";
+import {ShapeLayerNode} from "../../Core/Documents/DocNodes/Layers/ShapeLayer/ShapeLayerNode";
 import {br, colorPicker, div, text} from "../../UI/DOM/DOMFunctions";
 import {PaintToolUIRenderEvent} from "../PaintTool";
 import {currentTheme} from "../../UI/Themes";

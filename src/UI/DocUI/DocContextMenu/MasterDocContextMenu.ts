@@ -1,7 +1,7 @@
 import {DocUIState} from "../DocUIState";
 import {closeToolMenu, openToolMenu} from "./ToolMenu";
 import {closeLayerMenu, openLayerMenu} from "./LayerMenu";
-import {Vec2} from "../../../core/src/submodules/common-ts-utils/Math/Vector";
+import {Vec2} from "../../../Core/submodules/common-ts-utils/Math/Vector";
 
 
 let openPos: Vec2 | null = null;

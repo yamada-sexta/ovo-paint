@@ -1,6 +1,6 @@
 import {PaintTool} from "../PaintTool";
-import {DocNode} from "../../core/src/Documents/DocNodes/DocNode";
-import {OVODocument} from "../../core/src/Documents/OVODocument";
+import {DocNode} from "../../Core/Documents/DocNodes/DocNode";
+import {OVODocument} from "../../Core/Documents/OVODocument";
 import {br, div, iconBtn, input} from "../../UI/DOM/DOMFunctions";
 import {currentTheme} from "../../UI/Themes";
 import {statelessRefreshDocContextMenu} from "../../UI/DocUI/DocContextMenu/MasterDocContextMenu";

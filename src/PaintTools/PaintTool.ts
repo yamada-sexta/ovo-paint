@@ -1,8 +1,8 @@
-import {PaintToolEvent} from "../core/src/PaintToolEvent";
-import {DocNode} from "../core/src/Documents/DocNodes/DocNode";
+import {PaintToolEvent} from "../Core/PaintToolEvent";
+import {DocNode} from "../Core/Documents/DocNodes/DocNode";
 import {DocUIState} from "../UI/DocUI/DocUIState";
 import {IShortcut} from "../Shortcuts/ShortcutsChecker";
-import {OVODocument} from "../core/src/Documents/OVODocument";
+import {OVODocument} from "../Core/Documents/OVODocument";
 
 export interface PaintToolUIRenderEvent {
     ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D;

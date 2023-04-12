@@ -1,13 +1,13 @@
 import {BitmapPaintTool} from "./BitmapPaintTool";
-import {PaintToolEvent} from "../../core/src/PaintToolEvent";
-import {BitmapLayerNode} from "../../core/src/Documents/DocNodes/Layers/BitmapLayerNode";
-import {clearCanvas, drawHermitCurve} from "../../core/src/submodules/common-ts-utils/Canvas/PaintCanvas";
+import {PaintToolEvent} from "../../Core/PaintToolEvent";
+import {BitmapLayerNode} from "../../Core/Documents/DocNodes/Layers/BitmapLayerNode";
+import {clearCanvas, drawHermitCurve} from "../../Core/submodules/common-ts-utils/Canvas/PaintCanvas";
 import {br, div, text} from "../../UI/DOM/DOMFunctions";
 import {PaintToolUIRenderEvent} from "../PaintTool";
 import {checkShortcut} from "../../Shortcuts/ShortcutsChecker";
-import {Vec2} from "../../core/src/submodules/common-ts-utils/Math/Vector";
+import {Vec2} from "../../Core/submodules/common-ts-utils/Math/Vector";
 import {draggableNum} from "../../UI/DOM/DraggableNum";
-import {IOperation} from "../../core/src/Interface/IOperation";
+import {IOperation} from "../../Core/Interface/IOperation";
 
 export class BasicPen extends BitmapPaintTool {
     // isDrawing: boolean = false;

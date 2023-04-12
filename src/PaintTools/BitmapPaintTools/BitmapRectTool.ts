@@ -1,7 +1,7 @@
 import {BitmapPaintTool} from "./BitmapPaintTool";
-import {BitmapLayerNode} from "../../core/src/Documents/DocNodes/Layers/BitmapLayerNode";
-import {PaintToolEvent} from "../../core/src/PaintToolEvent";
-import {Vec2} from "../../core/src/submodules/common-ts-utils/Math/Vector";
+import {BitmapLayerNode} from "../../Core/Documents/DocNodes/Layers/BitmapLayerNode";
+import {PaintToolEvent} from "../../Core/PaintToolEvent";
+import {Vec2} from "../../Core/submodules/common-ts-utils/Math/Vector";
 
 export class BitmapRectTool extends BitmapPaintTool {
     downPos: Vec2 | null = null;

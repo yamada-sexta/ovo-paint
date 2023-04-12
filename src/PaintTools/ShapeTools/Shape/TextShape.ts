@@ -1,5 +1,5 @@
-import {Shape, ShapeState} from "../../../core/src/Documents/DocNodes/Layers/ShapeLayer/Shape";
-import {Vec2} from "../../../core/src/submodules/common-ts-utils/Math/Vector";
+import {Shape, ShapeState} from "../../../Core/Documents/DocNodes/Layers/ShapeLayer/Shape";
+import {Vec2} from "../../../Core/submodules/common-ts-utils/Math/Vector";
 
 interface TextState extends ShapeState {
     type: "text";

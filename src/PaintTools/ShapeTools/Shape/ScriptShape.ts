@@ -1,4 +1,4 @@
-import {CanvasCtx, Shape, ShapeState} from "../../../core/src/Documents/DocNodes/Layers/ShapeLayer/Shape";
+import {CanvasCtx, Shape, ShapeState} from "../../../Core/Documents/DocNodes/Layers/ShapeLayer/Shape";
 
 export interface ScriptShapeState extends ShapeState {
     type: "script";

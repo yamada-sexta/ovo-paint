@@ -1,12 +1,12 @@
-import {DocNode} from "../../../../core/src/Documents/DocNodes/DocNode";
-import {OVODocument} from "../../../../core/src/Documents/OVODocument";
+import {DocNode} from "../../../../Core/Documents/DocNodes/DocNode";
+import {OVODocument} from "../../../../Core/Documents/OVODocument";
 import {div, mdIcon, text} from "../../../DOM/DOMFunctions";
-import {GroupNode} from "../../../../core/src/Documents/DocNodes/GroupNode";
+import {GroupNode} from "../../../../Core/Documents/DocNodes/GroupNode";
 import {currentTheme} from "../../../Themes";
 import {findParentNode, notInPath} from "./PathFinding";
 import {DragState} from "./DragState";
 import {dragDivider} from "./DragDivider";
-import {ShapeLayerNode} from "../../../../core/src/Documents/DocNodes/Layers/ShapeLayer/ShapeLayerNode";
+import {ShapeLayerNode} from "../../../../Core/Documents/DocNodes/Layers/ShapeLayer/ShapeLayerNode";
 
 /**
  * It returns a div element that represents the node in the document tree.

@@ -1,9 +1,9 @@
 import {OVOPaint} from "./OVOPaint";
 import {paintTools} from "./PaintTools/PaintTools";
-import {OVODocument} from "./core/src/Documents/OVODocument";
-import {BitmapLayerNode} from "./core/src/Documents/DocNodes/Layers/BitmapLayerNode";
-import {GroupNode} from "./core/src/Documents/DocNodes/GroupNode";
-import {ShapeLayerNode} from "./core/src/Documents/DocNodes/Layers/ShapeLayer/ShapeLayerNode";
+import {OVODocument} from "./Core/Documents/OVODocument";
+import {BitmapLayerNode} from "./Core/Documents/DocNodes/Layers/BitmapLayerNode";
+import {GroupNode} from "./Core/Documents/DocNodes/GroupNode";
+import {ShapeLayerNode} from "./Core/Documents/DocNodes/Layers/ShapeLayer/ShapeLayerNode";
 
 
 async function main() {
@@ -27,10 +27,7 @@ async function main() {
     folder1.addNode(layer);
     folder2.addNode(new ShapeLayerNode("Shape Layer 1"));
 
-    // layer.createSnapshot();
-    // doc.stageChange(layer);
     doc.activeNode = layer;
-    // ovo.openDocument(doc);
     console.log(paintTools);
 }
 

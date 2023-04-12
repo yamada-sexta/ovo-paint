@@ -1,4 +1,4 @@
-import {GroupNode} from "../../../../core/src/Documents/DocNodes/GroupNode";
+import {GroupNode} from "../../../../Core/Documents/DocNodes/GroupNode";
 import {div} from "../../../DOM/DOMFunctions";
 import {currentTheme} from "../../../Themes";
 import {DragState} from "./DragState";

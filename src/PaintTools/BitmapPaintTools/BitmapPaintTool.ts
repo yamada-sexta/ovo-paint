@@ -1,6 +1,6 @@
 import {PaintTool} from "../PaintTool";
-import {BitmapLayerNode} from "../../core/src/Documents/DocNodes/Layers/BitmapLayerNode";
-import {DocNode} from "../../core/src/Documents/DocNodes/DocNode";
+import {BitmapLayerNode} from "../../Core/Documents/DocNodes/Layers/BitmapLayerNode";
+import {DocNode} from "../../Core/Documents/DocNodes/DocNode";
 
 export abstract class BitmapPaintTool extends PaintTool<BitmapLayerNode> {
     isCompatibleWithNode(node: DocNode): boolean {

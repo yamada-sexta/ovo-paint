@@ -1,4 +1,4 @@
-import {DocNode} from "../../../../core/src/Documents/DocNodes/DocNode";
+import {DocNode} from "../../../../Core/Documents/DocNodes/DocNode";
 
 
 export type DragState = {

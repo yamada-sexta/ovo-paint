@@ -1,15 +1,15 @@
 import {PaintTool} from "../PaintTool";
 import {ShapePaintTool} from "./ShapePaintTool";
-import {Shape} from "../../core/src/Documents/DocNodes/Layers/ShapeLayer/Shape";
-import {Vec2} from "../../core/src/submodules/common-ts-utils/Math/Vector";
+import {Shape} from "../../Core/Documents/DocNodes/Layers/ShapeLayer/Shape";
+import {Vec2} from "../../Core/submodules/common-ts-utils/Math/Vector";
 import {ScriptShape, ScriptShapeState} from "./Shape/ScriptShape";
-import {PaintToolEvent} from "../../core/src/PaintToolEvent";
-import {ShapeLayerNode} from "../../core/src/Documents/DocNodes/Layers/ShapeLayer/ShapeLayerNode";
+import {PaintToolEvent} from "../../Core/PaintToolEvent";
+import {ShapeLayerNode} from "../../Core/Documents/DocNodes/Layers/ShapeLayer/ShapeLayerNode";
 import {br, div, iconBtn, input} from "../../UI/DOM/DOMFunctions";
 import {draggableNum} from "../../UI/DOM/DraggableNum";
 import {openCreateWindow} from "../../UI/DocumentCreateUI";
 import {openPopUp} from "../../UI/OpenPopUp";
-import {SimpleCodeMirror} from "../../ez-codemirror/src/ez-codemirror";
+import {SimpleCodeMirror} from "../../ez-codemirror/Core/ez-codemirror";
 import {currentTheme} from "../../UI/Themes";
 
 function defaultScript(ctx: CanvasRenderingContext2D) {

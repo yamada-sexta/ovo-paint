@@ -1,4 +1,4 @@
-import {OVODocument} from "../../core/src/Documents/OVODocument";
+import {OVODocument} from "../../Core/Documents/OVODocument";
 import {onWheel} from "./CanvasEvent/DocCanvasEvent";
 import {onDown, onMove, onUp} from "./CanvasEvent/OnPointer";
 import {update} from "./CanvasEvent/ViewerRender";

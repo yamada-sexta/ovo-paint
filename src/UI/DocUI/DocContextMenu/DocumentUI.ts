@@ -1,5 +1,5 @@
 import {br, div, input, label} from "../../DOM/DOMFunctions";
-import {OVODocument} from "../../../core/src/Documents/OVODocument";
+import {OVODocument} from "../../../Core/Documents/OVODocument";
 import {nodeTreeUI} from "./DocNodeUI/NodeTreeUI";
 import {DocUIState} from "../DocUIState";
 

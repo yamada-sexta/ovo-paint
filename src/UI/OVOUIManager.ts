@@ -1,4 +1,4 @@
-import {OVODocument} from "../core/src/Documents/OVODocument";
+import {OVODocument} from "../Core/Documents/OVODocument";
 import {div, text} from "./DOM/DOMFunctions";
 import {IOVORootUI} from "./RootFrame/IOVORootUI";
 import {OVOWelcomeScreen} from "./RootFrame/OVOWelcomeScreen";

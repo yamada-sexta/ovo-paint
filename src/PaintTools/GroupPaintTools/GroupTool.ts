@@ -1,11 +1,11 @@
-import {GroupNode} from "../../core/src/Documents/DocNodes/GroupNode";
+import {GroupNode} from "../../Core/Documents/DocNodes/GroupNode";
 import {PaintTool, PaintToolUIRenderEvent} from "../PaintTool";
-import {DocNode} from "../../core/src/Documents/DocNodes/DocNode";
+import {DocNode} from "../../Core/Documents/DocNodes/DocNode";
 import {br, div, iconBtn} from "../../UI/DOM/DOMFunctions";
-import {BitmapLayerNode} from "../../core/src/Documents/DocNodes/Layers/BitmapLayerNode";
-import {OVODocument} from "../../core/src/Documents/OVODocument";
+import {BitmapLayerNode} from "../../Core/Documents/DocNodes/Layers/BitmapLayerNode";
+import {OVODocument} from "../../Core/Documents/OVODocument";
 import {statelessRefreshDocContextMenu} from "../../UI/DocUI/DocContextMenu/MasterDocContextMenu";
-import {ShapeLayerNode} from "../../core/src/Documents/DocNodes/Layers/ShapeLayer/ShapeLayerNode";
+import {ShapeLayerNode} from "../../Core/Documents/DocNodes/Layers/ShapeLayer/ShapeLayerNode";
 import {currentTheme} from "../../UI/Themes";
 
 export class GroupTool extends PaintTool<GroupNode> {

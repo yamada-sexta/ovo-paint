@@ -1,5 +1,5 @@
-import {CanvasCtx, Shape, ShapeState} from "../../../core/src/Documents/DocNodes/Layers/ShapeLayer/Shape";
-import {Vec2} from "../../../core/src/submodules/common-ts-utils/Math/Vector";
+import {CanvasCtx, Shape, ShapeState} from "../../../Core/Documents/DocNodes/Layers/ShapeLayer/Shape";
+import {Vec2} from "../../../Core/submodules/common-ts-utils/Math/Vector";
 
 export type SimpleShapeType = "circle" | "rectangle" | "triangle" | "line" | "star" | "ellipse";
 

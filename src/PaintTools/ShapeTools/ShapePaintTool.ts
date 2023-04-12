@@ -1,9 +1,9 @@
 import {PaintTool, PaintToolUIRenderEvent} from "../PaintTool";
-import {ShapeLayerNode} from "../../core/src/Documents/DocNodes/Layers/ShapeLayer/ShapeLayerNode";
-import {DocNode} from "../../core/src/Documents/DocNodes/DocNode";
-import {Shape} from "../../core/src/Documents/DocNodes/Layers/ShapeLayer/Shape";
-import {PaintToolEvent} from "../../core/src/PaintToolEvent";
-import {Vec2} from "../../core/src/submodules/common-ts-utils/Math/Vector";
+import {ShapeLayerNode} from "../../Core/Documents/DocNodes/Layers/ShapeLayer/ShapeLayerNode";
+import {DocNode} from "../../Core/Documents/DocNodes/DocNode";
+import {Shape} from "../../Core/Documents/DocNodes/Layers/ShapeLayer/Shape";
+import {PaintToolEvent} from "../../Core/PaintToolEvent";
+import {Vec2} from "../../Core/submodules/common-ts-utils/Math/Vector";
 
 export abstract class ShapePaintTool extends PaintTool<ShapeLayerNode> {
     selectedShape: Shape | null = null;

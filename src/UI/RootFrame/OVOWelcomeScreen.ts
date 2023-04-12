@@ -5,8 +5,8 @@ import {openCreateWindow} from "../DocumentCreateUI";
 import {currentTheme} from "../Themes";
 import {
     SystemFileAccessFileGetter
-} from "../../core/src/submodules/common-ts-utils/Files/SystemFileAccess/SystemFileAccessFileGetter";
-import {OvoJsonSerializer} from "../../core/src/Documents/Serializers/OvoJsonSerializer";
+} from "../../Core/submodules/common-ts-utils/Files/SystemFileAccess/SystemFileAccessFileGetter";
+import {OvoJsonSerializer} from "../../Core/Documents/Serializers/OvoJsonSerializer";
 
 const welcomeMessages = [
     "Welcome to OVO Paint",

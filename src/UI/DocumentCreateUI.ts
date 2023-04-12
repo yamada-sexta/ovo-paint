@@ -1,4 +1,4 @@
-import {OVODocument} from "../core/src/Documents/OVODocument";
+import {OVODocument} from "../Core/Documents/OVODocument";
 import {br, button, div, input, label, text} from "./DOM/DOMFunctions";
 import {openPopUp} from "./OpenPopUp";
 import {currentTheme} from "./Themes";

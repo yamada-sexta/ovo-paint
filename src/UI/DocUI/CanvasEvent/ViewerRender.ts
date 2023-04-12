@@ -1,4 +1,4 @@
-import {OVODocument} from "../../../core/src/Documents/OVODocument";
+import {OVODocument} from "../../../Core/Documents/OVODocument";
 import {DocUIState} from "../DocUIState";
 
 

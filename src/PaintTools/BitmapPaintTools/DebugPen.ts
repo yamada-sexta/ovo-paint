@@ -1,7 +1,7 @@
 import {BitmapPaintTool} from "./BitmapPaintTool";
-import {PaintToolEvent} from "../../core/src/PaintToolEvent";
-import {BitmapLayerNode} from "../../core/src/Documents/DocNodes/Layers/BitmapLayerNode";
-import {drawPointDebug} from "../../core/src/submodules/common-ts-utils/Canvas/PaintCanvas";
+import {PaintToolEvent} from "../../Core/PaintToolEvent";
+import {BitmapLayerNode} from "../../Core/Documents/DocNodes/Layers/BitmapLayerNode";
+import {drawPointDebug} from "../../Core/submodules/common-ts-utils/Canvas/PaintCanvas";
 
 // @registerPaintTool
 export class DebugPen extends BitmapPaintTool {

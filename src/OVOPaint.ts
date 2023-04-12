@@ -1,6 +1,6 @@
 import {OVOUIManager} from "./UI/OVOUIManager";
-import {OVODocument} from "./core/src/Documents/OVODocument";
-import {OvoJsonSerializer} from "./core/src/Documents/Serializers/OvoJsonSerializer";
+import {OVODocument} from "./Core/Documents/OVODocument";
+import {OvoJsonSerializer} from "./Core/Documents/Serializers/OvoJsonSerializer";
 import {initializeUIDependencyOn} from "./UI/InitializeUIDependency";
 import {assets} from "./Assets/Assets";
 
