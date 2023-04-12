@@ -10,8 +10,10 @@ It is currently under active development and is not yet ready for use.
 - [x] Basic shapes
 - [x] Basic text
 - [x] Basic file saving
+- [x] Basic file loading
+- [x] Basic script support
 - [ ] Full redo and undo
 - [ ] Basic image
-- [ ] Basic export
-- [ ] Basic import
+- [x] Basic export
+- [x] Basic import
 - [ ] Better text support
