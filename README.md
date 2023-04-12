@@ -14,6 +14,6 @@ It is currently under active development and is not yet ready for use.
 - [x] Basic script support
 - [ ] Full redo and undo
 - [ ] Basic image
-- [x] Basic export
-- [x] Basic import
+- [ ] ~~Basic export~~ (Not ideal given the current JavaScript API)
+- [ ] ~~Basic import~~ (Not ideal given the current JavaScript API)
 - [ ] Better text support
