@@ -14,4 +14,4 @@ ovoPaint stands for "Open Visual Object Paint" and is a simple and easy to use p
 - [ ] Basic image
 - [ ] ~~Basic export~~ (Not ideal given the current JavaScript API)
 - [ ] ~~Basic import~~ (Not ideal given the current JavaScript API)
-- [ ] Better text support
+- [ ] ~~Better text support~~ (Canvas2D isn't good for that)
