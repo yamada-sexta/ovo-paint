@@ -1,6 +1,7 @@
 import {BitmapPaintTool} from "./BitmapPaintTool";
 import {BitmapLayerNode} from "../../Core/Documents/DocNodes/Layers/BitmapLayerNode";
 import {PaintToolEvent} from "../../Core/PaintToolEvent";
+import {br, div, input, text} from "../../UI/DOM/DOMFunctions";
 
 /**
  * Paint tool that fills a region with a color
@@ -8,8 +9,24 @@ import {PaintToolEvent} from "../../Core/PaintToolEvent";
  * Algorithm from http://www.williammalone.com/articles/html5-canvas-javascript-paint-bucket-tool/
  */
 export class FillBucket extends BitmapPaintTool {
+    color = "#000000";
+    getMenu(): HTMLElement {
+        const menu = div();
+        menu.appendChild(text("Fill Bucket"));
+        menu.appendChild(br())
+        menu.appendChild(input({
+            type: "color",
+            value: this.color,
+            onchange: (e) => {
+                this.color = (e.target as HTMLInputElement).value;
+            }
+        }))
+        return menu;
+    }
+
     async onDown(e: PaintToolEvent<BitmapLayerNode>): Promise<void> {
         await super.onDown(e);
+        e.node.createSnapshot();
         const ctx = e.node.ctx;
         const canvas = ctx.canvas;
         const imgData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -46,11 +63,17 @@ export class FillBucket extends BitmapPaintTool {
         }
         // console.log(imgData)
         // console.log(startPixel);
+        const targetColor = {
+            r: parseInt(this.color.slice(1, 3), 16),
+            g: parseInt(this.color.slice(3, 5), 16),
+            b: parseInt(this.color.slice(5, 7), 16),
+            a: 255
+        }
         function colorPixel(pixelPos: number) {
-            imgData.data[pixelPos] = 255;
-            imgData.data[pixelPos + 1] = 0;
-            imgData.data[pixelPos + 2] = 0;
-            imgData.data[pixelPos + 3] = 255;
+            imgData.data[pixelPos] = targetColor.r;
+            imgData.data[pixelPos + 1] = targetColor.g;
+            imgData.data[pixelPos + 2] = targetColor.b;
+            imgData.data[pixelPos + 3] = targetColor.a;
         }
 
         const pixelStack = [pos];
@@ -100,12 +123,6 @@ export class FillBucket extends BitmapPaintTool {
             }
         }
 
-        // for (let i = 0; i < imgData.data.length; i += 4) {
-        //     imgData.data[i] = 255;
-        //     imgData.data[i + 1] = 0;
-        //     imgData.data[i + 2] = 0;
-        //     imgData.data[i + 3] = 255;
-        // }
         ctx.putImageData(imgData, 0, 0);
     }
 }
