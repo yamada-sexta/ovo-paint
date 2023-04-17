@@ -6,6 +6,7 @@ import {GroupTool} from "./GroupPaintTools/GroupTool";
 import {SimpleShapeTool} from "./ShapeTools/SimpleShapeTool";
 import {NodeTool} from "./NodePaintTool/NodeTool";
 import {ScriptShapeTool} from "./ShapeTools/ScriptShapeTool";
+import {PasteTool} from "./BitmapPaintTools/PasteTool";
 
 export function registerPaintTool(constructor: Function) {
     if (constructor.prototype instanceof PaintTool) {
@@ -30,4 +31,5 @@ export const paintTools: PaintTool[] = [
     new SimpleShapeTool(),
     new NodeTool(),
     new ScriptShapeTool(),
+    new PasteTool(),
 ];
