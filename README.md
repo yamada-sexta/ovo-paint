@@ -24,7 +24,7 @@ npm run build
 - [x] Basic file loading
 - [x] Basic script support
 - [ ] Redo and undo (partially implemented)
-- [ ] Basic image
+- [x] Basic image import
 - [ ] ~~Basic export~~ (Not ideal given the current JavaScript API)
 - [ ] ~~Basic import~~ (Not ideal given the current JavaScript API)
 - [ ] ~~Better text support~~ (Canvas2D isn't good for that)
