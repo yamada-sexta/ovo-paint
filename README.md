@@ -2,6 +2,11 @@
 
 ovoPaint stands for "Open Visual Object Paint" and is a simple and easy to use paint tool/library written in Typescript.
 
+# Getting started
+
+Online version: https://nannoda.github.io/ovo-paint/
+(Check github-page branch for source code)
+
 # TODO
 
 - [x] Basic drawing
