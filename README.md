@@ -6,6 +6,13 @@ ovoPaint stands for "Open Visual Object Paint" and is a simple and easy to use p
 
 Online version: https://nannoda.github.io/ovo-paint/
 
+Offline version:
+Run the following commands to build it yourself:
+```bash
+npm run build
+```
+
+
 # TODO
 
 - [x] Basic drawing
