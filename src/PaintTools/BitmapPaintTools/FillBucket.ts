@@ -2,7 +2,13 @@ import {BitmapPaintTool} from "./BitmapPaintTool";
 import {BitmapLayerNode} from "../../Core/Documents/DocNodes/Layers/BitmapLayerNode";
 import {PaintToolEvent} from "../../Core/PaintToolEvent";
 import {br, div, input, text} from "../../UI/DOM/DOMFunctions";
-
+import {draggableNum} from "../../UI/DOM/DraggableNum";
+interface RGBA{
+    r: number;
+    g: number;
+    b: number;
+    a: number;
+}
 /**
  * Paint tool that fills a region with a color
  *
@@ -10,15 +16,23 @@ import {br, div, input, text} from "../../UI/DOM/DOMFunctions";
  */
 export class FillBucket extends BitmapPaintTool {
     color = "#000000";
+    tolerance = 0;
     getMenu(): HTMLElement {
         const menu = div();
-        menu.appendChild(text("Fill Bucket"));
-        menu.appendChild(br())
+        menu.appendChild(text("Color: "));
         menu.appendChild(input({
             type: "color",
             value: this.color,
             onchange: (e) => {
                 this.color = (e.target as HTMLInputElement).value;
+            }
+        }))
+        menu.appendChild(br())
+        menu.appendChild(text("Tolerance: "));
+        menu.appendChild(draggableNum({
+            value: this.tolerance,
+            onchange: (val) => {
+                this.tolerance = val;
             }
         }))
         return menu;
@@ -37,7 +51,7 @@ export class FillBucket extends BitmapPaintTool {
 
         console.log(pos)
 
-        function getPixel(x: number, y: number) {
+        function getPixel(x: number, y: number):RGBA {
             let i = (y * width + x) * 4;
             // convert i to int
             i = ~~i;
@@ -54,12 +68,19 @@ export class FillBucket extends BitmapPaintTool {
 
         const startPixel = getPixel(pos[0], pos[1]);
 
+        const tolerance = this.tolerance;
+
         function matchStartColor(pixelPos: number) {
             const r = imgData.data[pixelPos];
             const g = imgData.data[pixelPos + 1];
             const b = imgData.data[pixelPos + 2];
             const a = imgData.data[pixelPos + 3];
-            return (r === startPixel.r && g === startPixel.g && b === startPixel.b && a === startPixel.a);
+            return (
+                Math.abs(r - startPixel.r) <= tolerance &&
+                Math.abs(g - startPixel.g) <= tolerance &&
+                Math.abs(b - startPixel.b) <= tolerance &&
+                Math.abs(a - startPixel.a) <= tolerance
+            )
         }
         // console.log(imgData)
         // console.log(startPixel);
