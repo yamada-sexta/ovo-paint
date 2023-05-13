@@ -3,12 +3,14 @@ import {BitmapLayerNode} from "../../Core/Documents/DocNodes/Layers/BitmapLayerN
 import {PaintToolEvent} from "../../Core/PaintToolEvent";
 import {br, div, input, text} from "../../UI/DOM/DOMFunctions";
 import {draggableNum} from "../../UI/DOM/DraggableNum";
-interface RGBA{
+
+interface RGBA {
     r: number;
     g: number;
     b: number;
     a: number;
 }
+
 /**
  * Paint tool that fills a region with a color
  *
@@ -17,6 +19,7 @@ interface RGBA{
 export class FillBucket extends BitmapPaintTool {
     color = "#000000";
     tolerance = 0;
+
     getMenu(): HTMLElement {
         const menu = div();
         menu.appendChild(text("Color: "));
@@ -47,11 +50,14 @@ export class FillBucket extends BitmapPaintTool {
         const width = canvas.width;
         const height = canvas.height;
 
+        let counter = 0;
+        const max = canvas.width * canvas.height;
+
         const pos = [~~e.pos[0], ~~e.pos[1]];
 
-        console.log(pos)
+        // console.log(pos)
 
-        function getPixel(x: number, y: number):RGBA {
+        function getPixel(x: number, y: number): RGBA {
             let i = (y * width + x) * 4;
             // convert i to int
             i = ~~i;
@@ -64,7 +70,6 @@ export class FillBucket extends BitmapPaintTool {
                 a: imgData.data[i + 3]
             }
         }
-
 
         const startPixel = getPixel(pos[0], pos[1]);
 
@@ -79,28 +84,32 @@ export class FillBucket extends BitmapPaintTool {
                 Math.abs(r - startPixel.r) <= tolerance &&
                 Math.abs(g - startPixel.g) <= tolerance &&
                 Math.abs(b - startPixel.b) <= tolerance &&
-                Math.abs(a - startPixel.a) <= tolerance
+                Math.abs(a - startPixel.a) <= tolerance &&
+                counter <= max
             )
         }
-        // console.log(imgData)
-        // console.log(startPixel);
+
         const targetColor = {
             r: parseInt(this.color.slice(1, 3), 16),
             g: parseInt(this.color.slice(3, 5), 16),
             b: parseInt(this.color.slice(5, 7), 16),
             a: 255
         }
+
         function colorPixel(pixelPos: number) {
             imgData.data[pixelPos] = targetColor.r;
             imgData.data[pixelPos + 1] = targetColor.g;
             imgData.data[pixelPos + 2] = targetColor.b;
             imgData.data[pixelPos + 3] = targetColor.a;
+            counter++;
         }
 
         const pixelStack = [pos];
 
         let x = pos[0];
         let y = pos[1];
+
+
         while (pixelStack.length) {
             const newPos = pixelStack.pop() as [number, number];
             x = newPos[0];
