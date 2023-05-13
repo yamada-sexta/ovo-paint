@@ -109,7 +109,6 @@ export class FillBucket extends BitmapPaintTool {
         let x = pos[0];
         let y = pos[1];
 
-
         while (pixelStack.length) {
             const newPos = pixelStack.pop() as [number, number];
             x = newPos[0];
