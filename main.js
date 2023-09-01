@@ -5599,14 +5599,14 @@
           PlatformBrowser2.prototype.now = function() {
             return performance.now();
           };
-          PlatformBrowser2.prototype.encode = function(text2, encoding) {
+          PlatformBrowser2.prototype.encode = function(text3, encoding) {
             if (encoding !== "utf-8" && encoding !== "utf8") {
               throw new Error("Browser's encoder only supports utf-8, but got " + encoding);
             }
             if (this.textEncoder == null) {
               this.textEncoder = new TextEncoder();
             }
-            return this.textEncoder.encode(text2);
+            return this.textEncoder.encode(text3);
           };
           PlatformBrowser2.prototype.decode = function(bytes, encoding) {
             return new TextDecoder(encoding).decode(bytes);
@@ -5678,11 +5678,11 @@
             var time2 = process.hrtime();
             return time2[0] * 1e3 + time2[1] / 1e6;
           };
-          PlatformNode2.prototype.encode = function(text2, encoding) {
+          PlatformNode2.prototype.encode = function(text3, encoding) {
             if (encoding !== "utf-8" && encoding !== "utf8") {
               throw new Error("Node built-in encoder only supports utf-8, but got " + encoding);
             }
-            return this.textEncoder.encode(text2);
+            return this.textEncoder.encode(text3);
           };
           PlatformNode2.prototype.decode = function(bytes, encoding) {
             if (bytes.length === 0) {
@@ -22859,12 +22859,12 @@
           return OperationMapper2;
         }()
       );
-      function decodeBase64(text2) {
+      function decodeBase64(text3) {
         var global2 = tfc.env().global;
         if (typeof global2.atob !== "undefined") {
-          return global2.atob(text2);
+          return global2.atob(text3);
         } else if (typeof Buffer !== "undefined") {
-          return new Buffer(text2, "base64").toString();
+          return new Buffer(text3, "base64").toString();
         } else {
           throw new Error("Unable to decode base64 in this environment. Missing built-in atob() or Buffer()");
         }
@@ -36409,10 +36409,10 @@
               });
             });
           };
-          BertTokenizer2.prototype.processInput = function(text2) {
+          BertTokenizer2.prototype.processInput = function(text3) {
             var _this = this;
             var charOriginalIndex = [];
-            var cleanedText = this.cleanText(text2, charOriginalIndex);
+            var cleanedText = this.cleanText(text3, charOriginalIndex);
             var origTokens = cleanedText.split(" ");
             var charCount = 0;
             var tokens = origTokens.map(function(token) {
@@ -36427,10 +36427,10 @@
             }
             return flattenTokens;
           };
-          BertTokenizer2.prototype.cleanText = function(text2, charOriginalIndex) {
+          BertTokenizer2.prototype.cleanText = function(text3, charOriginalIndex) {
             var stringBuilder = [];
             var originalCharIndex = 0, newCharIndex = 0;
-            for (var _i = 0, text_1 = text2; _i < text_1.length; _i++) {
+            for (var _i = 0, text_1 = text3; _i < text_1.length; _i++) {
               var ch = text_1[_i];
               if (isInvalid(ch)) {
                 originalCharIndex += ch.length;
@@ -36454,10 +36454,10 @@
             }
             return stringBuilder.join("");
           };
-          BertTokenizer2.prototype.runSplitOnPunc = function(text2, count, charOriginalIndex) {
+          BertTokenizer2.prototype.runSplitOnPunc = function(text3, count, charOriginalIndex) {
             var tokens = [];
             var startNewWord = true;
-            for (var _i = 0, text_2 = text2; _i < text_2.length; _i++) {
+            for (var _i = 0, text_2 = text3; _i < text_2.length; _i++) {
               var ch = text_2[_i];
               if (isPunctuation(ch)) {
                 tokens.push({ text: ch, index: charOriginalIndex[count] });
@@ -36474,9 +36474,9 @@
             }
             return tokens;
           };
-          BertTokenizer2.prototype.tokenize = function(text2) {
+          BertTokenizer2.prototype.tokenize = function(text3) {
             var outputTokens = [];
-            var words = this.processInput(text2);
+            var words = this.processInput(text3);
             words.forEach(function(word) {
               if (word.text !== exports.CLS_TOKEN && word.text !== exports.SEP_TOKEN) {
                 word.text = "" + SEPERATOR + word.text.normalize(exports.NFKC_TOKEN);
@@ -37147,11 +37147,11 @@
     });
     return input2;
   }
-  function text(text2) {
+  function text(text3) {
     let textElement = document.createElement("label");
     textElement.style.color = currentTheme.text;
     textElement.classList.add(baseClass);
-    textElement.innerText = text2;
+    textElement.innerText = text3;
     return textElement;
   }
   function iconBtn(iconName, btnText, onclick) {
@@ -37295,7 +37295,7 @@
   };
 
   // src/Core/Static.ts
-  var MAX_UNDO = 2;
+  var MAX_UNDO = 10;
 
   // src/Core/Documents/DocNodes/Layers/BitmapLayerNode.ts
   var BitmapLayerNode = class extends DocNode {
@@ -37593,7 +37593,7 @@
         if (res.status === 200) {
           console.log("Font loaded");
           res.text().then(
-            (text2) => {
+            (text3) => {
               link.href = url;
               link.rel = "stylesheet";
               document.head.appendChild(link);
@@ -37913,9 +37913,9 @@
       for (let i = 0; i < shapeNodeDict.shapes.length; i++) {
         const shapeJson = shapeNodeDict.shapes[i];
         if (shapeJson.type === "text") {
-          const text2 = new TextShape("", [0, 0], "Arial", 12);
-          text2.applyState(shapeJson);
-          shapeNode.addShape(text2);
+          const text3 = new TextShape("", [0, 0], "Arial", 12);
+          text3.applyState(shapeJson);
+          shapeNode.addShape(text3);
         }
         if (shapeJson.type === "simple") {
           const simple = new SimpleShape([0, 0], [0, 0]);
@@ -39967,6 +39967,171 @@
     }
   };
 
+  // src/PaintTools/BitmapPaintTools/PasteTool.ts
+  var PasteTool = class extends BitmapPaintTool {
+    constructor() {
+      super(...arguments);
+      this._doc = null;
+    }
+    onSelect(e) {
+      super.onSelect(e);
+      this._doc = e.doc;
+    }
+    getMenu() {
+      const menu = div();
+      menu.appendChild(iconBtn(
+        "content_paste",
+        "Paste",
+        () => __async(this, null, function* () {
+          if (!this._doc) {
+            console.log("No document selected");
+            return;
+          }
+          const permission = yield navigator.permissions.query({
+            // @ts-ignore
+            name: "clipboard-read"
+          });
+          if (permission.state === "denied") {
+            throw new Error("Not allowed to read clipboard.");
+          }
+          const clipboardContents = yield navigator.clipboard.read();
+          const blob = yield clipboardContents[0].getType("image/png");
+          const img = new Image();
+          img.src = URL.createObjectURL(blob);
+          img.onload = () => {
+            if (!this._doc) {
+              console.log("No document selected");
+              return;
+            }
+            if (this._doc._activeNode instanceof BitmapLayerNode) {
+              this._doc._activeNode.ctx.drawImage(img, 0, 0);
+            }
+          };
+        })
+      ));
+      return menu;
+    }
+  };
+
+  // src/PaintTools/BitmapPaintTools/FillBucket.ts
+  var FillBucket = class extends BitmapPaintTool {
+    constructor() {
+      super(...arguments);
+      this.color = "#000000";
+      this.tolerance = 0;
+    }
+    getMenu() {
+      const menu = div();
+      menu.appendChild(text("Color: "));
+      menu.appendChild(input({
+        type: "color",
+        value: this.color,
+        onchange: (e) => {
+          this.color = e.target.value;
+        }
+      }));
+      menu.appendChild(br());
+      menu.appendChild(text("Tolerance: "));
+      menu.appendChild(draggableNum({
+        value: this.tolerance,
+        onchange: (val) => {
+          this.tolerance = val;
+        }
+      }));
+      return menu;
+    }
+    onDown(e) {
+      return __async(this, null, function* () {
+        yield __superGet(FillBucket.prototype, this, "onDown").call(this, e);
+        e.node.createSnapshot();
+        const ctx = e.node.ctx;
+        const canvas = ctx.canvas;
+        const imgData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
+        const width = canvas.width;
+        const height = canvas.height;
+        let counter = 0;
+        const max = canvas.width * canvas.height;
+        const pos = [~~e.pos[0], ~~e.pos[1]];
+        function getPixel(x2, y2) {
+          let i = (y2 * width + x2) * 4;
+          i = ~~i;
+          console.log(i);
+          console.log(imgData.data[i]);
+          return {
+            r: imgData.data[i],
+            g: imgData.data[i + 1],
+            b: imgData.data[i + 2],
+            a: imgData.data[i + 3]
+          };
+        }
+        const startPixel = getPixel(pos[0], pos[1]);
+        const tolerance = this.tolerance;
+        function matchStartColor(pixelPos) {
+          const r = imgData.data[pixelPos];
+          const g = imgData.data[pixelPos + 1];
+          const b = imgData.data[pixelPos + 2];
+          const a = imgData.data[pixelPos + 3];
+          return Math.abs(r - startPixel.r) <= tolerance && Math.abs(g - startPixel.g) <= tolerance && Math.abs(b - startPixel.b) <= tolerance && Math.abs(a - startPixel.a) <= tolerance && counter <= max;
+        }
+        const targetColor = {
+          r: parseInt(this.color.slice(1, 3), 16),
+          g: parseInt(this.color.slice(3, 5), 16),
+          b: parseInt(this.color.slice(5, 7), 16),
+          a: 255
+        };
+        function colorPixel(pixelPos) {
+          imgData.data[pixelPos] = targetColor.r;
+          imgData.data[pixelPos + 1] = targetColor.g;
+          imgData.data[pixelPos + 2] = targetColor.b;
+          imgData.data[pixelPos + 3] = targetColor.a;
+          counter++;
+        }
+        const pixelStack = [pos];
+        let x = pos[0];
+        let y = pos[1];
+        while (pixelStack.length) {
+          const newPos = pixelStack.pop();
+          x = newPos[0];
+          y = newPos[1];
+          let pixelPos = (y * width + x) * 4;
+          pixelPos = ~~pixelPos;
+          while (y-- >= 0 && matchStartColor(pixelPos)) {
+            pixelPos -= width * 4;
+          }
+          pixelPos += width * 4;
+          ++y;
+          let reachLeft = false;
+          let reachRight = false;
+          while (y++ < height - 1 && matchStartColor(pixelPos)) {
+            colorPixel(pixelPos);
+            if (x > 0) {
+              if (matchStartColor(pixelPos - 4)) {
+                if (!reachLeft) {
+                  pixelStack.push([x - 1, y]);
+                  reachLeft = true;
+                }
+              } else if (reachLeft) {
+                reachLeft = false;
+              }
+            }
+            if (x < width - 1) {
+              if (matchStartColor(pixelPos + 4)) {
+                if (!reachRight) {
+                  pixelStack.push([x + 1, y]);
+                  reachRight = true;
+                }
+              } else if (reachRight) {
+                reachRight = false;
+              }
+            }
+            pixelPos += width * 4;
+          }
+        }
+        ctx.putImageData(imgData, 0, 0);
+      });
+    }
+  };
+
   // src/PaintTools/PaintTools.ts
   var paintTools = [
     new BasicPen(),
@@ -39975,7 +40140,9 @@
     new GroupTool(),
     new SimpleShapeTool(),
     new NodeTool(),
-    new ScriptShapeTool()
+    new ScriptShapeTool(),
+    new PasteTool(),
+    new FillBucket()
   ];
 
   // src/UI/DocUI/UpdateState.ts
