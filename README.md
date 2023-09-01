@@ -2,7 +2,7 @@
 
 ovoPaint stands for "Open Visual Object Paint" and is a simple and easy to use paint tool/library written in Typescript.
 
-It is not actively mantained now.
+Currently, it is not being actively maintained.
 
 # Getting started
 
