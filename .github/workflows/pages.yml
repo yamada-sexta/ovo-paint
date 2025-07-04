@@ -69,7 +69,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './dist' # Replace 'dist' with your actual build output directory
+          path: './' # Replace 'dist' with your actual build output directory
 
       # Step 8: Deploy to GitHub Pages
       # This action deploys the uploaded artifact to your GitHub Pages site
