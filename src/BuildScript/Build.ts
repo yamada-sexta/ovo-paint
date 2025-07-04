@@ -17,6 +17,8 @@ async function buildProject(watch: boolean, logLevel: LogLevel) {
     })
     if (!watch) {
         await esbuildCtx.rebuild();
+        await esbuildCtx.dispose();
+        console.log("Build complete.")
         return;
     }
     await esbuildCtx.watch()
@@ -44,12 +46,10 @@ async function main() {
 main().then(
     () => {
         console.log("Build script loaded.");
-        process.exit(0);
     }
 ).catch(
     (err) => {
         console.error("Build script failed to load.");
         console.error(err);
-        process.exit(1);
     }
 )
