@@ -50,5 +50,6 @@ main().then(
     (err) => {
         console.error("Build script failed to load.");
         console.error(err);
+        process.exit(1);
     }
 )
