@@ -44,6 +44,7 @@ async function main() {
 main().then(
     () => {
         console.log("Build script loaded.");
+        process.exit(0);
     }
 ).catch(
     (err) => {
