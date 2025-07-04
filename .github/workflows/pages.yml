@@ -69,11 +69,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: |
-            $(git ls-files)
-            main.js
-            index.html
-            main.js.map
+          path: './'
            # Replace 'dist' with your actual build output directory
 
       # Step 8: Deploy to GitHub Pages
