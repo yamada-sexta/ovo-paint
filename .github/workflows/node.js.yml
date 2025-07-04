@@ -1,0 +1,78 @@
+# This workflow builds your web application and deploys it to GitHub Pages.
+# It uses caching to speed up subsequent builds by reusing node_modules.
+
+name: Deploy to GitHub Pages
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on pushes to the "main" branch
+  push:
+    branches:
+      - main
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Sets permissions for the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# A single job to build and deploy the project
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest # Uses the latest Ubuntu runner
+
+    steps:
+      # Step 1: Checkout your repository code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step 2: Set up Node.js environment
+      # We recommend using a specific Node.js version, e.g., 20.x
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x' # You can change this to your project's Node.js version
+          cache: 'npm' # Caches npm dependencies
+
+      # Step 3: Cache Node.js modules
+      # This step checks if node_modules can be restored from cache,
+      # and saves them to cache if they are not found or changed.
+      - name: Cache Node.js modules
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm # Path to the npm cache directory
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }} # Cache key based on OS and package-lock.json
+          restore-keys: |
+            ${{ runner.os }}-node- # Fallback key
+
+      # Step 4: Install project dependencies
+      # 'npm ci' is recommended for CI/CD environments as it's faster and more reliable
+      - name: Install dependencies
+        run: npm ci
+
+      # Step 5: Build the project
+      # This command runs your project's build script, usually defined in package.json
+      - name: Build project
+        run: npm run build
+
+      # Step 6: Set up GitHub Pages
+      # This action configures the GitHub Pages environment
+      - name: Set up Pages
+        uses: actions/configure-pages@v4
+
+      # Step 7: Upload the build artifact to GitHub Pages
+      # The 'dist' directory is a common output directory for build tools.
+      # Adjust 'path' if your build output is in a different directory (e.g., 'build', 'public').
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './dist' # Replace 'dist' with your actual build output directory
+
+      # Step 8: Deploy to GitHub Pages
+      # This action deploys the uploaded artifact to your GitHub Pages site
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
