@@ -7,7 +7,7 @@ Currently, it is not being actively maintained.
 # Getting started
 
 ## Try it now: 
-[https://nannoda.github.io/ovo-paint/](https://yamada-sexta.github.io/ovo-paint/)
+https://yamada-sexta.github.io/ovo-paint/
 
 ## Build
 Run the following commands to build it yourself:
